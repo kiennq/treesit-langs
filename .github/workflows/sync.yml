@@ -1,0 +1,33 @@
+name: Sync with upstream
+
+on:
+  schedule:
+    - cron: "0 0 */7 * *"
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - feature/native-comp
+
+jobs:
+  sync:
+    name: Sync with upstream
+    runs-on: ubuntu-latest
+    env:
+      upstream_repo: emacs-tree-sitter/tree-sitter-langs
+      upstream_branch: master
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 20
+          token: ${{ secrets.PAT_TOKEN }} # needed for trigger other workflow
+          # token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup upstream branch
+        run: |
+          git remote add upstream https://github.com/$upstream_repo.git
+          git fetch upstream $upstream_branch --depth=400
+      - name: Sync
+        run: |
+          git config --global user.email "github-actions[bot]"
+          git config --global user.name "github-actions[bot]@users.noreply.github.com"
+          git rebase --autosquash --autostash upstream/$upstream_branch
+          git push origin -f

@@ -1,20 +1,21 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - master
-      - github-actions          # To test changes related to GitHub Actions.
-      - ci                      # To test all CI changes.
-    paths-ignore:
-      - README.org
-      - CHANGELOG.md
-  pull_request:
-    branches:
-      - master
-    paths-ignore:
-      - README.org
-      - CHANGELOG.md
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master
+  #     - github-actions          # To test changes related to GitHub Actions.
+  #     - ci                      # To test all CI changes.
+  #   paths-ignore:
+  #     - README.org
+  #     - CHANGELOG.md
+  # pull_request:
+  #   branches:
+  #     - master
+  #   paths-ignore:
+  #     - README.org
+  #     - CHANGELOG.md
 
 jobs:
   ci:

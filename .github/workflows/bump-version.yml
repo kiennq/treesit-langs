@@ -1,11 +1,12 @@
 name: Bump Version
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - repos/**
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - repos/**
+  workflow_dispatch:
 
 jobs:
   bump-version:

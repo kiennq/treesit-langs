@@ -1,0 +1,25 @@
+name: Update parsers
+
+on:
+  schedule:
+    - cron: "0 0 */7 * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update parsers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 20
+          token: ${{ secrets.PAT_TOKEN }} # needed for trigger other workflow
+      - name: Update submodules
+        run: |
+          git submodule update --remote --merge --init
+      - name: Push back changes
+        run: |
+          git config --global user.email "github-actions[bot]"
+          git config --global user.name "github-actions[bot]@users.noreply.github.com"
+          git commit -am "[chore] Auto update parsers"
+          git push origin || (exit 0)
