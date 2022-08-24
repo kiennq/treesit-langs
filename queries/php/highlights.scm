@@ -19,7 +19,7 @@
 (list_literal "list" @function.builtin)
 
 (method_declaration
-  name: (name) @function.method)
+  name: (name) @method)
 
 (function_call_expression
   function: (qualified_name (name)) @function)
@@ -28,13 +28,13 @@
   name: (name) @function)
 
 (member_call_expression
-  name: (name) @function.method)
+  name: (name) @method)
 
 (function_definition
   name: (name) @function)
 
 (nullsafe_member_call_expression
-  name: (name) @function.method)
+  name: (name) @method)
 
 ; Member
 

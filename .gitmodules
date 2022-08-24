@@ -162,7 +162,7 @@
 	url = https://github.com/MichaHoffmann/tree-sitter-hcl
 	update = none
 	ignore = dirty
-	branch = master
+	branch = main
 [submodule "repos/elixir"]
 	path = repos/elixir
 	url = https://github.com/elixir-lang/tree-sitter-elixir
@@ -178,7 +178,7 @@
 [submodule "repos/nix"]
 	path = repos/nix
 	url = https://github.com/cstrahan/tree-sitter-nix
-	branch = main
+	branch = master
 	update = none
 	ignore = dirty
 [submodule "repos/prisma"]
@@ -186,7 +186,7 @@
 	url = https://github.com/LumaKernel/tree-sitter-prisma
 	branch = master
 	update = none
-	ignore = dirty  
+	ignore = dirty
 [submodule "repos/haskell"]
 	path = repos/haskell
 	url = https://github.com/tree-sitter/tree-sitter-haskell
@@ -215,5 +215,29 @@
 	path = repos/perl
 	url = https://github.com/leonerd/tree-sitter-perl.git
 	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/lua"]
+	path = repos/lua
+	url = https://github.com/MunifTanjim/tree-sitter-lua
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/kotlin"]
+	path = repos/kotlin
+	url = https://github.com/fwcd/tree-sitter-kotlin
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/powershell"]
+	path = repos/powershell
+	url = https://github.com/kiennq/tree-sitter-powershell.git
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/scheme"]
+	path = repos/scheme
+	url = https://github.com/6cdh/tree-sitter-scheme.git
+	branch = main
 	update = none
 	ignore = dirty

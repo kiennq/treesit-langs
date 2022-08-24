@@ -88,10 +88,14 @@
 ["("
  ")"
  "["
- "]"] @punctuation.bracket
+ "]"
+ "{"
+ "}"] @punctuation.bracket
 
 ["::"
+ ":"
  "."
+ ","
  ";"] @punctuation.delimiter
 
 ;;; Variable bindings

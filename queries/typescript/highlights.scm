@@ -1,63 +1,82 @@
+; inherits: ecma
+[
+"abstract"
+"declare"
+"enum"
+"export"
+"implements"
+"interface"
+"keyof"
+"namespace"
+"private"
+"protected"
+"public"
+"type"
+"readonly"
+] @keyword
 
+; types
 
-(module
- "module" @keyword
- name: (_) @constant)
-(internal_module
- "namespace"
- name: (_) @constant)
+(type_identifier) @type
+(predefined_type) @type.builtin
 
-;; Function bindings.
+(import_statement "type"
+  (import_clause
+    (named_imports
+      ((import_specifier
+          name: (identifier) @type)))))
 
-(method_signature
- name: (property_identifier) @method)
-(function_signature
- name: (identifier) @function)
-
-;; Types.
+;; punctuation
 
 (type_arguments
   "<" @punctuation.bracket
   ">" @punctuation.bracket)
-(type_parameters
- "<" @punctuation.bracket
- ">" @punctuation.bracket)
 
-(type_parameter (type_identifier) @type.parameter)
+(union_type 
+  "|" @punctuation.delimiter)
 
-(type_identifier) @type
-(predefined_type) @type.builtin
-((identifier) @type
- (match? @type "^[A-Z]"))
+(intersection_type
+  "&" @punctuation.delimiter)
 
-(union_type "|" @keyword)
-(optional_parameter "?" @keyword)
+(type_annotation
+  ":" @punctuation.delimiter)
 
-;; Variable bindings.
+(pair
+  ":" @punctuation.delimiter)
 
-(required_parameter (identifier) @variable.parameter)
-(optional_parameter (identifier) @variable.parameter)
+"?." @punctuation.delimiter
 
-(property_signature
- name: (property_identifier) @property.definition)
-(enum_body
- [(property_identifier) @property.definition
-  (enum_assignment
-   (property_identifier) @property.definition)])
+(property_signature "?" @punctuation.special)
+(optional_parameter "?" @punctuation.special)
 
-;; Keywords.
+; Variables
 
-["abstract"
- "declare"
- "enum"
- "export"
- "implements"
- "interface"
- "keyof"
- "namespace"
- "private"
- "protected"
- "public"
- "type"
- "!"
- "readonly"] @keyword
+(undefined) @variable.builtin
+
+;;; Parameters
+(required_parameter (identifier) @parameter)
+(optional_parameter (identifier) @parameter)
+
+(required_parameter
+  (rest_pattern
+    (identifier) @parameter))
+
+;; ({ a }) => null
+(required_parameter
+  (object_pattern
+    (shorthand_property_identifier_pattern) @parameter))
+
+;; ({ a: b }) => null
+(required_parameter
+  (object_pattern
+    (pair_pattern
+      value: (identifier) @parameter)))
+
+;; ([ a ]) => null
+(required_parameter
+  (array_pattern
+    (identifier) @parameter))
+
+;; a => null
+(arrow_function
+  parameter: (identifier) @parameter)

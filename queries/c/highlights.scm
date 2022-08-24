@@ -1,134 +1,182 @@
-["break"
- "case"
- "const"
- "continue"
- "default"
- "do"
- "else"
- "enum"
- "extern"
- "for"
- "goto"
+; Lower priority to prefer @parameter when identifier appears in parameter_declaration.
+[
+  "const"
+  "default"
+  "enum"
+  "extern"
+  "inline"
+  "static"
+  "struct"
+  "typedef"
+  "union"
+  "volatile"
+  "goto"
+  "register"
+] @keyword
+
+"sizeof" @keyword.operator
+"return" @keyword.return
+
+[
+  "while"
+  "for"
+  "do"
+  "continue"
+  "break"
+] @repeat
+
+[
  "if"
- "inline"
- "return"
- "sizeof"
- "static"
- "struct"
+ "else"
+ "case"
  "switch"
- "typedef"
- "union"
- "volatile"
- "while"
- "..."] @keyword
+] @conditional
 
-[(storage_class_specifier)
- (type_qualifier)] @keyword
+"#define" @constant.macro
+[
+  "#if"
+  "#ifdef"
+  "#ifndef"
+  "#else"
+  "#elif"
+  "#endif"
+  "#include" 
+  (preproc_directive)
+] @keyword
 
-["#define"
- "#else"
- "#endif"
- "#if"
- "#ifdef"
- "#ifndef"
- "#include"
- (preproc_directive)] @function.macro
+[ ";" ":" "," ] @punctuation.delimiter
 
-((["#ifdef" "#ifndef"] (identifier) @constant))
+"..." @punctuation.special
 
-["+" "-" "*" "/" "%"
- "~" "|" "&" "<<" ">>"
- "!" "||" "&&"
- "->"
- "==" "!=" "<" ">" "<=" ">="
- "=" "+=" "-=" "*=" "/=" "%=" "|=" "&="
- "++" "--"
+[ "(" ")" "[" "]" "{" "}"] @punctuation.bracket
+
+[
+  "="
+
+  "-"
+  "*"
+  "/"
+  "+"
+  "%"
+
+  "~"
+  "|"
+  "&"
+  "^"
+  "<<"
+  ">>"
+
+  "->"
+  "."
+
+  "<"
+  "<="
+  ">="
+  ">"
+  "=="
+  "!="
+
+  "!"
+  "&&"
+  "||"
+
+  "-="
+  "+="
+  "*="
+  "/="
+  "%="
+  "|="
+  "&="
+  "^="
+  ">>="
+  "<<="
+  "--"
+  "++"
 ] @operator
 
-(conditional_expression ["?" ":"] @operator)
+;; Make sure the comma operator is given a highlight group after the comma
+;; punctuator so the operator is highlighted properly.
+(comma_expression [ "," ] @operator)
 
-["(" ")" "[" "]" "{" "}"] @punctuation.bracket
+[
+ (true)
+ (false)
+] @boolean
 
-["." "," ";"] @punctuation.delimiter
+(conditional_expression [ "?" ":" ] @conditional)
 
-;;; ----------------------------------------------------------------------------
-;;; Functions.
+(string_literal) @string
+(system_lib_string) @string
+(escape_sequence) @string.escape
 
-(call_expression
- function: [(identifier) @function.call
-            (field_expression field: (_) @method.call)])
+(null) @constant.builtin
+(number_literal) @number
+(char_literal) @character
 
-(function_declarator
- declarator: [(identifier) @function
-              (parenthesized_declarator
-               (pointer_declarator (field_identifier) @function))])
+[
+ (preproc_arg)
+ (preproc_defined)
+]  @function.macro
 
-(preproc_function_def
- name: (identifier) @function)
-
-;;; ----------------------------------------------------------------------------
-;;; Types.
-
-[(primitive_type)
- (sized_type_specifier)] @type.builtin
-
-(type_identifier) @type
-
-;;; ----------------------------------------------------------------------------
-;;; Variables.
-
-(declaration declarator: [(identifier) @variable
-                          (_ (identifier) @variable)])
-
-(parameter_declaration declarator: [(identifier) @variable.parameter
-                                    (_ (identifier) @variable.parameter)])
-
-(init_declarator declarator: [(identifier) @variable
-                              (_ (identifier) @variable)])
-
-(assignment_expression
- left: [(identifier) @variable
-        (field_expression field: (_) @variable)
-        (subscript_expression argument: (identifier) @variable)
-        (pointer_expression (identifier) @variable)])
-
-(update_expression
- argument: (identifier) @variable)
-
-(preproc_def name: (identifier) @variable.special)
-
-(preproc_params
- (identifier) @variable.parameter)
-
-;;; ----------------------------------------------------------------------------
-;;; Properties.
-
-(field_declaration
- declarator: [(field_identifier) @property.definition
-              (pointer_declarator (field_identifier) @property.definition)
-              (pointer_declarator (pointer_declarator (field_identifier) @property.definition))])
-
-(enumerator name: (identifier) @property.definition)
-
-(field_identifier) @property
-
-;;; ----------------------------------------------------------------------------
-;;; Misc.
-
-((identifier) @constant
- (.match? @constant "^[A-Z_][A-Z_\\d]*$"))
-
-[(null) (true) (false)] @constant.builtin
-
-[(number_literal)
- (char_literal)] @number
+(field_designator) @property
 
 (statement_identifier) @label
 
-;;; ----------------------------------------------------------------------------
-;;; Strings and comments.
+[
+ (type_identifier)
+ (primitive_type)
+ (sized_type_specifier)
+ (type_descriptor)
+] @type
+
+(sizeof_expression value: (parenthesized_expression (identifier) @type))
+
+((identifier) @constant
+ (#match? @constant "^[A-Z][A-Z0-9_]+$"))
+(enumerator
+  name: (identifier) @constant)
+(case_statement
+  value: (identifier) @constant)
+
+;; Preproc def / undef
+(preproc_def
+  name: (_) @constant)
+(preproc_call
+  directive: (preproc_directive) @_u
+  argument: (_) @constant
+  (#eq? @_u "#undef"))
+
+(call_expression
+  function: (identifier) @function.call)
+(call_expression
+  function: (field_expression
+    field: (field_identifier) @function.call))
+(function_declarator
+  declarator: (identifier) @function)
+(preproc_function_def
+  name: (identifier) @function.macro)
 
 (comment) @comment
 
-[(string_literal)
- (system_lib_string)] @string
+;; Parameters
+(parameter_declaration
+  declarator: (identifier) @parameter)
+
+(parameter_declaration
+  declarator: (pointer_declarator) @parameter)
+
+(preproc_params (identifier) @parameter)
+
+[
+  "__attribute__"
+  "__cdecl"
+  "__clrcall"
+  "__stdcall"
+  "__fastcall"
+  "__thiscall"
+  "__vectorcall"
+  "_unaligned"
+  "__unaligned"
+  "__declspec"
+  (attribute_declaration)
+] @attribute

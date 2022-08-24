@@ -30,7 +30,7 @@
 
 (external (value_name) @function)
 
-(method_name) @function.method
+(method_name) @method
 
 ; Application
 ;------------

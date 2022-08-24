@@ -1,56 +1,177 @@
-;; Keywords
+; inherits: c
 
-["catch"
+((identifier) @field
+ (#match? @field "(^_|^m_|_$)"))
+
+(parameter_declaration
+  declarator: (reference_declarator) @parameter)
+; function(Foo ...foo)
+(variadic_parameter_declaration
+  declarator: (variadic_declarator
+                (_) @parameter))
+; int foo = 0
+(optional_parameter_declaration
+    declarator: (_) @parameter)
+
+;(field_expression) @parameter ;; How to highlight this?
+(template_function
+  name: (identifier) @function)
+
+(template_method
+  name: (field_identifier) @method)
+
+(field_initializer
+ (field_identifier) @property)
+
+(function_declarator
+  declarator: (field_identifier) @method)
+
+(concept_definition
+  name: (identifier) @type)
+
+(namespace_identifier) @namespace
+((namespace_identifier) @type
+                        (#match? @type "^[A-Z]"))
+((namespace_identifier) @constant
+                        (#match? @constant "^[A-Z][A-Z_0-9]*$"))
+(case_statement
+  value: (qualified_identifier (identifier) @constant))
+(namespace_definition
+  name: (identifier) @namespace)
+
+(using_declaration . "using" . "namespace" . [(qualified_identifier) (identifier)] @namespace)
+
+(destructor_name
+  (identifier) @method)
+
+(function_declarator
+      declarator: (qualified_identifier
+        name: (identifier) @function))
+(function_declarator
+      declarator: (qualified_identifier
+        name: (qualified_identifier
+          name: (identifier) @function)))
+((function_declarator
+      declarator: (qualified_identifier
+        name: (identifier) @constructor))
+ (#match? @constructor "^[A-Z]"))
+
+(operator_name) @function
+"operator" @function
+"static_assert" @function.builtin
+
+(call_expression
+  function: (qualified_identifier
+              name: (identifier) @function.call))
+(call_expression
+  function: (qualified_identifier
+              name: (qualified_identifier
+                      name: (identifier) @function.call)))
+(call_expression
+  function:
+      (qualified_identifier
+        name: (qualified_identifier
+              name: (qualified_identifier
+                      name: (identifier) @function.call))))
+
+(call_expression
+  function: (field_expression
+              field: (field_identifier) @function.call))
+
+((call_expression
+  function: (identifier) @constructor)
+(#match? @constructor "^[A-Z]"))
+((call_expression
+  function: (qualified_identifier
+              name: (identifier) @constructor))
+(#match? @constructor "^[A-Z]"))
+
+((call_expression
+  function: (field_expression
+              field: (field_identifier) @constructor))
+(#match? @constructor "^[A-Z]"))
+
+;; constructing a type in an initializer list: Constructor ():  **SuperType (1)**
+((field_initializer
+  (field_identifier) @constructor
+  (argument_list))
+ (#match? @constructor "^[A-Z]"))
+
+
+; Constants
+
+(this) @variable.builtin
+(nullptr) @constant
+
+(true) @boolean
+(false) @boolean
+
+; Literals
+
+(raw_string_literal)  @string
+
+; Keywords
+
+[
+ "try"
+ "catch"
+ "noexcept"
+ "throw"
+] @exception
+
+
+[
  "class"
+ "decltype"
  "constexpr"
- "delete"
  "explicit"
  "final"
  "friend"
  "mutable"
  "namespace"
- "noexcept"
- "new"
  "override"
  "private"
  "protected"
  "public"
  "template"
- "throw"
- "try"
  "typename"
  "using"
- "virtual"] @keyword
+ "virtual"
+ "co_await"
+ "concept"
+ "requires"
+ "consteval"
+ "constinit"
+ (auto)
+] @keyword
 
-;;; ----------------------------------------------------------------------------
-;; Functions
+[
+ "co_yield"
+ "co_return"
+] @keyword.return
 
-(call_expression
- function: (qualified_identifier name: (_) @function.call))
+[
+ "new"
+ "delete"
 
-(template_function
- name: [(identifier) @function.call
-        (qualified_identifier name: (_) @function.call)])
+ ;; these keywords are not supported by the parser
+ ;"eq"
+ ;"not_eq"
+ ;
+ ;"compl"
+ ;"and"
+ ;"or"
+ ;
+ ;"bitand"
+ ;"bitand_eq"
+ ;"bitor"
+ ;"bitor_eq"
+ ;"xor"
+ ;"xor_eq"
+] @keyword.operator
 
-(template_method
- name: (field_identifier) @method.call)
+"<=>" @operator
 
-(function_declarator
- declarator: [(field_identifier) @function
-              (qualified_identifier name: (_) @function)])
+"::" @punctuation.delimiter
 
-;;; ----------------------------------------------------------------------------
-;; Types
-
-((namespace_identifier) @type
- (.match? @type "^[A-Za-z]"))
-
-(namespace_definition (identifier) @type)
-
-(auto) @type
-
-;;; ----------------------------------------------------------------------------
-;; Constants
-
-(this) @variable.builtin
-(nullptr) @constant
+(literal_suffix) @operator

@@ -18,6 +18,7 @@
 (require 'pp)
 (require 'url)
 (require 'tar-mode)
+(require 'rx)
 
 (eval-when-compile
   (require 'subr-x)
@@ -29,13 +30,13 @@
 (declare-function magit-rev-parse "magit-git" (&rest args))
 
 (defconst tree-sitter-langs--dir
-  (file-name-directory (locate-library "tree-sitter-langs.el"))
+  (file-name-directory (locate-library "tree-sitter-langs-build.el"))
   "The directory where the library `tree-sitter-langs' is located.")
 
 ;; TODO: Separate build-time settings from run-time settings.
 (defcustom tree-sitter-langs-grammar-dir tree-sitter-langs--dir
   "The root data directory of `tree-sitter-langs'.
-The 'bin' directory under this directory is used to stored grammar
+The `bin' directory under this directory is used to stored grammar
 binaries (either downloaded, or compiled from source).
 
 This should be set before the grammars are downloaded, e.g. before
@@ -246,7 +247,7 @@ infrequent (grammar-only changes). It is different from the version of
 
 (defconst tree-sitter-langs--langs-with-deps
   '(cpp typescript)
-  "Languages that depend on another, thus requiring 'npm install'.")
+  "Languages that depend on another, thus requiring `npm install'.")
 
 (defun tree-sitter-langs--bundle-file (&optional ext version os)
   "Return the grammar bundle file's name, with optional EXT.
@@ -391,7 +392,7 @@ from the current state of the grammar repo, without cleanup."
         (tree-sitter-langs--call "git" "reset" "--hard" "HEAD")
         (tree-sitter-langs--call "git" "clean" "-f")))))
 
-(cl-defun tree-sitter-langs-create-bundle (&optional clean target)
+(cl-defun tree-sitter-langs-create-bundle (&optional clean target version)
   "Create a bundle of language grammars.
 The bundle includes all languages tracked in git submodules.
 
@@ -413,7 +414,7 @@ compile from the current state of the grammar repos, without cleanup."
     (unwind-protect
         (let* ((tar-file (concat (file-name-as-directory
                                   (expand-file-name default-directory))
-                                 (tree-sitter-langs--old-bundle-file) ".gz"))
+                                 (tree-sitter-langs--old-bundle-file nil version) ".gz"))
                (default-directory (tree-sitter-langs--bin-dir))
                (tree-sitter-langs--out (tree-sitter-langs--buffer "*tree-sitter-langs-create-bundle*"))
                (files (cons tree-sitter-langs--bundle-version-file
@@ -422,14 +423,10 @@ compile from the current state of the grammar repos, without cleanup."
                                                           tree-sitter-langs--suffixes)
                                             file))
                                         (directory-files default-directory))))
-               ;; Disk names in Windows can confuse tar, so we need this option. BSD
-               ;; tar (macOS) doesn't have it, so we don't set it everywhere.
-               ;; https://unix.stackexchange.com/questions/13377/tar/13381#13381.
-               (tar-opts (pcase system-type
-                           ('windows-nt '("--force-local")))))
+               (tar-opts nil))
           (with-temp-file tree-sitter-langs--bundle-version-file
             (let ((coding-system-for-write 'utf-8))
-              (insert tree-sitter-langs--bundle-version)))
+              (insert (or version tree-sitter-langs--bundle-version))))
           (apply #'tree-sitter-langs--call "tar" "-zcvf" tar-file (append tar-opts files)))
       (when errors
         (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -461,11 +458,14 @@ If no language-specific change is detected, compile all languages."
   (file-name-as-directory
    (concat tree-sitter-langs--dir "queries")))
 
+(defconst tree-sitter-langs--repo "kiennq/tree-sitter-langs")
+
 (defun tree-sitter-langs--bundle-url (&optional version os)
   "Return the URL to download the grammar bundle.
 If VERSION and OS are not specified, use the defaults of
 `tree-sitter-langs--bundle-version' and `tree-sitter-langs--os'."
-  (format "https://github.com/emacs-tree-sitter/tree-sitter-langs/releases/download/%s/%s"
+  (format "https://github.com/%s/releases/download/%s/%s"
+          tree-sitter-langs--repo
           version
           (tree-sitter-langs--bundle-file ".gz" version os)))
 
@@ -478,16 +478,29 @@ If VERSION or OS is not specified, use the default of
 This installs the grammar bundle even if the same version was already installed,
 unless SKIP-IF-INSTALLED is non-nil.
 
+When this is called interactively with a prefix argument (e.g \\[universal-argument]
+\\[tree-sitter-langs-install-grammars]) it will install the latest version instead.
+
 The download bundle file is deleted after installation, unless KEEP-BUNDLE is
 non-nil."
   (interactive (list
                 nil
-                (read-string "Bundle version: " tree-sitter-langs--bundle-version)
+                (if current-prefix-arg
+                    (with-current-buffer (url-retrieve-synchronously
+                                          (format "https://github.com/%s/releases/"
+                                                  tree-sitter-langs--repo))
+                      (goto-char (point-min))
+                      (re-search-forward "\n\n" nil :noerror)
+                      (when (re-search-forward (rx "/releases/tag/" (group (+ (| digit ?.))))
+                                               nil :noerror)
+                        (match-string 1)))
+                  (read-string "Bundle version: " tree-sitter-langs--bundle-version))
                 tree-sitter-langs--os
                 nil))
   (let* ((bin-dir (tree-sitter-langs--bin-dir))
          (_ (unless (unless (file-directory-p bin-dir)
                       (make-directory bin-dir))))
+         (soft-forced version)
          (version (or version tree-sitter-langs--bundle-version))
          (default-directory bin-dir)
          (bundle-file (tree-sitter-langs--bundle-file ".gz" version os))
@@ -499,6 +512,9 @@ non-nil."
                                  tree-sitter-langs--bundle-version-file)
                                 (string-trim (buffer-string)))))))
     (cl-block nil
+      (when (or soft-forced (version<= version current-version))
+        (message "tree-sitter-langs: Grammar bundle v%s was older than current one; skipped" version)
+        (cl-return))
       (if (string= version current-version)
           (if skip-if-installed
               (progn (message "tree-sitter-langs: Grammar bundle v%s was already installed; skipped" version)
@@ -508,11 +524,14 @@ non-nil."
       ;; FIX: Handle HTTP errors properly.
       (url-copy-file (tree-sitter-langs--bundle-url version os)
                      bundle-file 'ok-if-already-exists)
+      ;; Remove old files
+      (mapc (lambda (file)
+              (condition-case nil
+                  (delete-file file)
+                (permission-denied
+                 (rename-file file (concat file ".tmp") :ok-if-already-exists))))
+            (directory-files bin-dir 'full module-file-suffix))
       (tree-sitter-langs--call "tar" "-xvzf" bundle-file)
-      ;; FIX: This should be a metadata file in the bundle itself.
-      (with-temp-file tree-sitter-langs--bundle-version-file
-        (let ((coding-system-for-write 'utf-8))
-          (insert version)))
       (unless keep-bundle
         (delete-file bundle-file 'trash))
       (when (and (called-interactively-p 'any)

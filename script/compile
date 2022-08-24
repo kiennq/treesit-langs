@@ -28,6 +28,11 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        (-version)
+            version="\"$2\""
+            shift
+            shift
+            ;;
         (*)
             POSITIONAL+=("$1")
             shift
@@ -38,10 +43,13 @@ target=${target:-nil}
 if [ "$target" == "'" ]; then
     target=nil
 fi
+if [ "$version" == "\"\"" ]; then
+  version=nil
+fi
 
 case $LANG in
     (all)
-        code="(tree-sitter-langs-create-bundle nil $target)"
+        code="(tree-sitter-langs-create-bundle nil $target $version)"
         ;;
     (changed)
         code="(tree-sitter-langs-compile-changed-or-all \"${POSITIONAL[1]:-origin/master}\" $target)"
