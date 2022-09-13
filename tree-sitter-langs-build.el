@@ -504,15 +504,16 @@ non-nil."
          (version (or version tree-sitter-langs--bundle-version))
          (default-directory bin-dir)
          (bundle-file (tree-sitter-langs--bundle-file ".gz" version os))
-         (current-version (when (file-exists-p
-                                 tree-sitter-langs--bundle-version-file)
-                            (with-temp-buffer
-                              (let ((coding-system-for-read 'utf-8))
-                                (insert-file-contents
-                                 tree-sitter-langs--bundle-version-file)
-                                (string-trim (buffer-string)))))))
+         (current-version (if (file-exists-p
+                               tree-sitter-langs--bundle-version-file)
+                              (with-temp-buffer
+                                (let ((coding-system-for-read 'utf-8))
+                                  (insert-file-contents
+                                   tree-sitter-langs--bundle-version-file)
+                                  (string-trim (buffer-string))))
+                            "0.pre")))
     (cl-block nil
-      (when (or soft-forced (version<= version current-version))
+      (unless (or soft-forced (version< current-version version))
         (message "tree-sitter-langs: Grammar bundle v%s was older than current one; skipped" version)
         (cl-return))
       (if (string= version current-version)

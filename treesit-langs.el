@@ -160,9 +160,6 @@ elisp-tree-sitter) to a query string compatible with treesit."
   :type '(alist :key-type symbol
                 :value-type symbol))
 
-(defvar-local treesit-langs-current-patterns nil
-  "Loaded query patterns for current buffer.")
-
 (defun treesit-langs--hl-query-path (lang-symbol &optional mode)
   "Return the highlighting query file for LANG-SYMBOL.
 If MODE is non-nil, return the file containing additional MODE-specfic patterns
@@ -205,18 +202,18 @@ Return nil if there are no bundled patterns."
     (let ((language (or lang
                         (alist-get major-mode treesit-major-mode-language-alist))))
       (treesit-langs--reformat-shared-objects language)
-      (unless (and (treesit-should-enable-p)
+      (unless (and (treesit-can-enable-p)
                    (treesit-language-available-p language))
         (error "Tree sitter isn't available"))
 
       (treesit-parser-create language)
-      (setq treesit-langs-current-patterns
-            `((,language
-               ,(treesit-query-compile
-                 language
-                 (treesit-langs--convert-highlights
-                  (or (treesit-langs--hl-default-patterns language major-mode)
-                      (error "No query patterns for %s" language)))))))
+      (setq treesit-font-lock-settings
+            (treesit-font-lock-rules
+             :language language
+             (treesit-langs--convert-highlights
+              (or (treesit-langs--hl-default-patterns language major-mode)
+                  (error "No query patterns for %s" language)))))
+
       (unless (and (equal treesit-indent-function #'treesit-simple-indent)
                    (not (alist-get language treesit-simple-indent-rules)))
         (setq-local indent-line-function #'treesit-indent)
@@ -226,8 +223,6 @@ Return nil if there are no bundled patterns."
     (advice-add 'treesit-inspect-node-at-point :after
                 (lambda (&rest _) (message treesit--inspect-name)))
 
-    (setq-local treesit-font-lock-defaults
-                '((treesit-langs-current-patterns)))
     (setq-local font-lock-syntactic-face-function #'ignore)
     (setq-local font-lock-defaults '(nil t))
     (treesit-font-lock-enable)
