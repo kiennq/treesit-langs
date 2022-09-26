@@ -5,7 +5,7 @@
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @method.call))
+    field: (field_identifier) @function.method.call))
 
 ; Function definitions
 
@@ -13,7 +13,7 @@
   name: (identifier) @function)
 
 (method_declaration
-  name: (field_identifier) @method)
+  name: (field_identifier) @function.method)
 
 ; Identifiers
 

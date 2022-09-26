@@ -71,7 +71,7 @@ jobs:
           echo BUNDLE_VERSION=$bundle_version.${{ github.run_number }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - run: script/compile all -target "${{ matrix.target }}" -version "${{ env.BUNDLE_VERSION  }}"
-        continue-on-error: ${{ !matrix.target }}
+        continue-on-error: ${{ runner.os == 'Windows' }}
 
       - run: script/inspect-binaries
         continue-on-error: true
