@@ -245,10 +245,6 @@ infrequent (grammar-only changes). It is different from the version of
 (defconst tree-sitter-langs--suffixes '(".dylib" ".dll" ".so")
   "List of suffixes for shared libraries that define tree-sitter languages.")
 
-(defconst tree-sitter-langs--langs-with-deps
-  '(cpp typescript)
-  "Languages that depend on another, thus requiring `npm install'.")
-
 (defun tree-sitter-langs--bundle-file (&optional ext version os)
   "Return the grammar bundle file's name, with optional EXT.
 If VERSION and OS are not spcified, use the defaults of
@@ -322,10 +318,9 @@ from the current state of the grammar repo, without cleanup."
         (_
          (error "Weird status from git-submodule '%s'" status))))
     (let ((default-directory dir))
-      (when (member lang-symbol tree-sitter-langs--langs-with-deps)
-        (tree-sitter-langs--call "npm" "set" "progress=false")
-        (with-demoted-errors "Failed to run 'npm install': %s"
-          (tree-sitter-langs--call "npm" "install")))
+      (tree-sitter-langs--call "npm" "set" "progress=false")
+      (with-demoted-errors "Failed to run 'npm install': %s"
+        (tree-sitter-langs--call "npm" "install"))
       ;; A repo can have multiple grammars (e.g. typescript + tsx).
       (dolist (path-spec paths)
         (let* ((path (or (car-safe path-spec) path-spec))
