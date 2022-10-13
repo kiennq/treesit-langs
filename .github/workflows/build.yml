@@ -39,6 +39,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+      # - name: Install rust toolchain
+      #   uses: actions-rs/toolchain@v1
+      #   with:
+      #     toolchain: stable
+      #     override: true
+
       - run: .github/script/setup
 
       - name: Install tree-sitter CLI
@@ -71,7 +77,7 @@ jobs:
           echo BUNDLE_VERSION=$bundle_version.${{ github.run_number }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - run: script/compile all -target "${{ matrix.target }}" -version "${{ env.BUNDLE_VERSION  }}"
-        continue-on-error: true
+        continue-on-error: ${{ runner.os != 'Windows' }}
 
       - run: script/inspect-binaries
         continue-on-error: true

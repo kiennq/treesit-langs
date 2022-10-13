@@ -265,6 +265,20 @@ If VERSION and OS are not spcified, use the defaults of
     (tree-sitter-langs--old-bundle-file
      ext version os)))
 
+(defvar tree-sitter-langs--cache-dir nil "The tree-sitter parsers dir.")
+(defun tree-sitter-langs--cache-dir ()
+  "The tree-sitter parsers dir."
+  (or tree-sitter-langs--cache-dir
+      (setq tree-sitter-langs--cache-dir
+            (tree-sitter-langs--with-temp-buffer
+              (unless (executable-find "rsdirs")
+                (tree-sitter-langs--call "cargo" "install" "--git" "https://github.com/kiennq/rust-dirs"))
+              (expand-file-name "tree-sitter/lib"
+                                (tree-sitter-langs--with-temp-buffer
+                                  (tree-sitter-langs--call "rsdirs" "cache")
+                                  (goto-char 1)
+                                  (buffer-substring-no-properties 1 (line-end-position))))))))
+
 ;; This is for compatibility with old downloading code. TODO: Remove it.
 (defun tree-sitter-langs--old-bundle-file (&optional ext version os)
   (setq os (or os tree-sitter-langs--os)
@@ -326,7 +340,7 @@ from the current state of the grammar repo, without cleanup."
         (let* ((path (or (car-safe path-spec) path-spec))
                (lang-symbol (or (cdr-safe path-spec) lang-symbol))
                (default-directory (file-name-as-directory (concat dir path))))
-          (tree-sitter-langs--call "tree-sitter" "generate")
+          (ignore-errors (tree-sitter-langs--call "tree-sitter" "generate"))
           (cond
            ((and (memq system-type '(gnu/linux))
                  (file-exists-p "src/scanner.cc"))
@@ -361,7 +375,11 @@ from the current state of the grammar repo, without cleanup."
                       "src/parser.c"
                       "-o" (format "%sbin/%s.so" tree-sitter-langs-grammar-dir lang-symbol)
                       "-target" target))))
-           (:default (tree-sitter-langs--call "tree-sitter" "test")))))
+           (:default (ignore-errors (tree-sitter-langs--call "tree-sitter" "test"))))))
+      (when (file-exists-p (tree-sitter-langs--cache-dir))
+        (dolist (file (directory-files (tree-sitter-langs--cache-dir) 'full ".+\\..+"))
+          (copy-file file bin-dir 'replace)
+          (delete-file file)))
       ;; Replace underscores with hyphens. Example: c_sharp.
       (let ((default-directory bin-dir))
         (dolist (file (directory-files default-directory))
@@ -425,7 +443,8 @@ compile from the current state of the grammar repos, without cleanup."
           (apply #'tree-sitter-langs--call "tar" "-zcvf" tar-file (append tar-opts files)))
       (when errors
         (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        (error "Could not compile grammars:\n%s" (pp-to-string errors))))))
+        (message "[tree-sitter-langs] Errors:\n%s" (pp-to-string errors))
+        (error "Could not compile grammars!!!")))))
 
 (defun tree-sitter-langs-compile-changed-or-all (&optional base target)
   "Compile languages that have changed since git revision BASE.
@@ -444,7 +463,8 @@ If no language-specific change is detected, compile all languages."
           (error (setq errors (append errors `([,lang-symbol ,err]))))))
       (when errors
         (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        (error "Could not compile grammars:\n%s" (pp-to-string errors))))))
+        (message "[tree-sitter-langs] Errors:\n%s" (pp-to-string errors))
+        (error "Could not compile grammars!!!")))))
 
 ;; ---------------------------------------------------------------------------
 ;;; Download and installation.
