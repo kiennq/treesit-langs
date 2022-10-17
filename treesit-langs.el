@@ -206,18 +206,19 @@ Return nil if there are no bundled patterns."
                    (treesit-language-available-p language))
         (error "Tree sitter isn't available"))
 
-      (treesit-parser-create language)
-      (setq treesit-font-lock-settings
-            (treesit-font-lock-rules
-             :language language
-             (treesit-langs--convert-highlights
-              (or (treesit-langs--hl-default-patterns language major-mode)
-                  (error "No query patterns for %s" language)))))
+      (setq-local treesit-font-lock-feature-list '((basic)))
+      (setq-local treesit-font-lock-settings
+                  (treesit-font-lock-rules
+                   :language language
+                   :feature 'basic
+                   :override t
+                   (treesit-langs--convert-highlights
+                    (or (treesit-langs--hl-default-patterns language major-mode)
+                        (error "No query patterns for %s" language)))))
 
       (unless (and (equal treesit-indent-function #'treesit-simple-indent)
                    (not (alist-get language treesit-simple-indent-rules)))
-        (setq-local indent-line-function #'treesit-indent)
-        (setq-local treesit-defun-query "")))
+        (setq-local indent-line-function #'treesit-indent)))
 
     ;; better inspect
     (advice-add 'treesit-inspect-node-at-point :after
@@ -227,8 +228,9 @@ Return nil if there are no bundled patterns."
     (setq-local font-lock-defaults '(nil t))
     (treesit-font-lock-enable)
     ;; Re-enable font-lock-fontify
-    (font-lock-mode -1)
-    (font-lock-mode +1)))
+    ;; (font-lock-mode -1)
+    ;; (font-lock-mode +1)
+    ))
 
 (provide 'treesit-langs)
 ;;; treesit-langs.el ends here
