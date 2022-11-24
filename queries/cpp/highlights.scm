@@ -122,8 +122,12 @@
 
 [
  "class"
- "decltype"
+ "co_await"
+ "concept"
+ "consteval"
  "constexpr"
+ "constinit"
+ "decltype"
  "explicit"
  "final"
  "friend"
@@ -133,15 +137,12 @@
  "private"
  "protected"
  "public"
+ "requires"
+ "requires"
  "template"
  "typename"
  "using"
  "virtual"
- "co_await"
- "concept"
- "requires"
- "consteval"
- "constinit"
  (auto)
 ] @keyword
 
