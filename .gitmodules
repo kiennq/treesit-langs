@@ -250,6 +250,6 @@
 [submodule "repos/r"]
 	path = repos/r
 	url = https://github.com/r-lib/tree-sitter-r.git
-	branch = master
+	branch = main
 	update = none
 	ignore = dirty

@@ -500,27 +500,30 @@ The download bundle file is deleted after installation, unless KEEP-BUNDLE is
 non-nil."
   (interactive (list
                 nil
-                (if current-prefix-arg
-                    (with-current-buffer (url-retrieve-synchronously
-                                          (format "https://github.com/%s/releases/"
-                                                  tree-sitter-langs--repo))
-                      (goto-char (point-min))
-                      (re-search-forward "\n\n" nil :noerror)
-                      (when (re-search-forward (rx "/releases/tag/" (group (+ (| digit ?.))))
-                                               nil :noerror)
-                        (match-string 1)))
+                (unless current-prefix-arg
                   (read-string "Bundle version: " tree-sitter-langs--bundle-version))
                 tree-sitter-langs--os
                 nil))
   (let* ((bin-dir (tree-sitter-langs--bin-dir))
+         (default-directory bin-dir)
          (_ (unless (unless (file-directory-p bin-dir)
                       (make-directory bin-dir))))
+         (has-bundle (file-exists-p
+                      tree-sitter-langs--bundle-version-file))
          (soft-forced version)
-         (version (or version tree-sitter-langs--bundle-version))
-         (default-directory bin-dir)
+         (version (or version
+                      (when (or current-prefix-arg (not has-bundle))
+                        (with-current-buffer (url-retrieve-synchronously
+                                          (format "https://github.com/%s/releases/"
+                                                  tree-sitter-langs--repo))
+                          (goto-char (point-min))
+                          (re-search-forward "\n\n" nil :noerror)
+                          (when (re-search-forward (rx "/releases/tag/" (group (+ (| digit ?.))))
+                                                   nil :noerror)
+                            (match-string 1))))
+                      tree-sitter-langs--bundle-version))
          (bundle-file (tree-sitter-langs--bundle-file ".gz" version os))
-         (current-version (if (file-exists-p
-                               tree-sitter-langs--bundle-version-file)
+         (current-version (if has-bundle
                               (with-temp-buffer
                                 (let ((coding-system-for-read 'utf-8))
                                   (insert-file-contents
