@@ -16,18 +16,17 @@ jobs:
       upstream_repo: emacs-tree-sitter/tree-sitter-langs
       upstream_branch: master
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 20
-          token: ${{ secrets.PAT_TOKEN }} # needed for trigger other workflow
-          # token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup upstream branch
+      - name: Clone
+        run: |
+          REPO="https://${GITHUB_ACTOR}:${{ secrets.PAT_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone --filter=tree:0 $REPO .
+      - name: Setup upstream
         run: |
           git remote add upstream https://github.com/$upstream_repo.git
-          git fetch upstream $upstream_branch --depth=400
+          echo $upstream_branch | xargs -n1 | xargs -I{} git fetch upstream {} --filter=tree:0
       - name: Sync
         run: |
           git config --global user.email "github-actions[bot]"
           git config --global user.name "github-actions[bot]@users.noreply.github.com"
-          git rebase --autosquash --autostash upstream/$upstream_branch
+          echo $upstream_branch | xargs -n1 | xargs -I{} git merge --no-edit upstream/{}
           git push origin -f
