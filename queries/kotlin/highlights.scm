@@ -96,17 +96,17 @@
                                         ; or a type. Classes can appear anywhere in the import path, unlike functions
 (import_header
  (identifier
-  (simple_identifier) @type @_import)
+  (simple_identifier) @type @import)
  (import_alias
   (type_identifier) @type)?
-  (#match? @_import "^[A-Z]"))
+  (#match? @import "^[A-Z]"))
 
 (import_header
  (identifier
-  (simple_identifier) @function @_import .)
+  (simple_identifier) @function @import .)
  (import_alias
   (type_identifier) @function)?
-  (#match? @_import "^[a-z]"))
+  (#match? @import "^[a-z]"))
 
                                         ; TODO: Seperate labeled returns/breaks/continue/super/this
                                         ;       Must be implemented in the parser first
@@ -242,13 +242,13 @@
  (navigation_expression
   ([(line_string_literal) (multi_line_string_literal)] @string.regex)
   (navigation_suffix
-   ((simple_identifier) @_function
-    (#eq? @_function "toRegex")))))
+   ((simple_identifier) @function
+    (#eq? @function "toRegex")))))
 
                                         ;    - Regex("[abc]?")
 (call_expression
- ((simple_identifier) @_function
-  (#eq? @_function "Regex"))
+ ((simple_identifier) @function
+  (#eq? @function "Regex"))
  (call_suffix
   (value_arguments
    (value_argument
@@ -257,11 +257,11 @@
                                         ;    - Regex.fromLiteral("[abc]?")
 (call_expression
  (navigation_expression
-  ((simple_identifier) @_class
-   (#eq? @_class "Regex"))
+  ((simple_identifier) @class
+   (#eq? @class "Regex"))
   (navigation_suffix
-   ((simple_identifier) @_function
-    (#eq? @_function "fromLiteral"))))
+   ((simple_identifier) @function
+    (#eq? @function "fromLiteral"))))
  (call_suffix
   (value_arguments
    (value_argument

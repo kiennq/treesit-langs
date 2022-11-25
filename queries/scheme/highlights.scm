@@ -34,20 +34,20 @@
 
 (list
  .
- (symbol) @_f
+ (symbol) @function
  .
  (list
    (symbol) @variable)
- (#any-of? @_f "lambda" "λ"))
+ (#any-of? @function "lambda" "λ"))
 
 (list
  .
- (symbol) @_f
+ (symbol) @function
  .
  (list
    (list
      (symbol) @variable))
- (#any-of? @_f
+ (#any-of? @function
   "let" "let*" "let-syntax" "let-values" "let*-values" "letrec" "letrec*" "letrec-syntax"))
 
 ;; operators
@@ -82,18 +82,18 @@
 
 (list
  .
- (symbol) @_f
- (#eq? @_f "quote")) @symbol
+ (symbol) @function
+ (#eq? @function "quote")) @symbol
 
 ;; library
 
 (list
  .
- (symbol) @_lib
+ (symbol) @library
  .
  (symbol) @namespace
 
- (#eq? @_lib "library"))
+ (#eq? @library "library"))
 
 ;; builtin procedures
 ;; procedures in R5RS and R6RS but not in R6RS-lib

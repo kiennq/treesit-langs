@@ -142,9 +142,9 @@
 (preproc_def
   name: (_) @constant)
 (preproc_call
-  directive: (preproc_directive) @_u
+  directive: (preproc_directive) @constant.macro
   argument: (_) @constant
-  (#eq? @_u "#undef"))
+  (#eq? @constant.macro "#undef"))
 
 (call_expression
   function: (identifier) @function.call)
