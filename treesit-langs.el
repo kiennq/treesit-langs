@@ -114,9 +114,9 @@ elisp-tree-sitter) to a query string compatible with treesit."
   '((agda-mode        . agda)
     (bash-ts-mode     . bash)
     (c++-mode         . cpp)
-    (c++-ts-mode      . cpp)
+    ;; (c++-ts-mode      . cpp)
     (c-mode           . c)
-    (c-ts-mode        . c)
+    ;; (c-ts-mode        . c)
     (caml-mode        . ocaml)
     (csharp-mode      . c-sharp)
     (csharp-ts-mode   . c-sharp)
@@ -208,11 +208,11 @@ Return nil if there are no bundled patterns."
 
 ;;;###autoload
 (defun treesit-hl-enable (&optional lang)
-  "Enable `treesit-font-lock' for current buffer."
+  "Enable `treesit-font-lock' for current buffer with language LANG."
   (interactive)
-  (when treesit-lang--setup-completed
-    (when-let ((language (or lang
-                        (alist-get major-mode treesit-major-mode-language-alist))))
+  (when-let ((avail treesit-lang--setup-completed)
+             (language (or lang
+                           (alist-get major-mode treesit-major-mode-language-alist))))
       (treesit-langs--reformat-shared-objects language)
       (unless (treesit-ready-p language)
         (error "Tree sitter for %s isn't available" language))
@@ -221,13 +221,14 @@ Return nil if there are no bundled patterns."
       (setq-local treesit-font-lock-settings
                   (treesit-font-lock-rules
                    :language language
-                   :feature 'basic
+                   :feature 'override
                    :override t
                    (treesit-langs--convert-highlights
                     (or (treesit-langs--hl-default-patterns language major-mode)
                         (error "No query patterns for %s" language)))))
-      (setq-local treesit-font-lock-feature-list '((basic)))
-      (treesit-major-mode-setup))
+      (setq-local treesit-font-lock-feature-list '((override)))
+      (let (treesit-simple-indent-rules)
+        (treesit-major-mode-setup))
 
     ;; better inspect
     (advice-add 'treesit-inspect-node-at-point :after
