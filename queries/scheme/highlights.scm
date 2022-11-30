@@ -9,6 +9,10 @@
 [(comment)
  (block_comment)] @comment
 
+;; highlight for datum comment
+;; copied from ../clojure/highlights.scm
+([(comment) (directive)] @comment)
+
 (escape_sequence) @string.escape
 
 ["(" ")" "[" "]" "{" "}"] @punctuation.bracket
