@@ -12,3 +12,4 @@
 ["{" "}" "[" "]"] @punctuation.bracket
 
 (escape_sequence) @escape
+(comment) @comment
