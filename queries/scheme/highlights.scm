@@ -76,7 +76,7 @@
 
 ;; quote
 
-(abbreviation
+(quote
  "'"
  (symbol)) @symbol
 
@@ -89,11 +89,11 @@
 
 (list
  .
- (symbol) @library
+ (symbol) @_lib
  .
  (symbol) @namespace
 
- (#eq? @library "library"))
+ (#eq? @_lib "library"))
 
 ;; builtin procedures
 ;; procedures in R5RS and R6RS but not in R6RS-lib

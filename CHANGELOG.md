@@ -3,6 +3,12 @@
 ## Unreleased
  - Added `lua` grammar.
 
+## 0.12.8 - 2022-11-26
+- Bump ruby grammar
+
+## 0.12.7 - 2022-11-26
+ - Added `lua` grammar.
+
 ## 0.12.6 - 2022-11-22
 - Add `R` grammar
 
