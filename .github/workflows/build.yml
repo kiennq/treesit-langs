@@ -68,12 +68,12 @@ jobs:
       - name: Determine version
         if: runner.os != 'Windows'
         run: |
-          echo BUNDLE_VERSION=$(script/bundle-version).${{ github.run_number }} >> $GITHUB_ENV
+          echo BUNDLE_VERSION=$(script/bundle-version-prefix).${{ github.run_number }} >> $GITHUB_ENV
 
       - name: Determine version
         if: runner.os == 'Windows'
         run: |
-          $bundle_version = ((script/bundle-version) | Out-String).Trim()
+          $bundle_version = ((script/bundle-version-prefix) | Out-String).Trim()
           echo BUNDLE_VERSION=$bundle_version.${{ github.run_number }} | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - run: script/compile all -target "${{ matrix.target }}" -version "${{ env.BUNDLE_VERSION  }}"

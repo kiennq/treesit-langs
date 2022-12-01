@@ -233,6 +233,9 @@ This should be bumped whenever a language submodule is updated, which should be
 infrequent (grammar-only changes). It is different from the version of
 `tree-sitter-langs', which can change frequently (when queries change).")
 
+(defconst tree-sitter-langs--bundle-version-prefix "0.12"
+  "Version prefix of the grammar bundle.")
+
 (defconst tree-sitter-langs--bundle-version-file "BUNDLE-VERSION")
 
 (defconst tree-sitter-langs--os
@@ -252,18 +255,15 @@ If VERSION and OS are not spcified, use the defaults of
   (setq os (or os tree-sitter-langs--os)
         version (or version tree-sitter-langs--bundle-version)
         ext (or ext ""))
-  (if (version<= "0.10.13" version)
-      (format "tree-sitter-grammars.%s.v%s.tar%s"
-              ;; FIX: Implement this correctly, refactoring 'OS' -> 'platform'.
-              (pcase os
-                ("windows" "x86_64-pc-windows-msvc")
-                ("linux" "x86_64-unknown-linux-gnu")
-                ("macos" (if (string-prefix-p "aarch64" system-configuration)
-                             "aarch64-apple-darwin"
-                           "x86_64-apple-darwin")))
-              version ext)
-    (tree-sitter-langs--old-bundle-file
-     ext version os)))
+  (format "tree-sitter-grammars.%s.v%s.tar%s"
+          ;; FIX: Implement this correctly, refactoring 'OS' -> 'platform'.
+          (pcase os
+            ("windows" "x86_64-pc-windows-msvc")
+            ("linux" "x86_64-unknown-linux-gnu")
+            ("macos" (if (string-prefix-p "aarch64" system-configuration)
+                         "aarch64-apple-darwin"
+                       "x86_64-apple-darwin")))
+          version ext))
 
 (defvar tree-sitter-langs--cache-dir nil "The tree-sitter parsers dir.")
 (defun tree-sitter-langs--cache-dir ()
@@ -501,7 +501,7 @@ non-nil."
   (interactive (list
                 nil
                 (unless current-prefix-arg
-                  (read-string "Bundle version: " tree-sitter-langs--bundle-version))
+                  (read-string "Bundle version: " tree-sitter-langs--bundle-version-prefix))
                 tree-sitter-langs--os
                 nil))
   (let* ((bin-dir (tree-sitter-langs--bin-dir))
@@ -521,7 +521,7 @@ non-nil."
                           (when (re-search-forward (rx "/releases/tag/" (group (+ (| digit ?.))))
                                                    nil :noerror)
                             (match-string 1))))
-                      tree-sitter-langs--bundle-version))
+                      tree-sitter-langs--bundle-version-prefix))
          (bundle-file (tree-sitter-langs--bundle-file ".gz" version os))
          (current-version (if has-bundle
                               (with-temp-buffer
