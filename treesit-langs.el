@@ -51,11 +51,13 @@ treesit needs libtree-sitter-LANG.so."
             (directory-files (tree-sitter-langs--bin-dir) 'full
                              (rx (* any) (eval module-file-suffix) eol)))))
 
-(defconst treesit-lang--setup-completed
-  (progn
-    (treesit-langs--reformat-shared-objects)
-    (add-to-list 'treesit-extra-load-path (tree-sitter-langs--bin-dir))
-    t))
+(defvar treesit-lang--setup-completed nil)
+
+(defun treesit-lang--setup ()
+  "Setup parsers."
+  (treesit-langs--reformat-shared-objects)
+  (add-to-list 'treesit-extra-load-path (tree-sitter-langs--bin-dir))
+  (setq treesit-lang--setup-completed t))
 
 (defun treesit-langs--convert-highlights (patterns)
   "Convert PATTERNS (a query string compatible with
@@ -223,8 +225,9 @@ Return nil if there are no bundled patterns."
 (defun treesit-hl-enable (&optional lang)
   "Enable `treesit-font-lock' for current buffer with language LANG."
   (interactive)
-  (when-let ((avail treesit-lang--setup-completed)
-             (language (or lang
+  (unless treesit-lang--setup-completed
+    (treesit-lang--setup))
+  (when-let ((language (or lang
                            (let ((mode major-mode) l)
                              (while (and mode (not l))
                                (setq l (alist-get mode treesit-major-mode-language-alist))

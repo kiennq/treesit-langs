@@ -484,6 +484,8 @@ If VERSION and OS are not specified, use the defaults of
           version
           (tree-sitter-langs--bundle-file ".gz" version os)))
 
+(defvar treesit-lang--setup-completed)
+
 ;;;###autoload
 (defun tree-sitter-langs-install-grammars (&optional skip-if-installed version os keep-bundle)
   "Download and install the specified VERSION of the language grammar bundle.
@@ -550,9 +552,10 @@ non-nil."
                 (permission-denied
                  (rename-file file (concat file ".tmp") :ok-if-already-exists))))
             (directory-files bin-dir 'full module-file-suffix))
+      (setq treesit-lang--setup-completed nil)
       (tree-sitter-langs--call "tar" "-xvzf" bundle-file)
       (unless keep-bundle
-        (delete-file bundle-file 'trash))
+        (delete-file bundle-file))
       (when (and (called-interactively-p 'any)
                  (y-or-n-p (format "Show installed grammars in %s? " bin-dir)))
         (with-current-buffer (find-file bin-dir)
