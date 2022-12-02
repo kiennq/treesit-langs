@@ -67,12 +67,6 @@
 	update = none
 	ignore = dirty
 	branch = master
-[submodule "repos/janet-simple"]
-	path = repos/janet-simple
-	url = https://github.com/sogaiu/tree-sitter-janet-simple
-	update = none
-	ignore = dirty
-	branch = master
 [submodule "repos/java"]
 	path = repos/java
 	url = https://github.com/tree-sitter/tree-sitter-java
@@ -251,5 +245,71 @@
 	path = repos/r
 	url = https://github.com/r-lib/tree-sitter-r.git
 	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/dockerfile"]
+	path = repos/dockerfile
+	url = https://github.com/camdencheek/tree-sitter-dockerfile
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/viml"]
+	path = repos/viml
+	url = https://github.com/vigoux/tree-sitter-viml
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/make"]
+	path = repos/make
+	url = https://github.com/alemuller/tree-sitter-make
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/cmake"]
+	path = repos/cmake
+	url = https://github.com/uyha/tree-sitter-cmake
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/ninja"]
+	path = repos/ninja
+	url = https://github.com/alemuller/tree-sitter-ninja
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/meson"]
+	path = repos/meson
+	url = https://github.com/Decodetalkers/tree-sitter-meson
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/pascal"]
+	path = repos/pascal
+	url = https://github.com/Isopod/tree-sitter-pascal
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/fennel"]
+	path = repos/fennel
+	url = https://github.com/travonted/tree-sitter-fennel
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/clojure"]
+	path = repos/clojure
+	url = https://github.com/sogaiu/tree-sitter-clojure
+	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/elisp"]
+	path = repos/elisp
+	url = https://github.com/Wilfred/tree-sitter-elisp
+	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/latex"]
+	path = repos/latex
+	url = https://github.com/latex-lsp/tree-sitter-latex
+	branch = master
 	update = none
 	ignore = dirty

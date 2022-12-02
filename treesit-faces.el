@@ -249,10 +249,12 @@
 ;;; Aliases
 (put 'treesit-face-boolean 'face-alias 'treesit-face-type.builtin)
 (put 'treesit-face-character 'face-alias 'treesit-face-string.special)
+(put 'treesit-face-class 'face-alias 'treesit-face-type)
 (put 'treesit-face-conditional 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-constant.macro 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-exception 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-field 'face-alias 'treesit-face-variable)
+(put 'treesit-face-float 'face-alias 'treesit-face-number)
 (put 'treesit-face-function.method 'face-alias 'treesit-face-method)
 (put 'treesit-face-import 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-include 'face-alias 'treesit-face-function.macro)
@@ -263,8 +265,8 @@
 (put 'treesit-face-namespace 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-none 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-parameter 'face-alias 'treesit-face-type.parameter)
-(put 'treesit-face-class 'face-alias 'treesit-face-type)
 (put 'treesit-face-repeat 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-spell 'face-alias 'treesit-face-comment)
 (put 'treesit-face-string.escape 'face-alias 'treesit-face-escape)
 (put 'treesit-face-string.regex 'face-alias 'treesit-face-string)
 
