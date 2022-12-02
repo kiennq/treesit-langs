@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - repos/**
+      - .github/workflows/build.yml
 
   workflow_dispatch:
 
@@ -26,7 +27,7 @@ jobs:
             emacs-version: '28.1'
             ext: dylib
             target: aarch64-apple-darwin
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             bundle_os: linux
             emacs-version: '28.1'
             ext: so
@@ -38,7 +39,7 @@ jobs:
             host: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # - name: Install rust toolchain
       #   uses: actions-rs/toolchain@v1
       #   with:
@@ -48,7 +49,7 @@ jobs:
       - run: .github/script/setup
 
       - name: Install tree-sitter CLI
-        run: npm install -g tree-sitter-cli@0.19.3
+        run: npm install -g tree-sitter-cli
 
       - uses: purcell/setup-emacs@master
         if: runner.os != 'Windows'
@@ -105,11 +106,6 @@ jobs:
     needs: build
     runs-on: ubuntu-18.04
     steps:
-      - uses: purcell/setup-emacs@master
-        with:
-          version: '28.1'
-      - uses: actions/checkout@v2
-
       - name: Download binaries
         uses: actions/download-artifact@v2
         with:
