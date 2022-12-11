@@ -46,6 +46,18 @@ jobs:
       #     toolchain: stable
       #     override: true
 
+      - name: Get npm cache dir
+        id: npm-cache-dir
+        shell: bash
+        run: |
+          echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node
+          restore-keys: ${{ runner.os }}-node
+
       - run: .github/script/setup
         shell: bash
 
@@ -74,7 +86,7 @@ jobs:
 
       - run: script/inspect-binaries
         continue-on-error: true
-        id: inpsect_binary
+        id: inspect-binary
 
       - name: Rename cross-compilation's binary
         if: matrix.target
@@ -87,7 +99,7 @@ jobs:
           mv tree-sitter-grammars-${{ matrix.bundle_os }}-${{ env.BUNDLE_VERSION }}.tar.gz tree-sitter-grammars.${{ matrix.host }}.v${{ env.BUNDLE_VERSION }}.tar.gz
 
       - name: Upload binary
-        if: steps.inspect_binary.outcome == 'success'
+        if: steps.inspect-binary.outcome == 'success'
         uses: actions/upload-artifact@v2
         with:
           name: tree-sitter-grammars
@@ -99,7 +111,7 @@ jobs:
 
   publish:
     needs: build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Download binaries
         uses: actions/download-artifact@v2
