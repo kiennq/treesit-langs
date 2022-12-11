@@ -47,6 +47,7 @@ jobs:
       #     override: true
 
       - run: .github/script/setup
+        shell: bash
 
       - name: Install tree-sitter CLI
         run: npm install -g tree-sitter-cli
@@ -63,19 +64,10 @@ jobs:
         with:
           version: ${{ matrix.emacs-version }}
 
-      - run: .github/script/setup-cask
-      - run: cask install
-
       - name: Determine version
-        if: runner.os != 'Windows'
         run: |
           echo BUNDLE_VERSION=$(script/bundle-version-prefix).${{ github.run_number }} >> $GITHUB_ENV
-
-      - name: Determine version
-        if: runner.os == 'Windows'
-        run: |
-          $bundle_version = ((script/bundle-version-prefix) | Out-String).Trim()
-          echo BUNDLE_VERSION=$bundle_version.${{ github.run_number }} >> $env:GITHUB_ENV
+        shell: bash
 
       - run: script/compile all -target "${{ matrix.target }}" -version "${{ env.BUNDLE_VERSION  }}"
         continue-on-error: ${{ runner.os != 'Windows' }}
