@@ -16,20 +16,20 @@ try {
       } else {
         $version = "\`"$version\`""
       }
-      $code = "(tree-sitter-langs-create-bundle nil nil $version)"
+      $code = "(treesit-langs-create-bundle nil nil $version)"
     }
     'changed' {
       $base = $target
       if (!$base) {
         $base = "origin/master"
       }
-      $code = "(tree-sitter-langs-compile-changed-or-all \`"$base\`")"
+      $code = "(treesit-langs-compile-changed-or-all \`"$base\`")"
     }
-    default { $code = "(tree-sitter-langs-compile '$lang)" }
+    default { $code = "(treesit-langs-compile '$lang)" }
   }
   emacs --batch `
     --directory "$project_root" `
-    --load tree-sitter-langs-build `
+    --load treesit-langs-build `
     --eval "$code"
 }
 finally {

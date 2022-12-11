@@ -1,1 +1,1 @@
-cask eval "(progn (require 'tree-sitter-langs-build) (princ tree-sitter-langs--bundle-version-prefix))"
+cask eval "(progn (require 'treesit-langs-build) (princ treesit-langs--bundle-version-prefix))"

@@ -8,7 +8,6 @@
 ;; Modified: May 14, 2022
 ;; Version: 0.0.1
 ;; Keywords: languages tools parsers tree-sitter
-;; Homepage: https://github.com/emacs-tree-sitter/tree-sitter-langs
 ;; Package-Requires: ((emacs "29.0.50"))
 ;; SPDX-License-Identifier: MIT
 ;;
@@ -21,7 +20,7 @@
 ;;; Code:
 
 (require 'treesit)
-(require 'tree-sitter-langs-build)
+(require 'treesit-langs-build)
 (require 'treesit-faces)
 (require 'rx)
 
@@ -29,12 +28,12 @@
 (eval-and-compile
   (unless (bound-and-true-p treesit-langs--testing)
     (ignore-errors
-      (tree-sitter-langs-install-grammars :skip-if-installed))))
+      (treesit-langs-install-grammars :skip-if-installed))))
 
 (defun treesit-langs--reformat-shared-objects (&optional lang)
-  "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `tree-sitter-langs--bin-dir' .
+  "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs--bin-dir' .
 
-Rationale: tree-sitter-langs saves grammars as LANG.so, but
+Rationale: treesit-langs saves grammars as LANG.so, but
 treesit needs libtree-sitter-LANG.so."
   (mapc (lambda (file)
           ;; make a symlink so that libtree-sitter-c.so points to c.so
@@ -46,9 +45,9 @@ treesit needs libtree-sitter-LANG.so."
               (make-symbolic-link
                file
                dest))))
-        (or (and lang `(,(concat (file-name-as-directory (tree-sitter-langs--bin-dir))
+        (or (and lang `(,(concat (file-name-as-directory (treesit-langs--bin-dir))
                                  (format "%s.dll" lang))))
-            (directory-files (tree-sitter-langs--bin-dir) 'full
+            (directory-files (treesit-langs--bin-dir) 'full
                              (rx (* any) (eval module-file-suffix) eol)))))
 
 (defvar treesit-lang--setup-completed nil)
@@ -56,7 +55,7 @@ treesit needs libtree-sitter-LANG.so."
 (defun treesit-lang--setup ()
   "Setup parsers."
   (treesit-langs--reformat-shared-objects)
-  (add-to-list 'treesit-extra-load-path (tree-sitter-langs--bin-dir))
+  (add-to-list 'treesit-extra-load-path (treesit-langs--bin-dir))
   (setq treesit-lang--setup-completed t))
 
 (defun treesit-langs--convert-highlights (patterns)
@@ -66,7 +65,9 @@ elisp-tree-sitter) to a query string compatible with treesit."
                 (pcase-exhaustive exp
                   ;; .match has its args flipped
                   ((or `(.match?  ,capture ,regexp)
-                       `(\#match? ,capture ,regexp))
+                       `(\#match? ,capture ,regexp)
+                       `(.lua-match? ,capture ,regexp)
+                       `(\#lua-match? ,capture ,regexp))
                    `(.match ,(transform regexp) ,(transform capture)))
                   ;; .equal becomes .eq
                   ((or `(.eq?  ,a ,b)
@@ -191,7 +192,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
   "Return the highlighting query file for LANG-SYMBOL.
 If MODE is non-nil, return the file containing additional MODE-specfic patterns
 instead.  An example is `terraform-mode'-specific highlighting patterns for HCL."
-  (concat (file-name-as-directory tree-sitter-langs--queries-dir)
+  (concat (file-name-as-directory treesit-langs--queries-dir)
           (file-name-as-directory (symbol-name lang-symbol))
           (if mode
               (format "highlights.%s.scm" mode)

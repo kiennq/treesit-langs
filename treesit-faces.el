@@ -1,14 +1,7 @@
 ;;; treesit-langs.el --- TODO -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2022 Yoav Marco
-;;
-;; Author: Yoav Marco <https://github.com/ymarco>
-;; Maintainer: Yoav Marco <yoavm448@gmail.com>
-;; Created: May 14, 2022
-;; Modified: May 14, 2022
 ;; Version: 0.0.1
 ;; Keywords: languages tools parsers tree-sitter
-;; Homepage: https://github.com/emacs-tree-sitter/tree-sitter-langs
 ;; Package-Requires: ((emacs "29.0.50"))
 ;; SPDX-License-Identifier: MIT
 ;;

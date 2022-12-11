@@ -82,6 +82,7 @@ jobs:
 
       - run: script/inspect-binaries
         continue-on-error: true
+        id: inpsect_binary
 
       - name: Rename cross-compilation's binary
         if: matrix.target
@@ -94,11 +95,13 @@ jobs:
           mv tree-sitter-grammars-${{ matrix.bundle_os }}-${{ env.BUNDLE_VERSION }}.tar.gz tree-sitter-grammars.${{ matrix.host }}.v${{ env.BUNDLE_VERSION }}.tar.gz
 
       - name: Upload binary
+        if: steps.inspect_binary.outcome == 'success'
         uses: actions/upload-artifact@v2
         with:
           name: tree-sitter-grammars
           path: tree-sitter-grammars*.tar.gz
           if-no-files-found: error
+
     outputs:
       version: ${{ env.BUNDLE_VERSION }}
 
