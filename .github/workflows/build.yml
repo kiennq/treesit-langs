@@ -3,7 +3,7 @@ name: Release nightly
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - repos/**
       - .github/workflows/build.yml
