@@ -4,312 +4,274 @@
 # `ignore = dirty` makes `git status` ignore untracked files and uncommited changes in submodules.
 # This reduces noises when working on the grammars.
 
-# `branch =` allows using `git submodule update --checkout --remote` to update to the latest
-# revision of a remote branch.
 
 [submodule "repos/agda"]
 	path = repos/agda
-	url = https://github.com/tree-sitter/tree-sitter-agda
+	url = https://github.com/AusCyberman/tree-sitter-agda
 	update = none
 	ignore = dirty
-	branch = master
 [submodule "repos/bash"]
 	path = repos/bash
 	url = https://github.com/tree-sitter/tree-sitter-bash
 	update = none
 	ignore = dirty
-	branch = master
 [submodule "repos/c"]
 	path = repos/c
 	url = https://github.com/tree-sitter/tree-sitter-c
 	update = none
 	ignore = dirty
-	branch = master
 [submodule "repos/c-sharp"]
 	path = repos/c-sharp
 	url = https://github.com/tree-sitter/tree-sitter-c-sharp
 	update = none
 	ignore = dirty
-	branch = master
-[submodule "repos/cpp"]
-	path = repos/cpp
-	url = https://github.com/tree-sitter/tree-sitter-cpp
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/css"]
-	path = repos/css
-	url = https://github.com/tree-sitter/tree-sitter-css
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/elm"]
-	path = repos/elm
-	url = https://github.com/razzeee/tree-sitter-elm
-	update = none
-	ignore = dirty
-	branch = main
-[submodule "repos/fluent"]
-	path = repos/fluent
-	url = https://github.com/tree-sitter/tree-sitter-fluent
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/go"]
-	path = repos/go
-	url = https://github.com/tree-sitter/tree-sitter-go
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/html"]
-	path = repos/html
-	url = https://github.com/tree-sitter/tree-sitter-html
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/java"]
-	path = repos/java
-	url = https://github.com/tree-sitter/tree-sitter-java
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/javascript"]
-	path = repos/javascript
-	url = https://github.com/tree-sitter/tree-sitter-javascript
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/jsdoc"]
-	path = repos/jsdoc
-	url = https://github.com/tree-sitter/tree-sitter-jsdoc
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/json"]
-	path = repos/json
-	url = https://github.com/tree-sitter/tree-sitter-json
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/julia"]
-	path = repos/julia
-	url = https://github.com/tree-sitter/tree-sitter-julia
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/ocaml"]
-	path = repos/ocaml
-	url = https://github.com/tree-sitter/tree-sitter-ocaml
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/php"]
-	path = repos/php
-	url = https://github.com/tree-sitter/tree-sitter-php
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/python"]
-	path = repos/python
-	url = https://github.com/tree-sitter/tree-sitter-python
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/ruby"]
-	path = repos/ruby
-	url = https://github.com/tree-sitter/tree-sitter-ruby
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/rust"]
-	path = repos/rust
-	url = https://github.com/tree-sitter/tree-sitter-rust
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/scala"]
-	path = repos/scala
-	url = https://github.com/tree-sitter/tree-sitter-scala
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/swift"]
-	path = repos/swift
-	url = https://github.com/tree-sitter/tree-sitter-swift
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/typescript"]
-	path = repos/typescript
-	url = https://github.com/tree-sitter/tree-sitter-typescript
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/pgn"]
-	path = repos/pgn
-	url = https://github.com/rolandwalker/tree-sitter-pgn.git
-	update = none
-	ignore = dirty
-	branch = master
-[submodule "repos/hcl"]
-	path = repos/hcl
-	url = https://github.com/MichaHoffmann/tree-sitter-hcl
-	update = none
-	ignore = dirty
-	branch = main
-[submodule "repos/elixir"]
-	path = repos/elixir
-	url = https://github.com/elixir-lang/tree-sitter-elixir
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/d"]
-	path = repos/d
-	url = https://github.com/CyberShadow/tree-sitter-d/
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/nix"]
-	path = repos/nix
-	url = https://github.com/cstrahan/tree-sitter-nix
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/prisma"]
-	path = repos/prisma
-	url = https://github.com/LumaKernel/tree-sitter-prisma
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/haskell"]
-	path = repos/haskell
-	url = https://github.com/tree-sitter/tree-sitter-haskell
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/zig"]
-	path = repos/zig
-	url = https://github.com/maxxnino/tree-sitter-zig
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/verilog"]
-	path = repos/verilog
-	url = https://github.com/tree-sitter/tree-sitter-verilog.git
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/yaml"]
-	path = repos/yaml
-	url = https://github.com/ikatyang/tree-sitter-yaml
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/perl"]
-	path = repos/perl
-	url = https://github.com/leonerd/tree-sitter-perl.git
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/lua"]
-	path = repos/lua
-	url = https://github.com/MunifTanjim/tree-sitter-lua
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/kotlin"]
-	path = repos/kotlin
-	url = https://github.com/fwcd/tree-sitter-kotlin
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/powershell"]
-	path = repos/powershell
-	url = https://github.com/kiennq/tree-sitter-powershell.git
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/scheme"]
-	path = repos/scheme
-	url = https://github.com/6cdh/tree-sitter-scheme.git
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/erlang"]
-	path = repos/erlang
-	url = https://github.com/WhatsApp/tree-sitter-erlang
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/r"]
-	path = repos/r
-	url = https://github.com/r-lib/tree-sitter-r.git
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/dockerfile"]
-	path = repos/dockerfile
-	url = https://github.com/camdencheek/tree-sitter-dockerfile
-	branch = main
-	update = none
-	ignore = dirty
-[submodule "repos/viml"]
-	path = repos/viml
-	url = https://github.com/vigoux/tree-sitter-viml
-	branch = master
-	update = none
-	ignore = dirty
-[submodule "repos/make"]
-	path = repos/make
-	url = https://github.com/alemuller/tree-sitter-make
-	branch = main
+[submodule "repos/clojure"]
+	path = repos/clojure
+	url = https://github.com/sogaiu/tree-sitter-clojure
 	update = none
 	ignore = dirty
 [submodule "repos/cmake"]
 	path = repos/cmake
 	url = https://github.com/uyha/tree-sitter-cmake
-	branch = master
 	update = none
 	ignore = dirty
-[submodule "repos/ninja"]
-	path = repos/ninja
-	url = https://github.com/alemuller/tree-sitter-ninja
-	branch = main
+[submodule "repos/cpp"]
+	path = repos/cpp
+	url = https://github.com/tree-sitter/tree-sitter-cpp
 	update = none
 	ignore = dirty
-[submodule "repos/meson"]
-	path = repos/meson
-	url = https://github.com/Decodetalkers/tree-sitter-meson
-	branch = master
+[submodule "repos/css"]
+	path = repos/css
+	url = https://github.com/tree-sitter/tree-sitter-css
 	update = none
 	ignore = dirty
-[submodule "repos/pascal"]
-	path = repos/pascal
-	url = https://github.com/Isopod/tree-sitter-pascal
-	branch = master
+[submodule "repos/d"]
+	path = repos/d
+	url = https://github.com/CyberShadow/tree-sitter-d/
 	update = none
 	ignore = dirty
-[submodule "repos/fennel"]
-	path = repos/fennel
-	url = https://github.com/travonted/tree-sitter-fennel
-	branch = master
+[submodule "repos/dart"]
+	path = repos/dart
+	url = https://github.com/UserNobody14/tree-sitter-dart
 	update = none
 	ignore = dirty
-[submodule "repos/clojure"]
-	path = repos/clojure
-	url = https://github.com/sogaiu/tree-sitter-clojure
-	branch = master
+[submodule "repos/dockerfile"]
+	path = repos/dockerfile
+	url = https://github.com/camdencheek/tree-sitter-dockerfile
 	update = none
 	ignore = dirty
 [submodule "repos/elisp"]
 	path = repos/elisp
 	url = https://github.com/Wilfred/tree-sitter-elisp
-	branch = main
+	update = none
+	ignore = dirty
+[submodule "repos/elixir"]
+	path = repos/elixir
+	url = https://github.com/elixir-lang/tree-sitter-elixir
+	update = none
+	ignore = dirty
+[submodule "repos/elm"]
+	path = repos/elm
+	url = https://github.com/elm-tooling/tree-sitter-elm
+	update = none
+	ignore = dirty
+[submodule "repos/erlang"]
+	path = repos/erlang
+	url = https://github.com/AbstractMachinesLab/tree-sitter-erlang
+	update = none
+	ignore = dirty
+[submodule "repos/fennel"]
+	path = repos/fennel
+	url = https://github.com/travonted/tree-sitter-fennel
+	update = none
+	ignore = dirty
+[submodule "repos/fluent"]
+	path = repos/fluent
+	url = https://github.com/tree-sitter/tree-sitter-fluent
+	update = none
+	ignore = dirty
+[submodule "repos/go"]
+	path = repos/go
+	url = https://github.com/tree-sitter/tree-sitter-go
+	update = none
+	ignore = dirty
+[submodule "repos/gomod"]
+	path = repos/gomod
+	url = https://github.com/camdencheek/tree-sitter-go-mod
+	update = none
+	ignore = dirty
+[submodule "repos/gowork"]
+	path = repos/gowork
+	url = https://github.com/omertuc/tree-sitter-go-work
+	update = none
+	ignore = dirty
+[submodule "repos/haskell"]
+	path = repos/haskell
+	url = https://github.com/tree-sitter/tree-sitter-haskell
+	update = none
+	ignore = dirty
+[submodule "repos/hcl"]
+	path = repos/hcl
+	url = https://github.com/MichaHoffmann/tree-sitter-hcl
+	update = none
+	ignore = dirty
+[submodule "repos/html"]
+	path = repos/html
+	url = https://github.com/tree-sitter/tree-sitter-html
+	update = none
+	ignore = dirty
+[submodule "repos/java"]
+	path = repos/java
+	url = https://github.com/tree-sitter/tree-sitter-java
+	update = none
+	ignore = dirty
+[submodule "repos/javascript"]
+	path = repos/javascript
+	url = https://github.com/tree-sitter/tree-sitter-javascript
+	update = none
+	ignore = dirty
+[submodule "repos/jsdoc"]
+	path = repos/jsdoc
+	url = https://github.com/tree-sitter/tree-sitter-jsdoc
+	update = none
+	ignore = dirty
+[submodule "repos/json"]
+	path = repos/json
+	url = https://github.com/tree-sitter/tree-sitter-json
+	update = none
+	ignore = dirty
+[submodule "repos/julia"]
+	path = repos/julia
+	url = https://github.com/tree-sitter/tree-sitter-julia
+	update = none
+	ignore = dirty
+[submodule "repos/kotlin"]
+	path = repos/kotlin
+	url = https://github.com/fwcd/tree-sitter-kotlin
 	update = none
 	ignore = dirty
 [submodule "repos/latex"]
 	path = repos/latex
 	url = https://github.com/latex-lsp/tree-sitter-latex
-	branch = master
+	update = none
+	ignore = dirty
+[submodule "repos/lua"]
+	path = repos/lua
+	url = https://github.com/MunifTanjim/tree-sitter-lua
+	update = none
+	ignore = dirty
+[submodule "repos/make"]
+	path = repos/make
+	url = https://github.com/alemuller/tree-sitter-make
+	update = none
+	ignore = dirty
+[submodule "repos/meson"]
+	path = repos/meson
+	url = https://github.com/Decodetalkers/tree-sitter-meson
+	update = none
+	ignore = dirty
+[submodule "repos/ninja"]
+	path = repos/ninja
+	url = https://github.com/alemuller/tree-sitter-ninja
+	update = none
+	ignore = dirty
+[submodule "repos/nix"]
+	path = repos/nix
+	url = https://github.com/cstrahan/tree-sitter-nix
+	update = none
+	ignore = dirty
+[submodule "repos/ocaml"]
+	path = repos/ocaml
+	url = https://github.com/tree-sitter/tree-sitter-ocaml
+	update = none
+	ignore = dirty
+[submodule "repos/pascal"]
+	path = repos/pascal
+	url = https://github.com/Isopod/tree-sitter-pascal
+	update = none
+	ignore = dirty
+[submodule "repos/perl"]
+	path = repos/perl
+	url = https://github.com/ganezdragon/tree-sitter-perl
+	update = none
+	ignore = dirty
+[submodule "repos/pgn"]
+	path = repos/pgn
+	url = https://github.com/rolandwalker/tree-sitter-pgn.git
+	update = none
+	ignore = dirty
+[submodule "repos/php"]
+	path = repos/php
+	url = https://github.com/tree-sitter/tree-sitter-php
+	update = none
+	ignore = dirty
+[submodule "repos/powershell"]
+	path = repos/powershell
+	url = https://github.com/kiennq/tree-sitter-powershell.git
+	update = none
+	ignore = dirty
+[submodule "repos/prisma"]
+	path = repos/prisma
+	url = https://github.com/victorhqc/tree-sitter-prisma
+	update = none
+	ignore = dirty
+[submodule "repos/python"]
+	path = repos/python
+	url = https://github.com/tree-sitter/tree-sitter-python
+	update = none
+	ignore = dirty
+[submodule "repos/r"]
+	path = repos/r
+	url = https://github.com/r-lib/tree-sitter-r.git
+	update = none
+	ignore = dirty
+[submodule "repos/ruby"]
+	path = repos/ruby
+	url = https://github.com/tree-sitter/tree-sitter-ruby
+	update = none
+	ignore = dirty
+[submodule "repos/rust"]
+	path = repos/rust
+	url = https://github.com/tree-sitter/tree-sitter-rust
+	update = none
+	ignore = dirty
+[submodule "repos/scala"]
+	path = repos/scala
+	url = https://github.com/tree-sitter/tree-sitter-scala
+	update = none
+	ignore = dirty
+[submodule "repos/scheme"]
+	path = repos/scheme
+	url = https://github.com/6cdh/tree-sitter-scheme.git
+	update = none
+	ignore = dirty
+[submodule "repos/swift"]
+	path = repos/swift
+	url = https://github.com/alex-pinkus/tree-sitter-swift
+	update = none
+	ignore = dirty
+[submodule "repos/typescript"]
+	path = repos/typescript
+	url = https://github.com/tree-sitter/tree-sitter-typescript
+	update = none
+	ignore = dirty
+[submodule "repos/verilog"]
+	path = repos/verilog
+	url = https://github.com/tree-sitter/tree-sitter-verilog.git
+	update = none
+	ignore = dirty
+[submodule "repos/viml"]
+	path = repos/viml
+	url = https://github.com/vigoux/tree-sitter-viml
+	update = none
+	ignore = dirty
+[submodule "repos/yaml"]
+	path = repos/yaml
+	url = https://github.com/ikatyang/tree-sitter-yaml
+	update = none
+	ignore = dirty
+[submodule "repos/zig"]
+	path = repos/zig
+	url = https://github.com/maxxnino/tree-sitter-zig
 	update = none
 	ignore = dirty
