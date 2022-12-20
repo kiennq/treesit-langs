@@ -509,7 +509,7 @@ non-nil."
   (let* ((bin-dir (treesit-langs--bin-dir))
          (default-directory bin-dir)
          (_ (unless (unless (file-directory-p bin-dir)
-                      (make-directory bin-dir))))
+                      (make-directory bin-dir t))))
          (has-bundle (file-exists-p
                       treesit-langs--bundle-version-file))
          (soft-forced version)
