@@ -250,6 +250,11 @@
 	url = https://github.com/alex-pinkus/tree-sitter-swift
 	update = none
 	ignore = dirty
+[submodule "repos/toml"]
+	path = repos/toml
+	url = https://github.com/ikatyang/tree-sitter-toml
+	update = none
+	ignore = dirty
 [submodule "repos/typescript"]
 	path = repos/typescript
 	url = https://github.com/tree-sitter/tree-sitter-typescript
