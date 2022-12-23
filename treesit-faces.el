@@ -260,6 +260,8 @@
 (put 'treesit-face-parameter 'face-alias 'treesit-face-type.parameter)
 (put 'treesit-face-repeat 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-spell 'face-alias 'treesit-face-comment)
+(put 'treesit-face-storageclass 'face-alias 'treesit-face-type)
+(put 'treesit-face-storageclass.lifetime 'face-alias 'treesit-face-type.argument)
 (put 'treesit-face-string.escape 'face-alias 'treesit-face-escape)
 (put 'treesit-face-string.regex 'face-alias 'treesit-face-string)
 
