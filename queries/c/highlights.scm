@@ -1,20 +1,19 @@
-; Lower priority to prefer @parameter when identifier appears in parameter_declaration.
 [
-  "const"
   "default"
   "enum"
   "extern"
+  "goto"
   "inline"
+  "register"
   "static"
   "struct"
   "typedef"
   "union"
   "volatile"
-  "goto"
-  "register"
 ] @keyword
 
 "sizeof" @keyword.operator
+
 "return" @keyword.return
 
 [
@@ -32,7 +31,6 @@
  "switch"
 ] @conditional
 
-"#define" @constant.macro
 [
   "#if"
   "#ifdef"
@@ -40,9 +38,12 @@
   "#else"
   "#elif"
   "#endif"
-  "#include" 
   (preproc_directive)
-] @keyword
+] @preproc
+
+"#define" @define
+
+"#include" @include
 
 [ ";" ":" "," ] @punctuation.delimiter
 
@@ -103,7 +104,7 @@
  (false)
 ] @boolean
 
-(conditional_expression [ "?" ":" ] @conditional)
+(conditional_expression [ "?" ":" ] @conditional.ternary)
 
 (string_literal) @string
 (system_lib_string) @string
@@ -116,35 +117,40 @@
 [
  (preproc_arg)
  (preproc_defined)
-]  @function.macro
-
-(field_designator) @property
+]  @constant
 
 (statement_identifier) @label
 
 [
  (type_identifier)
- (primitive_type)
  (sized_type_specifier)
  (type_descriptor)
 ] @type
 
-(sizeof_expression value: (parenthesized_expression (identifier) @type))
+(storage_class_specifier) @storageclass
+
+(type_qualifier) @type.qualifier
+
+(type_definition
+  declarator: (type_identifier) @type.definition)
+
+(primitive_type) @type.builtin
 
 ((identifier) @constant
- (#match? @constant "^[A-Z][A-Z0-9_]+$"))
+ (#lua-match? @constant "^[A-Z][A-Z0-9_]+$"))
 (enumerator
   name: (identifier) @constant)
 (case_statement
   value: (identifier) @constant)
 
+((identifier) @constant.builtin
+    (#any-of? @constant.builtin "stderr" "stdin" "stdout"))
+
 ;; Preproc def / undef
 (preproc_def
   name: (_) @constant)
 (preproc_call
-  directive: (preproc_directive) @constant.macro
-  argument: (_) @constant
-  (#eq? @constant.macro "#undef"))
+  argument: (_) @constant)
 
 (call_expression
   function: (identifier) @function.call)
@@ -156,7 +162,7 @@
 (preproc_function_def
   name: (identifier) @function.macro)
 
-(comment) @comment
+(comment) @comment @spell
 
 ;; Parameters
 (parameter_declaration

@@ -5,6 +5,7 @@
 
 (parameter_declaration
   declarator: (reference_declarator) @parameter)
+
 ; function(Foo ...foo)
 (variadic_parameter_declaration
   declarator: (variadic_declarator
@@ -20,6 +21,9 @@
 (template_method
   name: (field_identifier) @method)
 
+(field_declaration
+  (field_identifier) @field)
+
 (field_initializer
  (field_identifier) @property)
 
@@ -27,13 +31,18 @@
   declarator: (field_identifier) @method)
 
 (concept_definition
-  name: (identifier) @type)
+  name: (identifier) @type.definition)
+
+(alias_declaration
+  name: (type_identifier) @type.definition)
+
+(auto) @type.builtin
 
 (namespace_identifier) @namespace
 ((namespace_identifier) @type
-                        (#match? @type "^[A-Z]"))
+                        (#lua-match? @type "^[A-Z]"))
 ((namespace_identifier) @constant
-                        (#match? @constant "^[A-Z][A-Z_0-9]*$"))
+                        (#lua-match? @constant "^[A-Z][A-Z_0-9]*$"))
 (case_statement
   value: (qualified_identifier (identifier) @constant))
 (namespace_definition
@@ -54,7 +63,7 @@
 ((function_declarator
       declarator: (qualified_identifier
         name: (identifier) @constructor))
- (#match? @constructor "^[A-Z]"))
+ (#lua-match? @constructor "^[A-Z]"))
 
 (operator_name) @function
 "operator" @function
@@ -80,22 +89,22 @@
 
 ((call_expression
   function: (identifier) @constructor)
-(#match? @constructor "^[A-Z]"))
+(#lua-match? @constructor "^[A-Z]"))
 ((call_expression
   function: (qualified_identifier
               name: (identifier) @constructor))
-(#match? @constructor "^[A-Z]"))
+(#lua-match? @constructor "^[A-Z]"))
 
 ((call_expression
   function: (field_expression
               field: (field_identifier) @constructor))
-(#match? @constructor "^[A-Z]"))
+(#lua-match? @constructor "^[A-Z]"))
 
 ;; constructing a type in an initializer list: Constructor ():  **SuperType (1)**
 ((field_initializer
   (field_identifier) @constructor
   (argument_list))
- (#match? @constructor "^[A-Z]"))
+ (#lua-match? @constructor "^[A-Z]"))
 
 
 ; Constants
@@ -124,27 +133,24 @@
  "class"
  "co_await"
  "concept"
- "consteval"
- "constexpr"
- "constinit"
  "decltype"
  "explicit"
- "final"
  "friend"
- "mutable"
  "namespace"
  "override"
- "private"
- "protected"
- "public"
- "requires"
  "requires"
  "template"
  "typename"
  "using"
- "virtual"
- (auto)
 ] @keyword
+
+[
+ "public"
+ "private"
+ "protected"
+ "virtual"
+ "final"
+] @type.qualifier
 
 [
  "co_yield"
@@ -155,24 +161,24 @@
  "new"
  "delete"
 
- ;; these keywords are not supported by the parser
- ;"eq"
- ;"not_eq"
- ;
- ;"compl"
- ;"and"
- ;"or"
- ;
- ;"bitand"
- ;"bitand_eq"
- ;"bitor"
- ;"bitor_eq"
- ;"xor"
- ;"xor_eq"
+ "xor"
+ "bitand"
+ "bitor"
+ "compl"
+ "not"
+ "xor_eq"
+ "and_eq"
+ "or_eq"
+ "not_eq"
+ "and"
+ "or"
 ] @keyword.operator
 
 "<=>" @operator
 
 "::" @punctuation.delimiter
+
+(template_argument_list
+  ["<" ">"] @punctuation.bracket)
 
 (literal_suffix) @operator
