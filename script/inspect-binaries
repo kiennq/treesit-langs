@@ -9,7 +9,17 @@ PROJECT_ROOT=$(cd "$here/.."; pwd)
     system=$(uname)
 
     case $system in
-        (Linux)
+        MINGW*)
+            echo ┌─────────────────────────────────────────────────────────────────────
+            echo └ Grammar binaries:
+            file bin/*.dll
+            ldd bin/*.dll
+            echo ┌─────────────────────────────────────────────────────────────────────
+            echo └ Emacs:
+            file "$(which emacs)"
+            ldd "$(which emacs)"
+            ;;
+        Linux)
             echo ┌─────────────────────────────────────────────────────────────────────
             echo └ Grammar binaries:
             file bin/*.so
@@ -19,7 +29,7 @@ PROJECT_ROOT=$(cd "$here/.."; pwd)
             file "$(which emacs)"
             ldd "$(which emacs)"
             ;;
-        (Darwin)
+        Darwin)
             echo ┌─────────────────────────────────────────────────────────────────────
             echo └ Grammar binaries:
             file bin/*.dylib
@@ -29,7 +39,8 @@ PROJECT_ROOT=$(cd "$here/.."; pwd)
             file "$(which emacs)"
             otool -L "$(which emacs)"
             ;;
-        (*)
+        *)
             echo "Unknown system $system"
+            ;;
     esac
 )

@@ -87,6 +87,7 @@ jobs:
       - run: script/inspect-binaries
         continue-on-error: true
         id: inspect-binary
+        shell: bash
 
       - name: Rename cross-compilation's binary
         if: matrix.target

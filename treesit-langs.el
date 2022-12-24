@@ -48,7 +48,7 @@ treesit needs libtree-sitter-LANG.so."
         (or (and lang `(,(concat (file-name-as-directory (treesit-langs--bin-dir))
                                  (format "%s.dll" lang))))
             (directory-files (treesit-langs--bin-dir) 'full
-                             (rx (* any) (eval module-file-suffix) eol)))))
+                             (rx (* any) (eval `(or ,@treesit-langs--suffixes)) eol)))))
 
 (defvar treesit-lang--setup-completed nil)
 

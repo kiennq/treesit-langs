@@ -415,13 +415,13 @@ compile from the current state of the grammar repos, without cleanup."
   (unless (executable-find "tar")
     (error "Could not find tar executable (needed to bundle compiled grammars)"))
   (let ((errors (thread-last
-                    (treesit-langs--map-repos
-                     (lambda (name)
-                       (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                       (let ((lang-symbol (intern name)))
-                         (condition-case err
-                             (treesit-langs-compile lang-symbol clean target)
-                           (error `[,lang-symbol ,err])))))
+                  (treesit-langs--map-repos
+                   (lambda (name)
+                     (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                     (let ((lang-symbol (intern name)))
+                       (condition-case err
+                           (treesit-langs-compile lang-symbol clean target)
+                         (error `[,lang-symbol ,err])))))
                   (seq-filter #'identity))))
     (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     (unwind-protect
@@ -431,11 +431,18 @@ compile from the current state of the grammar repos, without cleanup."
                (default-directory (treesit-langs--bin-dir))
                (treesit-langs--out (treesit-langs--buffer "*treesit-langs-create-bundle*"))
                (files (cons treesit-langs--bundle-version-file
-                            (seq-filter (lambda (file)
-                                          (when (seq-some (lambda (ext) (string-suffix-p ext file))
-                                                          treesit-langs--suffixes)
-                                            file))
-                                        (directory-files default-directory))))
+                            (thread-last
+                              (directory-files default-directory)
+                              (seq-map (lambda (file)
+                                            (when (seq-some (lambda (ext) (string-suffix-p ext file))
+                                                            treesit-langs--suffixes)
+                                              (if (string-prefix-p "libtree-sitter-" file)
+                                                  file
+                                                (let ((dest (concat "libtree-sitter-" file)))
+                                                  (copy-file file dest 'replace)
+                                                  (delete-file file)
+                                                  dest)))))
+                              (seq-remove #'null))))
                (tar-opts nil))
           (with-temp-file treesit-langs--bundle-version-file
             (let ((coding-system-for-write 'utf-8))
