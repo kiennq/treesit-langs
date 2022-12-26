@@ -226,17 +226,27 @@ latest commit."
 
 ;; ---------------------------------------------------------------------------
 ;;; Building language grammars.
+(defconst treesit-langs--bundle-version-file "BUNDLE-VERSION")
 
-(defconst treesit-langs--bundle-version "0.12.0"
+(defvar treesit-langs--bundle-version nil
+  "Version of the grammar bundle.")
+(defun treesit-langs--bundle-version ()
   "Version of the grammar bundle.
 This should be bumped whenever a language submodule is updated, which should be
-infrequent (grammar-only changes). It is different from the version of
-`treesit-langs', which can change frequently (when queries change).")
+infrequent (grammar-only changes)."
+  (setq treesit-langs--bundle-version
+        (or treesit-langs--bundle-version
+            (let ((default-directory (treesit-langs--bin-dir)))
+              (if (file-exists-p treesit-langs--bundle-version-file)
+                  (with-temp-buffer
+                    (let ((coding-system-for-read 'utf-8))
+                      (insert-file-contents
+                       treesit-langs--bundle-version-file)
+                      (string-trim (buffer-string))))))
+            "0.pre")))
 
 (defconst treesit-langs--bundle-version-prefix "0.12"
   "Version prefix of the grammar bundle.")
-
-(defconst treesit-langs--bundle-version-file "BUNDLE-VERSION")
 
 (defconst treesit-langs--os
   (pcase system-type
@@ -253,7 +263,7 @@ infrequent (grammar-only changes). It is different from the version of
 If VERSION and OS are not spcified, use the defaults of
 `treesit-langs--bundle-version' and `treesit-langs--os'."
   (setq os (or os treesit-langs--os)
-        version (or version treesit-langs--bundle-version)
+        version (or version (treesit-langs--bundle-version))
         ext (or ext ""))
   (format "tree-sitter-grammars.%s.v%s.tar%s"
           ;; FIX: Implement this correctly, refactoring 'OS' -> 'platform'.
@@ -282,7 +292,7 @@ If VERSION and OS are not spcified, use the defaults of
 ;; This is for compatibility with old downloading code. TODO: Remove it.
 (defun treesit-langs--old-bundle-file (&optional ext version os)
   (setq os (or os treesit-langs--os)
-        version (or version treesit-langs--bundle-version)
+        version (or version (treesit-langs--bundle-version))
         ext (or ext ""))
   (format "tree-sitter-grammars-%s-%s.tar%s"
           os version ext))
@@ -446,7 +456,7 @@ compile from the current state of the grammar repos, without cleanup."
                (tar-opts nil))
           (with-temp-file treesit-langs--bundle-version-file
             (let ((coding-system-for-write 'utf-8))
-              (insert (or version treesit-langs--bundle-version))))
+              (insert (or version (treesit-langs--bundle-version)))))
           (apply #'treesit-langs--call "tar" "-zcvf" tar-file (append tar-opts files)))
       (when errors
         (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -510,7 +520,7 @@ non-nil."
   (interactive (list
                 nil
                 (unless current-prefix-arg
-                  (read-string "Bundle version: " treesit-langs--bundle-version-prefix))
+                  (read-string "Bundle version: " (treesit-langs--bundle-version)))
                 treesit-langs--os
                 nil))
   (let* ((bin-dir (treesit-langs--bin-dir))
@@ -530,15 +540,9 @@ non-nil."
                           (when (re-search-forward (rx "/releases/tag/" (group (+ (| digit ?.))))
                                                    nil :noerror)
                             (match-string 1))))
-                      treesit-langs--bundle-version-prefix))
+                      (treesit-langs--bundle-version)))
          (bundle-file (treesit-langs--bundle-file ".gz" version os))
-         (current-version (if has-bundle
-                              (with-temp-buffer
-                                (let ((coding-system-for-read 'utf-8))
-                                  (insert-file-contents
-                                   treesit-langs--bundle-version-file)
-                                  (string-trim (buffer-string))))
-                            "0.pre")))
+         (current-version (treesit-langs--bundle-version)))
     (cl-block nil
       (unless (or soft-forced (version< current-version version))
         (message "treesit-langs: Grammar bundle v%s was older than current one; skipped" version)
@@ -563,6 +567,7 @@ non-nil."
       (treesit-langs--call "tar" "-xvzf" bundle-file)
       (unless keep-bundle
         (delete-file bundle-file))
+      (setq treesit-langs--bundle-version version)
       (when (and (called-interactively-p 'any)
                  (y-or-n-p (format "Show installed grammars in %s? " bin-dir)))
         (with-current-buffer (find-file bin-dir)
