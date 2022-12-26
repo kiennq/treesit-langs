@@ -257,7 +257,11 @@ Return nil if there are no bundled patterns."
                     (or (treesit-langs--hl-default-patterns language major-mode)
                         (error "No query patterns for %s" language)))))
       (setq-local treesit-font-lock-feature-list '((override)))
-      (let (treesit-simple-indent-rules)
+      ;; Before reset up treesit for major mode, we need:
+      ;; - disable indent
+      ;; - and forcefully reload fontlock state for major mode
+      (let (treesit-simple-indent-rules
+            font-lock-set-defaults)
         (treesit-major-mode-setup))
 
     ;; better inspect
