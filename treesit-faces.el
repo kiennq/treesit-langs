@@ -15,6 +15,7 @@
 
 (require 'font-lock)
 
+
 (defgroup treesit-faces nil
   "Faces for highlighting code."
   :group 'treesit)
@@ -151,6 +152,26 @@
   "Face for special strings, e.g. regular expressions."
   :group 'treesit-faces)
 
+(defface treesit-face-string.emphasis
+  '((default :inherit treesit-face-string :slant italic))
+  "Face for emphasised strings."
+  :group 'treesit-faces)
+
+(defface treesit-face-string.strike
+  '((default :inherit treesit-face-string :strike-through t))
+  "Face for striked strings."
+  :group 'treesit-faces)
+
+(defface treesit-face-string.underline
+  '((default :inherit treesit-face-string :underline t))
+  "Face for underlined strings."
+  :group 'treesit-faces)
+
+(defface treesit-face-string.uri
+  '((default :inherit link))
+  "Face for uri."
+  :group 'treesit-faces)
+
 (defface treesit-face-escape
   '((default :inherit font-lock-keyword-face))
   "Face for escape characters in strings."
@@ -234,7 +255,7 @@
 ;;; ------------------------------------
 ;;; Errors.
 (defface treesit-face-error
-  '((default :inherit 'error))
+  '((default :inherit error))
   "Face for attributes markup languages."
   :group 'treesit-faces)
 
@@ -267,7 +288,21 @@
 (put 'treesit-face-storageclass.lifetime 'face-alias 'treesit-face-type.argument)
 (put 'treesit-face-string.escape 'face-alias 'treesit-face-escape)
 (put 'treesit-face-string.regex 'face-alias 'treesit-face-string)
+(put 'treesit-face-tag.attribute 'face-alias 'treesit-face-attribute)
+(put 'treesit-face-tag.delimiter 'face-alias 'treesit-face-punctuation.bracket)
+(put 'treesit-face-text 'face-alias 'treesit-face-string)
+(put 'treesit-face-text.emphasis 'face-alias 'treesit-face-string.emphasis)
+(put 'treesit-face-text.literal 'face-alias 'treesit-face-string)
+(put 'treesit-face-text.strike 'face-alias 'treesit-face-string.strike)
+(put 'treesit-face-text.strong 'face-alias 'treesit-face-string.special)
+(put 'treesit-face-text.title 'face-alias 'treesit-face-string.special)
+(put 'treesit-face-text.underline 'face-alias 'treesit-face-string.underline)
+(put 'treesit-face-text.uri 'face-alias 'treesit-face-string.uri)
 (put 'treesit-face-type.qualifier 'face-alias 'treesit-face-keyword)
+
+;; Diff
+(put 'treesit-face-text.diff.add 'face-alias 'diff-added)
+(put 'treesit-face-text.diff.delete 'face-alias 'diff-removed)
 
 (provide 'treesit-faces)
 ;;; treesit-faces.el ends here
