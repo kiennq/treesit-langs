@@ -388,8 +388,9 @@ from the current state of the grammar repo, without cleanup."
            (:default (ignore-errors (treesit-langs--call "tree-sitter" "test"))))))
       (when (file-exists-p (treesit-langs--cache-dir))
         (dolist (file (directory-files (treesit-langs--cache-dir) 'full ".+\\..+"))
-          (copy-file file bin-dir 'replace)
-          (delete-file file)))
+          (unless (file-directory-p file)
+            (copy-file file bin-dir :replace)
+            (delete-file file))))
       ;; Replace underscores with hyphens. Example: c_sharp.
       (let ((default-directory bin-dir))
         (dolist (file (directory-files default-directory))
@@ -449,7 +450,7 @@ compile from the current state of the grammar repos, without cleanup."
                                               (if (string-prefix-p "libtree-sitter-" file)
                                                   file
                                                 (let ((dest (concat "libtree-sitter-" file)))
-                                                  (copy-file file dest 'replace)
+                                                  (copy-file file dest :replace)
                                                   (delete-file file)
                                                   dest)))))
                               (seq-remove #'null))))
@@ -561,7 +562,7 @@ non-nil."
               (condition-case nil
                   (delete-file file)
                 (permission-denied
-                 (rename-file file (concat file ".tmp") :ok-if-already-exists))))
+                 (rename-file file (concat file ".tmp") :no-error))))
             (directory-files bin-dir 'full module-file-suffix))
       (setq treesit-lang--setup-completed nil)
       (treesit-langs--call "tar" "-xvzf" bundle-file)
@@ -593,7 +594,7 @@ If the optional arg FORCE is non-nil, any existing file will be overwritten."
         (let ((default-directory dst-dir))
           (if (file-exists-p "highlights.scm")
               (when force
-                (copy-file src dst-dir :force))
+                (copy-file src dst-dir :replace))
             (message "Copying highlights.scm for %s" lang-symbol)
             (copy-file src dst-dir)))))))
 
