@@ -28,7 +28,11 @@
 (eval-and-compile
   (unless (bound-and-true-p treesit-langs--testing)
     (ignore-errors
-      (treesit-langs-install-grammars :skip-if-installed))))
+      (treesit-langs-install-grammars :skip-if-installed)))
+
+  ;; better inspect
+  (advice-add 'treesit-inspect-node-at-point :after
+              (lambda (&rest _) (message treesit--inspect-name))))
 
 (defun treesit-langs--reformat-shared-objects (&optional lang)
   "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs--bin-dir' .
@@ -239,41 +243,54 @@ Return nil if there are no bundled patterns."
       (let ((content (buffer-string)))
         (unless (string-empty-p content) content)))))
 
+(defvar treesit-hl--enabled nil "Non-nil if the treesit highlighting should be used.")
+
+(defun treesit-hl--toggle (&optional lang)
+  "Toggle `treesit-font-lock-settings' for current buffer with language LANG."
+  (if treesit-hl--enabled
+      (progn
+        (unless treesit-lang--setup-completed
+          (treesit-lang--setup))
+        (when-let ((language (or lang
+                                 (let ((mode major-mode) l)
+                                   (while (and mode (not l))
+                                     (setq l (alist-get mode treesit-major-mode-language-alist))
+                                     (setq mode (get mode 'derived-mode-parent)))
+                                   l))))
+          (unless (treesit-ready-p language)
+            (error "Tree sitter for %s isn't available" language))
+
+          (treesit-parser-create language)
+          (setq-local treesit-font-lock-settings
+                      (treesit-font-lock-rules
+                       :language language
+                       :feature 'override
+                       :override t
+                       (treesit-langs--convert-highlights
+                        (or (treesit-langs--hl-default-patterns language major-mode)
+                            (error "No query patterns for %s" language)))))
+          (setq-local treesit-font-lock-feature-list '((override)))
+          ;; Before reset up treesit for major mode, we need:
+          ;; - disable indent
+          ;; - and forcefully reload fontlock state for major mode
+          (let (treesit-simple-indent-rules
+                font-lock-set-defaults)
+            (treesit-major-mode-setup))
+          (message "Turn on tree-sitter.")))
+    (let ((mode major-mode))
+      (fundamental-mode)
+      (funcall-interactively mode)
+      (message "Turn off tree-sitter."))))
+
 ;;;###autoload
-(defun treesit-hl-enable (&optional lang)
-  "Enable `treesit-font-lock' for current buffer with language LANG."
+(defun treesit-hl-toggle (&optional enable)
+  "Toggle tree-sitter highlighting state according to ENABLE."
   (interactive)
-  (unless treesit-lang--setup-completed
-    (treesit-lang--setup))
-  (when-let ((language (or lang
-                           (let ((mode major-mode) l)
-                             (while (and mode (not l))
-                               (setq l (alist-get mode treesit-major-mode-language-alist))
-                               (setq mode (get mode 'derived-mode-parent)))
-                             l))))
-      (unless (treesit-ready-p language)
-        (error "Tree sitter for %s isn't available" language))
+  (if (called-interactively-p 'any)
+      (setq treesit-hl--enabled (not treesit-hl--enabled))
+    (setq treesit-hl--enabled enable))
+  (treesit-hl--toggle))
 
-      (treesit-parser-create language)
-      (setq-local treesit-font-lock-settings
-                  (treesit-font-lock-rules
-                   :language language
-                   :feature 'override
-                   :override t
-                   (treesit-langs--convert-highlights
-                    (or (treesit-langs--hl-default-patterns language major-mode)
-                        (error "No query patterns for %s" language)))))
-      (setq-local treesit-font-lock-feature-list '((override)))
-      ;; Before reset up treesit for major mode, we need:
-      ;; - disable indent
-      ;; - and forcefully reload fontlock state for major mode
-      (let (treesit-simple-indent-rules
-            font-lock-set-defaults)
-        (treesit-major-mode-setup))
-
-    ;; better inspect
-    (advice-add 'treesit-inspect-node-at-point :after
-                (lambda (&rest _) (message treesit--inspect-name)))))
 
 (provide 'treesit-langs)
 ;;; treesit-langs.el ends here
