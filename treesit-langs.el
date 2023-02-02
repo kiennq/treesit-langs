@@ -282,14 +282,17 @@ Return nil if there are no bundled patterns."
       (funcall-interactively mode)
       (message "Turn off tree-sitter."))))
 
+(defvar treesit-hl--toggling nil "Non-nil if under toggling.")
 ;;;###autoload
 (defun treesit-hl-toggle (&optional enable)
   "Toggle tree-sitter highlighting state according to ENABLE."
   (interactive)
-  (if (called-interactively-p 'any)
-      (setq treesit-hl--enabled (not treesit-hl--enabled))
-    (setq treesit-hl--enabled enable))
-  (treesit-hl--toggle))
+  (unless treesit-hl--toggling
+    (let ((treesit-hl--toggling t))
+      (if (called-interactively-p 'any)
+          (setq treesit-hl--enabled (not treesit-hl--enabled))
+        (setq treesit-hl--enabled enable))
+      (treesit-hl--toggle))))
 
 
 (provide 'treesit-langs)
