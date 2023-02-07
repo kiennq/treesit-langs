@@ -65,7 +65,7 @@
 
 [
  (predefined_type)
- (void_keyword)
+ ;; (void_keyword)
 ] @type.builtin
 
 (implicit_type) @keyword
@@ -309,7 +309,7 @@
  "with"
  "new"
  "typeof"
- "nameof"
+ ;; "nameof"
  "sizeof"
  "is"
  "as"
