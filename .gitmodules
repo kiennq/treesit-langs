@@ -80,6 +80,11 @@
 	url = https://github.com/tree-sitter/tree-sitter-css
 	update = none
 	ignore = dirty
+[submodule "repos/csv"]
+	path = repos/csv
+	url = https://github.com/amaanq/tree-sitter-csv
+	update = none
+	ignore = dirty
 [submodule "repos/cuda"]
 	path = repos/cuda
 	url = https://github.com/theHamsta/tree-sitter-cuda
@@ -350,9 +355,19 @@
 	url = https://github.com/alemuller/tree-sitter-make
 	update = none
 	ignore = dirty
+[submodule "repos/matlab"]
+	path = repos/matlab
+	url = https://github.com/acristoffers/tree-sitter-matlab
+	update = none
+	ignore = dirty
 [submodule "repos/menhir"]
 	path = repos/menhir
 	url = https://github.com/Kerl13/tree-sitter-menhir
+	update = none
+	ignore = dirty
+[submodule "repos/mermaid"]
+	path = repos/mermaid
+	url = https://github.com/monaqa/tree-sitter-mermaid
 	update = none
 	ignore = dirty
 [submodule "repos/meson"]
@@ -373,6 +388,11 @@
 [submodule "repos/norg"]
 	path = repos/norg
 	url = https://github.com/nvim-neorg/tree-sitter-norg
+	update = none
+	ignore = dirty
+[submodule "repos/objc"]
+	path = repos/objc
+	url = https://github.com/amaanq/tree-sitter-objc
 	update = none
 	ignore = dirty
 [submodule "repos/ocaml"]
