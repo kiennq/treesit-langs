@@ -1,3 +1,5 @@
+; adapted from https://github.com/monaqa/tree-sitter-mermaid
+
 [
  "sequenceDiagram"
  "classDiagram"
@@ -53,9 +55,7 @@
 
  ] @keyword
 
-[
- (comment)
- ] @comment
+(comment) @comment
 
 [
  ":"
@@ -99,12 +99,12 @@
  "&"
  ] @operator
 
-(sequence_actor) @field
-(class_name) @field
+(sequence_actor) @type
+(class_name) @type
 
-(state_name) @field
+(state_name) @type
 
-(gantt_task_text) @field
+(gantt_task_text) @type
 
 [
  (class_annotation_line)
@@ -114,7 +114,7 @@
  (state_annotation_fork)
  (state_annotation_join)
  (state_annotation_choice)
- ] @type
+ ] @attribute
 
 (directive) @include
 
@@ -128,7 +128,7 @@
 (flowchart_direction_bt)
  ] @constant
 
-(flow_vertex_id) @field
+(flow_vertex_id) @type
 
 [
  (flow_link_arrow)
@@ -164,14 +164,28 @@
  (er_reltype_identifying)
  ] @operator
 
-(er_entity_name) @field
+(er_entity_name) @type
 
 (er_attribute_type) @type
-(er_attribute_name) @field
+(er_attribute_name) @type
 
 [
  (er_attribute_key_type_pk)
  (er_attribute_key_type_fk)
- ] @keyword
+ ] @type.qualifier
 
-(er_attribute_comment) @string
+[
+ (er_attribute_comment)
+ (flow_text_quoted)
+ (flow_text_literal)
+ (flow_arrow_text)
+ (flow_vertex_text)
+ (sequence_text)
+ (sequence_alias)
+ (state_description)
+ (er_role)
+ (cardinality)
+ (gantt_task_text)
+ (pie_title)
+ (pie_label)
+ ] @string
