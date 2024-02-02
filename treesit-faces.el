@@ -216,6 +216,11 @@
   "Face for numbers."
   :group 'treesit-faces)
 
+(defface treesit-face-module
+  '((default :inherit font-lock-constant-face))
+  "Face for constants."
+  :group 'treesit-faces)
+
 ;;; ------------------------------------
 ;;; Punctuations (aka. should-be-dimmed).
 
@@ -264,6 +269,7 @@
 (put 'treesit-face-boolean 'face-alias 'treesit-face-type.builtin)
 (put 'treesit-face-character 'face-alias 'treesit-face-string.special)
 (put 'treesit-face-class 'face-alias 'treesit-face-type)
+(put 'treesit-face-comment.warning 'face-alias 'treesit-face-comment)
 (put 'treesit-face-conditional 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-conditional.ternary 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-constant.macro 'face-alias 'treesit-face-function.macro)
@@ -272,11 +278,18 @@
 (put 'treesit-face-field 'face-alias 'treesit-face-variable)
 (put 'treesit-face-float 'face-alias 'treesit-face-number)
 (put 'treesit-face-function.method 'face-alias 'treesit-face-method)
+(put 'treesit-face-function.method.call 'face-alias 'treesit-face-method.call)
 (put 'treesit-face-import 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-include 'face-alias 'treesit-face-function.macro)
+(put 'treesit-face-keyword.conditional 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.coroutine 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.exception 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.function 'face-alias 'treesit-face-function)
+(put 'treesit-face-keyword.import 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-keyword.operator 'face-alias 'treesit-face-operator)
+(put 'treesit-face-keyword.repeat 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.return 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.storage 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-library 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-namespace 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-none 'face-alias 'treesit-face-keyword)
@@ -298,7 +311,9 @@
 (put 'treesit-face-text.title 'face-alias 'treesit-face-string.special)
 (put 'treesit-face-text.underline 'face-alias 'treesit-face-string.underline)
 (put 'treesit-face-text.uri 'face-alias 'treesit-face-string.uri)
+(put 'treesit-face-type.definition 'face-alias 'treesit-face-property.definition)
 (put 'treesit-face-type.qualifier 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-variable.member 'face-alias 'treesit-face-parameter)
 
 ;; Diff
 (put 'treesit-face-text.diff.add 'face-alias 'diff-added)
