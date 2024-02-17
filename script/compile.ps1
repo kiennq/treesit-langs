@@ -14,7 +14,7 @@ try {
       if (!$version) {
         $version = "nil"
       } else {
-        $version = "\`"$version\`""
+        $version = "`"$version`""
       }
       $code = "(treesit-langs-create-bundle nil nil $version)"
     }
