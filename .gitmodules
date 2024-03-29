@@ -432,7 +432,7 @@
 	ignore = dirty
 [submodule "repos/powershell"]
 	path = repos/powershell
-	url = https://github.com/kiennq/tree-sitter-powershell.git
+	url = https://github.com/airbus-cert/tree-sitter-powershell
 	update = none
 	ignore = dirty
 [submodule "repos/prisma"]

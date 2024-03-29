@@ -8,7 +8,7 @@
 ;; Modified: May 14, 2022
 ;; Version: 0.0.1
 ;; Keywords: languages tools parsers tree-sitter
-;; Package-Requires: ((emacs "29.0.50"))
+;; Package-Requires: ((emacs "29.1"))
 ;; SPDX-License-Identifier: MIT
 ;;
 ;; This file is not part of GNU Emacs.
@@ -184,6 +184,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (pascal-mode        . pascal)
     (perl-mode          . perl)
     (php-mode           . php)
+    (powershell-mode    . powershell)
     (prisma-mode        . prisma)
     (psv-mode           . psv)
     (pygn-mode          . pgn)
@@ -260,10 +261,15 @@ Return nil if there are no bundled patterns."
         (unless treesit-lang--setup-completed
           (treesit-lang--setup))
         (when-let ((language (or lang
-                                 (let ((mode major-mode) l)
+                                 (let* ((modes `(,major-mode))
+                                        (mode (pop modes))
+                                        l)
                                    (while (and mode (not l))
                                      (setq l (alist-get mode treesit-major-mode-language-alist))
-                                     (setq mode (get mode 'derived-mode-parent)))
+                                     (mapc (lambda (p-mode)
+                                             (add-to-list 'modes p-mode 'append))
+                                           `(,(get mode 'derived-mode-parent) ,@(get mode 'derived-mode-extra-parents)))
+                                     (setq mode (pop modes)))
                                    l))))
           (unless (treesit-ready-p language)
             (error "Tree sitter for %s isn't available" language))
