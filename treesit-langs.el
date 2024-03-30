@@ -185,6 +185,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (perl-mode          . perl)
     (php-mode           . php)
     (powershell-mode    . powershell)
+    (powershell-ts-mode . powershell)
     (prisma-mode        . prisma)
     (psv-mode           . psv)
     (pygn-mode          . pgn)
@@ -252,7 +253,8 @@ Return nil if there are no bundled patterns."
       (let ((content (buffer-string)))
         (unless (string-empty-p content) content)))))
 
-(defvar treesit-hl--enabled nil "Non-nil if the treesit highlighting should be used.")
+(defvar-local treesit-hl--enabled nil "Non-nil if the treesit highlighting should be used.")
+(put 'treesit-hl--enabled 'permanent-local t)
 
 (defun treesit-hl--toggle (&optional lang)
   "Toggle `treesit-font-lock-settings' for current buffer with language LANG."
@@ -301,11 +303,12 @@ Return nil if there are no bundled patterns."
 (defun treesit-hl-toggle (&optional enable)
   "Toggle tree-sitter highlighting state according to ENABLE."
   (interactive)
+  ;; Guard again invocation due to hook
   (unless treesit-hl--toggling
     (let ((treesit-hl--toggling t))
-      (if (called-interactively-p 'any)
-          (setq treesit-hl--enabled (not treesit-hl--enabled))
-        (setq treesit-hl--enabled enable))
+      (setq treesit-hl--enabled (if (called-interactively-p 'any)
+                                    (not treesit-hl--enabled)
+                                  enable))
       (treesit-hl--toggle))))
 
 
