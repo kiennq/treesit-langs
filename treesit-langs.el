@@ -84,17 +84,20 @@ elisp-tree-sitter) to a query string compatible with treesit."
                   ;; @capture => @parent face of tree-sitter-hl-face:capture
                   ((pred symbolp)
                    (let ((name (symbol-name exp)))
-                     (if (and (string-prefix-p "@" name)
-                              (not (string-prefix-p "@_" name)))
-                         (intern
-                          (concat "@" "treesit-face-" (substring name 1)))
-                       exp)))
+                     (cond
+                      ((string-prefix-p "#" name)
+                       '.ignore)
+                      ((and (string-prefix-p "@" name)
+                                 (not (string-prefix-p "@_" name)))
+                            (intern
+                             (concat "@" "treesit-face-" (substring name 1))))
+                      (t exp))))
                   ;; handle other cases
                   ((pred listp)
                    (mapcar #'transform exp))
                   ((pred vectorp)
                    (apply #'vector (mapcar #'transform exp)))
-                  ((pred stringp)
+                  ((or (pred stringp) (pred numberp))
                    exp)))
               (prin1exp
                (exp)
