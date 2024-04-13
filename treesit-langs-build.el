@@ -401,9 +401,8 @@ This function requires git and tree-sitter CLI."
            (if (file-exists-p "scanner.cc") c++ cc)
            `("-shared"
              ,(if (equal system-type 'cygwin) "-Wl,-dynamicbase" "-fPIC")
-             "-g" "-O2" "-static-libgcc" "-I."
-             ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "-static-libstdc++"
-                                                    "scanner.cc" "-xc"))
+             "-g" "-O2" "-I."
+             ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "scanner.cc" "-xc"))
              ,@(when (file-exists-p "scanner.c") '("scanner.c"))
              "parser.c"
              "-o" ,out-file
