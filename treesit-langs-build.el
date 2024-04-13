@@ -401,9 +401,8 @@ This function requires git and tree-sitter CLI."
            (if (file-exists-p "scanner.cc") c++ cc)
            `("-shared"
              ,(if (equal system-type 'cygwin) "-Wl,-dynamicbase" "-fPIC")
-             "-g" "-O2" "-static-libgcc" "-I."
-             ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "-static-libstdc++"
-                                                    "scanner.cc" "-xc"))
+             "-g" "-O2" "-I."
+             ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "-static-libstdc++" "scanner.cc" "-xc"))
              ,@(when (file-exists-p "scanner.c") '("scanner.c"))
              "parser.c"
              "-o" ,out-file
@@ -536,7 +535,7 @@ non-nil."
               (condition-case nil
                   (delete-file file)
                 (permission-denied
-                 (rename-file file (concat file ".tmp") :no-error))))
+                 (rename-file file (concat file ".old") :no-error))))
             (directory-files bin-dir 'full module-file-suffix))
       (treesit-langs--call "tar" "-xvzf" bundle-file)
       (unless keep-bundle
