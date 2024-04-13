@@ -49,10 +49,7 @@ fi
 
 case $LANG in
     (all)
-        code="(treesit-langs-create-bundle nil $target $version)"
-        ;;
-    (changed)
-        code="(treesit-langs-compile-changed-or-all \"${POSITIONAL[1]:-origin/master}\" $target)"
+        code="(treesit-langs-create-bundle $target $version)"
         ;;
     (*)
         code="(treesit-langs-compile '$LANG nil $target)"

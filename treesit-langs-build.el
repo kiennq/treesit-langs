@@ -52,6 +52,148 @@ This used for both compilation and downloading."
 ;; ---------------------------------------------------------------------------
 ;;; Utilities.
 
+(defvar treesit-langs-source-alist
+  `(
+    (ada :url "https://github.com/briot/tree-sitter-ada")
+    (agda :url "https://github.com/AusCyberman/tree-sitter-agda")
+    (arduino :url "https://github.com/ObserverOfTime/tree-sitter-arduino")
+    (astro :url "https://github.com/virchau13/tree-sitter-astro")
+    (bash :url "https://github.com/tree-sitter/tree-sitter-bash")
+    (beancount :url "https://github.com/polarmutex/tree-sitter-beancount")
+    (bibtex :url "https://github.com/latex-lsp/tree-sitter-bibtex")
+    (c :url "https://github.com/tree-sitter/tree-sitter-c")
+    (c-sharp :url "https://github.com/tree-sitter/tree-sitter-c-sharp")
+    (clojure :url "https://github.com/sogaiu/tree-sitter-clojure")
+    (cmake :url "https://github.com/uyha/tree-sitter-cmake")
+    (comment :url "https://github.com/stsewd/tree-sitter-comment")
+    (commonlisp :url "https://github.com/theHamsta/tree-sitter-commonlisp")
+    (cpp :url "https://github.com/tree-sitter/tree-sitter-cpp")
+    (css :url "https://github.com/tree-sitter/tree-sitter-css")
+    (csv :url "https://github.com/amaanq/tree-sitter-csv" :src "csv/src")
+    (tsv :url "https://github.com/amaanq/tree-sitter-csv" :src "tsv/src")
+    (psv :url "https://github.com/amaanq/tree-sitter-csv" :src "psv/src")
+    (cuda :url "https://github.com/theHamsta/tree-sitter-cuda")
+    (d :url "https://github.com/gdamore/tree-sitter-d")
+    (dart :url "https://github.com/UserNobody14/tree-sitter-dart")
+    (devicetree :url "https://github.com/joelspadin/tree-sitter-devicetree")
+    (diff :url "https://github.com/the-mikedavis/tree-sitter-diff")
+    (dockerfile :url "https://github.com/camdencheek/tree-sitter-dockerfile")
+    (dot :url "https://github.com/rydesun/tree-sitter-dot")
+    (eex :url "https://github.com/connorlay/tree-sitter-eex")
+    (elisp :url "https://github.com/Wilfred/tree-sitter-elisp")
+    (elixir :url "https://github.com/elixir-lang/tree-sitter-elixir")
+    (elm :url "https://github.com/elm-tooling/tree-sitter-elm")
+    (elvish :url "https://github.com/ckafi/tree-sitter-elvish")
+    (erlang :url "https://github.com/AbstractMachinesLab/tree-sitter-erlang")
+    (fennel :url "https://github.com/travonted/tree-sitter-fennel")
+    (fish :url "https://github.com/ram02z/tree-sitter-fish")
+    (fluent :url "https://github.com/tree-sitter/tree-sitter-fluent")
+    (fsharp :url "https://github.com/ionide/tree-sitter-fsharp.git")
+    (fusion :url "https://gitlab.com/jirgn/tree-sitter-fusion.git")
+    (git-rebase :url "https://github.com/the-mikedavis/tree-sitter-git-rebase")
+    (gitattributes :url "https://github.com/ObserverOfTime/tree-sitter-gitattributes")
+    (gitcommit :url "https://github.com/gbprod/tree-sitter-gitcommit")
+    (gitignore :url "https://github.com/shunsambongi/tree-sitter-gitignore")
+    (gleam :url "https://github.com/J3RN/tree-sitter-gleam")
+    (glimmer :url "https://github.com/alexlafroscia/tree-sitter-glimmer")
+    (glsl :url "https://github.com/theHamsta/tree-sitter-glsl")
+    (go :url "https://github.com/tree-sitter/tree-sitter-go")
+    (go-mod :url "https://github.com/camdencheek/tree-sitter-go-mod")
+    (go-work :url "https://github.com/omertuc/tree-sitter-go-work")
+    (gomod :url "https://github.com/camdencheek/tree-sitter-go-mod")
+    (gowork :url "https://github.com/omertuc/tree-sitter-go-work")
+    (graphql :url "https://github.com/bkegley/tree-sitter-graphql")
+    (haskell :url "https://github.com/tree-sitter/tree-sitter-haskell")
+    (hcl :url "https://github.com/MichaHoffmann/tree-sitter-hcl")
+    (heex :url "https://github.com/connorlay/tree-sitter-heex")
+    (hjson :url "https://github.com/winston0410/tree-sitter-hjson")
+    (hlsl :url "https://github.com/theHamsta/tree-sitter-hlsl")
+    (hocon :url "https://github.com/antosha417/tree-sitter-hocon")
+    (html :url "https://github.com/tree-sitter/tree-sitter-html")
+    (http :url "https://github.com/rest-nvim/tree-sitter-http")
+    (java :url "https://github.com/tree-sitter/tree-sitter-java")
+    (javascript :url "https://github.com/tree-sitter/tree-sitter-javascript")
+    (jq :url "https://github.com/flurie/tree-sitter-jq")
+    (jsdoc :url "https://github.com/tree-sitter/tree-sitter-jsdoc")
+    (json :url "https://github.com/tree-sitter/tree-sitter-json")
+    (json5 :url "https://github.com/Joakker/tree-sitter-json5")
+    (jsonnet :url "https://github.com/sourcegraph/tree-sitter-jsonnet")
+    (julia :url "https://github.com/tree-sitter/tree-sitter-julia")
+    (kotlin :url "https://github.com/fwcd/tree-sitter-kotlin")
+    (lalrpop :url "https://github.com/traxys/tree-sitter-lalrpop")
+    (latex :url "https://github.com/latex-lsp/tree-sitter-latex" :gen? t)
+    (ledger :url "https://github.com/cbarrete/tree-sitter-ledger")
+    (llvm :url "https://github.com/benwilliamgraham/tree-sitter-llvm")
+    (lua :url "https://github.com/MunifTanjim/tree-sitter-lua")
+    (m68k :url "https://github.com/grahambates/tree-sitter-m68k")
+    (make :url "https://github.com/alemuller/tree-sitter-make")
+    (matlab :url "https://github.com/acristoffers/tree-sitter-matlab")
+    (menhir :url "https://github.com/Kerl13/tree-sitter-menhir")
+    (mermaid :url "https://github.com/monaqa/tree-sitter-mermaid")
+    (meson :url "https://github.com/Decodetalkers/tree-sitter-meson")
+    (ninja :url "https://github.com/alemuller/tree-sitter-ninja")
+    (nix :url "https://github.com/cstrahan/tree-sitter-nix")
+    (norg :url "https://github.com/nvim-neorg/tree-sitter-norg")
+    (objc :url "https://github.com/amaanq/tree-sitter-objc")
+    (ocaml :url "https://github.com/tree-sitter/tree-sitter-ocaml" :src "grammars/ocaml/src")
+    (ocaml_interface :url "https://github.com/tree-sitter/tree-sitter-ocaml" :src "grammars/interface/src")
+    (ocaml_type :url "https://github.com/tree-sitter/tree-sitter-ocaml" :src "grammars/type/src")
+    (ocamllex :url "https://github.com/atom-ocaml/tree-sitter-ocamllex")
+    (pascal :url "https://github.com/Isopod/tree-sitter-pascal")
+    (perl :url "https://github.com/tree-sitter-perl/tree-sitter-perl" :rev "release")
+    (pgn :url "https://github.com/rolandwalker/tree-sitter-pgn.git")
+    (php :url "https://github.com/tree-sitter/tree-sitter-php" :src "php/src")
+    (pioasm :url "https://github.com/leo60228/tree-sitter-pioasm")
+    (powershell :url "https://github.com/airbus-cert/tree-sitter-powershell")
+    (prisma :url "https://github.com/victorhqc/tree-sitter-prisma")
+    (proto :url "https://github.com/mitchellh/tree-sitter-proto")
+    (python :url "https://github.com/tree-sitter/tree-sitter-python")
+    (ql :url "https://github.com/tree-sitter/tree-sitter-ql")
+    (qmljs :url "https://github.com/yuja/tree-sitter-qmljs")
+    (query :url "https://github.com/nvim-treesitter/tree-sitter-query")
+    (r :url "https://github.com/r-lib/tree-sitter-r.git")
+    (racket :url "https://github.com/6cdh/tree-sitter-racket")
+    (rasi :url "https://github.com/Fymyte/tree-sitter-rasi")
+    (regex :url "https://github.com/tree-sitter/tree-sitter-regex")
+    (rego :url "https://github.com/FallenAngel97/tree-sitter-rego")
+    (rnoweb :url "https://github.com/bamonroe/tree-sitter-rnoweb")
+    (rst :url "https://github.com/stsewd/tree-sitter-rst")
+    (ruby :url "https://github.com/tree-sitter/tree-sitter-ruby")
+    (rust :url "https://github.com/tree-sitter/tree-sitter-rust")
+    (scala :url "https://github.com/tree-sitter/tree-sitter-scala")
+    (scheme :url "https://github.com/6cdh/tree-sitter-scheme.git")
+    (scss :url "https://github.com/serenadeai/tree-sitter-scss")
+    (solidity :url "https://github.com/JoranHonig/tree-sitter-solidity")
+    (sparql :url "https://github.com/BonaBeavis/tree-sitter-sparql")
+    (sql :url "https://github.com/derekstride/tree-sitter-sql" :rev "gh-pages")
+    (supercollider :url "https://github.com/madskjeldgaard/tree-sitter-supercollider")
+    (surface :url "https://github.com/connorlay/tree-sitter-surface")
+    (svelte :url "https://github.com/Himujjal/tree-sitter-svelte")
+    (swift :url "https://github.com/alex-pinkus/tree-sitter-swift" :gen? t)
+    (sxhkdrc :url "https://github.com/RaafatTurki/tree-sitter-sxhkdrc")
+    (teal :url "https://github.com/euclidianAce/tree-sitter-teal" :gen? t)
+    (tiger :url "https://github.com/ambroisie/tree-sitter-tiger")
+    (tlaplus :url "https://github.com/tlaplus-community/tree-sitter-tlaplus")
+    (toml :url "https://github.com/ikatyang/tree-sitter-toml")
+    (turtle :url "https://github.com/BonaBeavis/tree-sitter-turtle")
+    (twig :url "https://github.com/gbprod/tree-sitter-twig")
+    (typescript :url "https://github.com/tree-sitter/tree-sitter-typescript" :src "typescript/src" :gen? t)
+    (tsx :url "https://github.com/tree-sitter/tree-sitter-typescript" :src "tsx/src" :gen? t)
+    (vala :url "https://github.com/vala-lang/tree-sitter-vala")
+    (verilog :url "https://github.com/tree-sitter/tree-sitter-verilog.git")
+    (vhs :url "https://github.com/charmbracelet/tree-sitter-vhs")
+    (vimdoc :url "https://github.com/neovim/tree-sitter-vimdoc")
+    (viml :url "https://github.com/vigoux/tree-sitter-viml")
+    (vls :url "https://github.com/vlang/vls" :src "tree_sitter_v/src")
+    (vue :url "https://github.com/ikatyang/tree-sitter-vue")
+    (wgsl :url "https://github.com/szebniok/tree-sitter-wgsl")
+    (yaml :url "https://github.com/ikatyang/tree-sitter-yaml")
+    (yang :url "https://github.com/Hubro/tree-sitter-yang")
+    (zig :url "https://github.com/maxxnino/tree-sitter-zig")
+    )
+  "List of recipes to build tree-sitter grammars.
+A list with element of `(LANG . (URL REV SRC GEN?))'")
+
 (defvar treesit-langs--out nil)
 
 (defmacro treesit-langs--with-temp-buffer (&rest body)
@@ -137,93 +279,6 @@ git checkout."
   (file-name-as-directory
    (concat treesit-langs-git-dir "repos")))
 
-(defun treesit-langs--source (lang-symbol)
-  "Return a plist describing the source of the grammar for LANG-SYMBOL."
-  (let* ((default-directory treesit-langs-git-dir)
-         (name (symbol-name lang-symbol))
-         (dir (concat (treesit-langs--repos-dir) name))
-         (sub-path (format "repos/%s" name)))
-    (when (file-directory-p dir)
-      (list
-       :repo (treesit-langs--with-temp-buffer
-               (let ((inhibit-message t))
-                 (treesit-langs--call
-                  "git" "config" "--file" ".gitmodules"
-                  "--get" (format "submodule.%s.url" sub-path)))
-               (goto-char 1)
-               (buffer-substring-no-properties 1 (line-end-position)))
-       :version (treesit-langs--with-temp-buffer
-                  (let ((inhibit-message t))
-                    (treesit-langs--call
-                     "git" "submodule" "status" "--cached" sub-path))
-                  (buffer-substring-no-properties 2 9))
-       :paths (pcase lang-symbol
-                ;; XXX
-                ('typescript '("typescript" ("tsx" . tsx)))
-                ('ocaml '("ocaml" ("interface" . ocaml-interface)))
-                (_ '("")))))))
-
-(defun treesit-langs--repo-status (lang-symbol)
-  "Return the git submodule status for LANG-SYMBOL."
-  (treesit-langs--with-temp-buffer
-    (let ((default-directory treesit-langs-git-dir)
-          (inhibit-message t))
-      (treesit-langs--call
-       "git" "submodule" "status" "--" (format "repos/%s" lang-symbol)))
-    (pcase (char-after 1)
-      (?- :uninitialized)
-      (?+ :modified)
-      (?U :conflicts)
-      (?  :synchronized)
-      (unknown-status unknown-status))))
-
-(defun treesit-langs--map-repos (fn)
-  "Call FN in each of the language repositories."
-  (let ((repos-dir (treesit-langs--repos-dir)))
-    (thread-last (directory-files repos-dir)
-      (seq-map (lambda (name)
-                 (unless (member name '("." ".."))
-                   (let ((dir (concat repos-dir name)))
-                     (when (file-directory-p dir)
-                       `(,name . ,dir))))))
-      (seq-filter #'identity)
-      (seq-map (lambda (d)
-                 (pcase-let ((`(,name . ,default-directory) d))
-                   (funcall fn name)))))))
-
-(defun treesit-langs--update-repos ()
-  "Update lang repos' remotes."
-  (treesit-langs--map-repos
-   (lambda (_) (treesit-langs--call "git" "remote" "update"))))
-
-(defun treesit-langs--get-latest (type)
-  "Return the latest tags/commits of the language repositories.
-TYPE should be either `:commits' or `:tags'. If there's no tag, return the
-latest commit."
-  (require 'magit)
-  (treesit-langs--map-repos
-   (lambda (name)
-     `(,name ,(pcase type
-                (:commits (magit-rev-parse "--short=7" "origin/master"))
-                (:tags (or (magit-get-current-tag "origin/master")
-                           (magit-rev-parse "--short=7" "origin/master"))))))))
-
-(defun treesit-langs--changed-langs (&optional base)
-  "Return languages that have changed since git revision BASE (as symbols)."
-  (let* ((base (or base "origin/master"))
-         (default-directory treesit-langs-git-dir)
-         (changed-files (thread-first
-                            (format "git --no-pager diff --name-only %s" base)
-                          shell-command-to-string
-                          string-trim split-string))
-         grammar-changed queries-changed)
-    (dolist (file changed-files)
-      (let ((segs (split-string file "/")))
-        (pcase (car segs)
-          ("repos" (cl-pushnew (intern (cadr segs)) grammar-changed))
-          ("queries" (cl-pushnew (intern (cadr segs)) queries-changed)))))
-    (cl-union grammar-changed queries-changed)))
-
 ;; ---------------------------------------------------------------------------
 ;;; Building language grammars.
 (defconst treesit-langs--bundle-version-file "BUNDLE-VERSION")
@@ -275,19 +330,19 @@ If VERSION and OS are not spcified, use the defaults of
                        "x86_64-apple-darwin")))
           version ext))
 
-(defvar treesit-langs--cache-dir nil "The tree-sitter parsers dir.")
-(defun treesit-langs--cache-dir ()
-  "The tree-sitter parsers dir."
-  (or treesit-langs--cache-dir
-      (setq treesit-langs--cache-dir
-            (treesit-langs--with-temp-buffer
-              (unless (executable-find "rsdirs")
-                (treesit-langs--call "cargo" "install" "--git" "https://github.com/kiennq/rust-dirs"))
-              (expand-file-name "tree-sitter/lib"
-                                (treesit-langs--with-temp-buffer
-                                  (treesit-langs--call "rsdirs" "cache")
-                                  (goto-char 1)
-                                  (buffer-substring-no-properties 1 (line-end-position))))))))
+;; (defvar treesit-langs--cache-dir nil "The tree-sitter parsers dir.")
+;; (defun treesit-langs--cache-dir ()
+;;   "The tree-sitter parsers dir."
+;;   (or treesit-langs--cache-dir
+;;       (setq treesit-langs--cache-dir
+;;             (treesit-langs--with-temp-buffer
+;;               (unless (executable-find "rsdirs")
+;;                 (treesit-langs--call "cargo" "install" "--git" "https://github.com/kiennq/rust-dirs"))
+;;               (expand-file-name "tree-sitter/lib"
+;;                                 (treesit-langs--with-temp-buffer
+;;                                   (treesit-langs--call "rsdirs" "cache")
+;;                                   (goto-char 1)
+;;                                   (buffer-substring-no-properties 1 (line-end-position))))))))
 
 ;; This is for compatibility with old downloading code. TODO: Remove it.
 (defun treesit-langs--old-bundle-file (&optional ext version os)
@@ -297,14 +352,11 @@ If VERSION and OS are not spcified, use the defaults of
   (format "tree-sitter-grammars-%s-%s.tar%s"
           os version ext))
 
-(defun treesit-langs-compile (lang-symbol &optional clean target)
+(cl-defun treesit-langs-compile (lang &optional target
+                                      &key url rev src gen?)
   "Download and compile the grammar for LANG-SYMBOL.
-This function requires git and tree-sitter CLI.
-
-If the optional arg CLEAN is non-nil, compile from the revision recorded in this
-project (through git submodules), and clean up afterwards. Otherwise, compile
-from the current state of the grammar repo, without cleanup."
-  (message "[treesit-langs] Processing %s" lang-symbol)
+This function requires git and tree-sitter CLI."
+  (message "[treesit-langs] Processing %s" lang)
   (unless (executable-find "git")
     (error "Could not find git (needed to download grammars)"))
   (unless (executable-find "tree-sitter")
@@ -315,124 +367,68 @@ from the current state of the grammar repo, without cleanup."
           ("aarch64-apple-darwin" "arm64-apple-macos11")
           ("nil" nil)
           (_ (error "Unsupported cross-compilation target %s" target))))
-  (let* ((source (treesit-langs--source lang-symbol))
-         (dir (if source
-                  (file-name-as-directory
-                   (concat (treesit-langs--repos-dir)
-                           (symbol-name lang-symbol)))
-                (error "Unknown language `%s'" lang-symbol)))
-         (sub-path (format "repos/%s" lang-symbol))
-         (status (treesit-langs--repo-status lang-symbol))
-         (paths (plist-get source :paths))
+  (let* ((specs (alist-get lang treesit-langs-source-alist))
+         (url (or url (plist-get :url specs)))
+         (rev (or rev (plist-get :rev specs)))
+         (src (or src (plist-get :src specs) "src"))
+         (gen? (or gen? (plist-get :gen? specs)))
+         (dir (file-name-as-directory
+               (concat (treesit-langs--repos-dir)
+                       (symbol-name lang))))
+         (src-path (expand-file-name src dir))
          (bin-dir (treesit-langs--bin-dir))
          (treesit-langs--out (treesit-langs--buffer
-                                  (format "*treesit-langs-compile %s*" lang-symbol))))
-    (let ((default-directory treesit-langs-git-dir))
-      (pcase status
-        (:uninitialized
-         (treesit-langs--call "git" "submodule" "update" "--init" "--checkout" "--" sub-path))
-        (:modified
-         (when clean
-           (let ((default-directory dir))
-             (treesit-langs--call "git" "stash" "push"))
-           (treesit-langs--call "git" "submodule" "update" "--init" "--checkout" "--force" "--" sub-path)))
-        (:conflicts
-         (error "Unresolved conflicts in %s" dir))
-        (:synchronized nil)
-        (_
-         (error "Weird status from git-submodule '%s'" status))))
-    (let ((default-directory dir))
-      (treesit-langs--call "npm" "set" "progress=false")
-      (with-demoted-errors "Failed to run 'npm install': %s"
-        (treesit-langs--call "npm" "install"))
-      ;; A repo can have multiple grammars (e.g. typescript + tsx).
-      (dolist (path-spec paths)
-        (let* ((path (or (car-safe path-spec) path-spec))
-               (lang-symbol (or (cdr-safe path-spec) lang-symbol))
-               (default-directory (file-name-as-directory (concat dir path))))
-          (ignore-errors (treesit-langs--call "tree-sitter" "generate"))
-          (cond
-           ((and (memq system-type '(gnu/linux))
-                 (file-exists-p "src/scanner.cc"))
-            ;; XXX: Modified from
-            ;; https://github.com/tree-sitter/tree-sitter/blob/v0.20.0/cli/loader/src/lib.rs#L351
-            (treesit-langs--call
-             "g++" "-shared" "-fPIC" "-fno-exceptions" "-g" "-O2"
-             "-static-libgcc" "-static-libstdc++"
-             "-I" "src"
-             "src/scanner.cc" "-xc" "src/parser.c"
-             "-o" (format "%sbin/%s.so" treesit-langs-grammar-dir lang-symbol)))
-           ;; XXX: This is a hack for cross compilation (mainly for Apple Silicon).
-           (target (cond
-                    ((file-exists-p "src/scanner.cc")
-                     (treesit-langs--call
-                      "c++" "-shared" "-fPIC" "-fno-exceptions" "-g" "-O2"
-                      "-I" "src"
-                      "src/scanner.cc" "-xc" "src/parser.c"
-                      "-o" (format "%sbin/%s.so" treesit-langs-grammar-dir lang-symbol)
-                      "-target" target))
-                    ((file-exists-p "src/scanner.c")
-                     (treesit-langs--call
-                      "cc" "-shared" "-fPIC" "-g" "-O2"
-                      "-I" "src"
-                      "src/scanner.c" "src/parser.c"
-                      "-o" (format "%sbin/%s.so" treesit-langs-grammar-dir lang-symbol)
-                      "-target" target))
-                    (:default
-                     (treesit-langs--call
-                      "cc" "-shared" "-fPIC" "-g" "-O2"
-                      "-I" "src"
-                      "src/parser.c"
-                      "-o" (format "%sbin/%s.so" treesit-langs-grammar-dir lang-symbol)
-                      "-target" target))))
-           (:default (ignore-errors (treesit-langs--call "tree-sitter" "test"))))))
-      (when (file-exists-p (treesit-langs--cache-dir))
-        (dolist (file (directory-files (treesit-langs--cache-dir) 'full ".+\\..+"))
-          (unless (file-directory-p file)
-            (copy-file file bin-dir :replace)
-            (delete-file file))))
-      ;; Replace underscores with hyphens. Example: c_sharp.
-      (let ((default-directory bin-dir))
-        (dolist (file (directory-files default-directory))
-          (when (and (string-match "_" file)
-                     (cl-some (lambda (s) (string-suffix-p s file))
-                              treesit-langs--suffixes))
-            (let ((new-name (replace-regexp-in-string "_" "-" file)))
-              (when (file-exists-p new-name)
-                (delete-file new-name))
-              (rename-file file new-name)))))
-      ;; On macOS, rename .so => .dylib, because we will make a "universal"
-      ;; bundle.
-      (when (eq system-type 'darwin)
-        ;; This renames existing ".so" files as well.
-        (let ((default-directory bin-dir))
-          (dolist (file (directory-files default-directory))
-            (when (string-suffix-p ".so" file)
-              (let ((new-name (concat (file-name-base file) ".dylib")))
-                (when (file-exists-p new-name)
-                  (delete-file new-name))
-                (rename-file file new-name))))))
-      (when clean
-        (treesit-langs--call "git" "reset" "--hard" "HEAD")
-        (treesit-langs--call "git" "clean" "-f")))))
+                              (format "*treesit-langs-compile %s*" lang)))
+         (cc (or (seq-find #'executable-find '("cc" "gcc" "c99"))
+                 ;; If no C compiler found, just use cc and let
+                 ;; `call-process' signal the error.
+                 "cc"))
+         (c++ (or (seq-find #'executable-find '("c++" "g++"))
+                  "c++"))
+         (out-file (format "%slibtree-sitter-%s%s" bin-dir lang module-file-suffix))
+         (default-directory treesit-langs-git-dir))
+    (apply #'treesit-langs--call
+           "git" "clone" url "--depth" "1" "--quiet" dir
+           (when rev `("-b" ,rev)))
+    (setq default-directory dir)
+    (when gen?
+      (ignore-errors (treesit-langs--call "npx" "tree-sitter" "generate")))
+    ;; We need to go into the source directory because some
+    ;; header files use relative path (#include "../xxx").
+    ;; cd "${sourcedir}"
+    (setq default-directory src-path)
+    (apply #'treesit-langs--call
+           (if (file-exists-p "scanner.cc") c++ cc)
+           `("-shared"
+             ,(if (equal system-type 'cygwin) "-Wl,-dynamicbase" "-fPIC")
+             "-g" "-O2" "-static-libgcc" "-I."
+             ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "-static-libstdc++"
+                                                    "scanner.cc" "-xc"))
+             ,@(when (file-exists-p "scanner.c") '("scanner.c"))
+             "parser.c"
+             "-o" ,out-file
+             ,@(when target `("-target" ,target))))
+    ;; (when (file-exists-p (treesit-langs--cache-dir))
+    ;;   (dolist (file (directory-files (treesit-langs--cache-dir) 'full ".+\\..+"))
+    ;;     (unless (file-directory-p file)
+    ;;       (copy-file file bin-dir :replace)
+    ;;       (delete-file file))))
+    ;; Replace underscores with hyphens. Example: c_sharp.
+    ))
 
-(cl-defun treesit-langs-create-bundle (&optional clean target version)
+(cl-defun treesit-langs-create-bundle (&optional target version)
   "Create a bundle of language grammars.
-The bundle includes all languages tracked in git submodules.
-
-If the optional arg CLEAN is non-nil, compile from the revisions recorded in
-this project (through git submodules), and clean up afterwards. Otherwise,
-compile from the current state of the grammar repos, without cleanup."
+The bundle includes all languages in `treesit-langs-source-alist'."
   (unless (executable-find "tar")
     (error "Could not find tar executable (needed to bundle compiled grammars)"))
   (let ((errors (thread-last
-                  (treesit-langs--map-repos
-                   (lambda (name)
+                  treesit-langs-source-alist
+                  (mapcar
+                   (pcase-lambda (`(,lang . ,specs))
                      (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                     (let ((lang-symbol (intern name)))
-                       (condition-case err
-                           (treesit-langs-compile lang-symbol clean target)
-                         (error `[,lang-symbol ,err])))))
+                     (condition-case err
+                         (apply #'treesit-langs-compile lang target specs)
+                       (error `[,lang ,err]))))
                   (seq-filter #'identity))))
     (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     (unwind-protect
@@ -464,26 +460,6 @@ compile from the current state of the grammar repos, without cleanup."
         (message "[treesit-langs] Errors:\n%s" (pp-to-string errors))
         (error "Could not compile grammars!!!")))))
 
-(defun treesit-langs-compile-changed-or-all (&optional base target)
-  "Compile languages that have changed since git revision BASE.
-If no language-specific change is detected, compile all languages."
-  (let ((lang-symbols (treesit-langs--changed-langs base))
-        errors)
-    (if (null lang-symbols)
-        (progn
-          (message "[treesit-langs] Compiling all langs, since there's no change since %s" base)
-          (treesit-langs-create-bundle nil target))
-      (message "[treesit-langs] Compiling langs changed since %s: %s" base lang-symbols)
-      (dolist (lang-symbol lang-symbols)
-        (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        (condition-case err
-            (treesit-langs-compile lang-symbol nil target)
-          (error (setq errors (append errors `([,lang-symbol ,err]))))))
-      (when errors
-        (message "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        (message "[treesit-langs] Errors:\n%s" (pp-to-string errors))
-        (error "Could not compile grammars!!!")))))
-
 ;; ---------------------------------------------------------------------------
 ;;; Download and installation.
 
@@ -501,8 +477,6 @@ If VERSION and OS are not specified, use the defaults of
           treesit-langs--repo
           version
           (treesit-langs--bundle-file ".gz" version os)))
-
-(defvar treesit-lang--setup-completed)
 
 ;;;###autoload
 (defun treesit-langs-install-grammars (&optional skip-if-installed version os keep-bundle)
@@ -564,7 +538,6 @@ non-nil."
                 (permission-denied
                  (rename-file file (concat file ".tmp") :no-error))))
             (directory-files bin-dir 'full module-file-suffix))
-      (setq treesit-lang--setup-completed nil)
       (treesit-langs--call "tar" "-xvzf" bundle-file)
       (unless keep-bundle
         (delete-file bundle-file))
@@ -574,37 +547,6 @@ non-nil."
         (with-current-buffer (find-file bin-dir)
           (when (bound-and-true-p dired-omit-mode)
             (dired-omit-mode -1)))))))
-
-(defun treesit-langs--copy-query (lang-symbol &optional force)
-  "Copy highlights.scm file of LANG-SYMBOL to `treesit-langs--queries-dir'.
-This assumes the repo has already been set up, for example by
-`treesit-langs-compile'.
-
-If the optional arg FORCE is non-nil, any existing file will be overwritten."
-  (let ((src (thread-first (treesit-langs--repos-dir)
-               (concat (symbol-name lang-symbol))
-               file-name-as-directory (concat "queries")
-               file-name-as-directory (concat "highlights.scm"))))
-    (when (file-exists-p src)
-      (let ((dst-dir  (file-name-as-directory
-                       (concat treesit-langs--queries-dir
-                               (symbol-name lang-symbol)))))
-        (unless (file-directory-p dst-dir)
-          (make-directory dst-dir t))
-        (let ((default-directory dst-dir))
-          (if (file-exists-p "highlights.scm")
-              (when force
-                (copy-file src dst-dir :replace))
-            (message "Copying highlights.scm for %s" lang-symbol)
-            (copy-file src dst-dir)))))))
-
-(defun treesit-langs--copy-queries ()
-  "Copy highlights.scm files to `treesit-langs--queries-dir'.
-This assumes the repos have already been cloned set up, for example by
-`treesit-langs-create-bundle'."
-  (treesit-langs--map-repos
-   (lambda (name)
-     (treesit-langs--copy-query (intern name) :force))))
 
 (provide 'treesit-langs-build)
 ;;; treesit-langs-build.el ends here
