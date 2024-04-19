@@ -72,33 +72,40 @@ elisp-tree-sitter) to a query string compatible with treesit."
                        `(\#match? ,capture ,regexp)
                        `(.lua-match? ,capture ,regexp)
                        `(\#lua-match? ,capture ,regexp))
-                   `(.match ,(transform regexp) ,(transform capture)))
+                   `(:match ,(transform regexp) ,(transform capture)))
                   ;; .equal becomes .eq
                   ((or `(.eq?  ,a ,b)
                        `(\#eq? ,a ,b))
-                   `(.equal ,(transform a) ,(transform b)))
+                   `(:equal ,(transform a) ,(transform b)))
                   ;; .any-of becomes .match with regexp-opt
                   ((or `(.any-of?  ,capture . ,options)
                        `(\#any-of? ,capture . ,options))
-                   `(.match ,(regexp-opt options) ,(transform capture)))
+                   `(:match ,(regexp-opt options) ,(transform capture)))
+                  ('\? `:?)
+                  ('+ `:+)
+                  ('* `:*)
                   ;; @capture => @parent face of tree-sitter-hl-face:capture
                   ((pred symbolp)
                    (let ((name (symbol-name exp)))
                      (cond
-                      ((string-prefix-p "#" name)
-                       '.ignore)
                       ((and (string-prefix-p "@" name)
                                  (not (string-prefix-p "@_" name)))
                             (intern
                              (concat "@" "treesit-face-" (substring name 1))))
-                      (t exp))))
+                      (:default exp))))
                   ;; handle other cases
-                  ((pred listp)
-                   (mapcar #'transform exp))
+                  (`(,op . ,_)
+                   (if (and (symbolp op)
+                              (string-prefix-p "#" (symbol-name op))
+                              (not (memq op '(\#match? \#lua-match? \#eq? \#any-of?))))
+                     '_
+                     (mapcar #'transform exp)))
                   ((pred vectorp)
                    (apply #'vector (mapcar #'transform exp)))
-                  ((or (pred stringp) (pred numberp))
-                   exp)))
+                  ((pred stringp)
+                   (replace-regexp-in-string (rx "\\?") "?" exp))
+                  ((pred numberp) exp)
+                  ))
               (prin1exp
                (exp)
                (let (print-level print-length)
@@ -108,18 +115,21 @@ elisp-tree-sitter) to a query string compatible with treesit."
       (format "(%s)")
       ;; `read' can't handle unescaped symbols that start with "#"
       (replace-regexp-in-string "(#" "(\\\\#")
-      (replace-regexp-in-string (rx (group (not (any alnum))) "?") (rx (backref 1) ":?"))
+      ;; See https://www.gnu.org/software/emacs/manual/html_node/elisp/Pattern-Matching.html
+      (replace-regexp-in-string (rx (group (not (any alnum))) "?") (rx (backref 1) "\?"))
       (replace-regexp-in-string (rx (group (+ (| ? ?\())) "." (group (+ (| ? ?\) eol))))
                                 (rx (backref 1) ":anchor"  (backref 2)))
       (read-from-string)
       (car)
       (transform)
-      (prin1exp)
-      (replace-regexp-in-string ":anchor" ".")
-      (replace-regexp-in-string (rx ":?") "?")
-      ;; `prin1' likes to prefix symbols that start with . with a backslash,
-      ;; but the tree-sitter query parser does diffrentiate.
-      (replace-regexp-in-string (regexp-quote "\\.") "."))))
+      ;; (prin1exp)
+      ;; (replace-regexp-in-string ":anchor" ".")
+      ;; (replace-regexp-in-string (rx ":" (group (| "equal" "match" "pred"))) (rx "." (backref 1)))
+      ;; (replace-regexp-in-string (rx ":" (group (| "?" "*" "+"))) (rx (backref 1)))
+      ;; ;; `prin1' likes to prefix symbols that start with . with a backslash,
+      ;; ;; but the tree-sitter query parser does diffrentiate.
+      ;; (replace-regexp-in-string (regexp-quote "\\.") ".")
+      )))
 
 (defcustom treesit-major-mode-language-alist
   '(
