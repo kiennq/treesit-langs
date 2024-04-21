@@ -267,7 +267,8 @@
 ;;; ------------------------------------
 ;;; Aliases
 (put 'treesit-face-boolean 'face-alias 'treesit-face-type.builtin)
-(put 'treesit-face-character 'face-alias 'treesit-face-string.special)
+(put 'treesit-face-character 'face-alias 'treesit-face-variable)
+(put 'treesit-face-character.special 'face-alias 'treesit-face-variable)
 (put 'treesit-face-class 'face-alias 'treesit-face-type)
 (put 'treesit-face-comment.warning 'face-alias 'treesit-face-comment)
 (put 'treesit-face-conditional 'face-alias 'treesit-face-keyword)
@@ -318,6 +319,25 @@
 ;; Diff
 (put 'treesit-face-text.diff.add 'face-alias 'diff-added)
 (put 'treesit-face-text.diff.delete 'face-alias 'diff-removed)
+
+;; Markdown
+(put 'treesit-face-markup.heading 'face-alias 'markdown-header-face)
+(put 'treesit-face-markup.heading.1 'face-alias 'markdown-header-face-1)
+(put 'treesit-face-markup.heading.2 'face-alias 'markdown-header-face-2)
+(put 'treesit-face-markup.heading.3 'face-alias 'markdown-header-face-3)
+(put 'treesit-face-markup.heading.4 'face-alias 'markdown-header-face-4)
+(put 'treesit-face-markup.heading.5 'face-alias 'markdown-header-face-5)
+(put 'treesit-face-markup.heading.6 'face-alias 'markdown-header-face-6)
+(put 'treesit-face-markup.italic 'face-alias 'markdown-italic-face)
+(put 'treesit-face-markup.link 'face-alias 'markdown-markup-face)
+(put 'treesit-face-markup.link.label 'face-alias 'markdown-link-face)
+(put 'treesit-face-markup.link.url 'face-alias 'markdown-url-face)
+(put 'treesit-face-markup.list 'face-alias 'markdown-list-face)
+(put 'treesit-face-markup.list.checked 'face-alias 'markdown-gfm-checkbox-face)
+(put 'treesit-face-markup.list.unchecked 'face-alias 'markdown-gfm-checkbox-face)
+(put 'treesit-face-markup.raw 'face-alias 'markdown-inline-code-face)
+(put 'treesit-face-markup.strikethrough 'face-alias 'markdown-strike-through-face)
+(put 'treesit-face-markup.strong 'face-alias 'markdown-bold-face)
 
 (provide 'treesit-faces)
 ;;; treesit-faces.el ends here
