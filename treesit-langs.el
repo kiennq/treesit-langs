@@ -3,10 +3,10 @@
 ;; Copyright (C) 2022 Yoav Marco
 ;;
 ;; Author: Yoav Marco <https://github.com/ymarco>
-;; Maintainer: Yoav Marco <yoavm448@gmail.com>
+;; Maintainer: Yoav Marco <yoavm448@gmail.com>, Kien Nguyen
 ;; Created: May 14, 2022
 ;; Modified: May 14, 2022
-;; Version: 0.0.1
+;; Version: 1.0
 ;; Keywords: languages tools parsers tree-sitter
 ;; Package-Requires: ((emacs "29.1"))
 ;; SPDX-License-Identifier: MIT
