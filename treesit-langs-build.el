@@ -388,10 +388,11 @@ This function requires git and tree-sitter CLI."
           ("aarch64-apple-darwin" "arm64-apple-macos11")
           ("nil" nil)
           (_ (error "Unsupported cross-compilation target %s" target))))
+  (message "[treesit-langs] url: %s" (alist-get lang treesit-langs-source-alist))
   (let* ((specs (alist-get lang treesit-langs-source-alist))
-         (url (or url (plist-get :url specs)))
-         (rev (or rev (plist-get :rev specs)))
-         (src (or src (plist-get :src specs) "src"))
+         (url (or url (plist-get specs :url)))
+         (rev (or rev (plist-get specs :rev)))
+         (src (or src (plist-get specs :src) "src"))
          (dir (file-name-as-directory
                (concat (treesit-langs--repos-dir)
                        (symbol-name lang))))
@@ -399,19 +400,21 @@ This function requires git and tree-sitter CLI."
          (bin-dir (treesit-langs--bin-dir))
          (treesit-langs--out (treesit-langs--buffer
                               (format "*treesit-langs-compile %s*" lang)))
-         (cc (or (seq-find #'executable-find '("cc" "gcc" "c99"))
+         (cc (or (seq-find #'executable-find '("cc" "gcc" "c99" "clang"))
                  ;; If no C compiler found, just use cc and let
                  ;; `call-process' signal the error.
                  "cc"))
-         (c++ (or (seq-find #'executable-find '("c++" "g++"))
+         (c++ (or (seq-find #'executable-find '("c++" "g++" "clang++"))
                   "c++"))
          (out-file (format "%slibtree-sitter-%s%s" bin-dir lang module-file-suffix))
          (default-directory treesit-langs-git-dir))
-    (apply #'treesit-langs--call
-           "git" "clone" url "--depth" "1" "--quiet" dir
-           (when rev `("-b" ,rev)))
+    (with-demoted-errors "[treesit-langs] Error: %s"
+      (apply #'treesit-langs--call
+             "git" "clone" url "--depth" "1" "--quiet" dir
+             (when rev `("-b" ,rev))))
     (setq default-directory dir)
     (unless (file-exists-p (expand-file-name "parser.c" src-path))
+      (ignore-errors (treesit-langs--call "npm" "install" "--quiet"))
       (ignore-errors (treesit-langs--call "npx" "tree-sitter" "generate")))
     ;; We need to go into the source directory because some
     ;; header files use relative path (#include "../xxx").
@@ -420,7 +423,7 @@ This function requires git and tree-sitter CLI."
     (apply #'treesit-langs--call
            (if (file-exists-p "scanner.cc") c++ cc)
            `("-shared"
-             ,(if (equal system-type 'cygwin) "-Wl,-dynamicbase" "-fPIC")
+             ,@(unless (memq system-type '(windows-nt cygwin)) '("-fPIC"))
              "-g" "-O2" "-I."
              ,@(when (file-exists-p "scanner.cc") '("-fno-exceptions" "-static-libstdc++" "scanner.cc" "-xc"))
              ,@(when (file-exists-p "scanner.c") '("scanner.c"))

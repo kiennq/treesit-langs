@@ -6,7 +6,7 @@ This is a convenient language bundle for the Emacs package [tree-sitter](https:/
 
 For each supported language, this package provides:
 
-1.  Pre-compiled grammar binaries for 3 major platforms: macOS, Linux and Windows, on x86<sub>64</sub>. In the future, `tree-sitter-langs` may provide tooling for major modes to do this on their own.
+1.  Pre-compiled grammar binaries for 3 major platforms: macOS, Linux and Windows, on x86\_64. In the future, `tree-sitter-langs` may provide tooling for major modes to do this on their own.
 2.  An optional `highlights.scm` file that provides highlighting patterns. This is mainly intended for major modes that are not aware of `tree-sitter`. A language major mode that wants to use `tree-sitter` for syntax highlighting should instead provide the query patterns on its own, using the mechanisms defined by [tree-sitter-hl](https://emacs-tree-sitter.github.io/syntax-highlighting/interface-for-modes/).
 3.  Optional query patterns for other minor modes that provide high-level functionalities on top of `tree-sitter`, such as code folding, evil text objects… As with highlighting patterns, major modes that are directly aware of `tree-sitter` should provide the query patterns on their own.
 
@@ -30,23 +30,14 @@ Some languages are associated with multiple major modes. Mode-specific highlight
 
 ## Building Grammars from Source
 
-Note: If you also plan to work on [elisp-tree-sitter](https://github.com/emacs-tree-sitter/elisp-tree-sitter#building-grammars-from-source), it might be more convenient to work with this repository as a submodule.
-
 ### Tools and dependencies
-
-- Install [cask](https://cask.readthedocs.io).
-- Install ELisp dependencies:
-
-``` bash
-cask install
-```
 
 - Install NodeJS. It is needed to generate the grammar code from the JavaScript DSL. The recommended tool to manage NodeJS is [volta](https://volta.sh/).
 - Install [tree-sitter CLI tool](https://tree-sitter.github.io/tree-sitter/creating-parsers#installation). (Its binary can also be downloaded directly from [GitHub](https://github.com/tree-sitter/tree-sitter/releases).)
 
 ### Building grammars
 
-To build a specific language's grammar, run `script/compile`. (See the list of registered languages in [repos/](./repos).) For example:
+To build a specific language's grammar, run `script/compile`. (See the list of registered languages in `treesit-langs-source-alist`.) For example:
 
 ``` bash
 script/compile rust
@@ -61,6 +52,6 @@ script/compile all
 ### Adding a new grammar
 
 - Add a new entry in `treesit-langs-source-alist`.
-  The entry is in the format of `(lang :url <git-url> :rev <revision> :src <src-dir> :gen? <generate-src-from-tree-sitter>)`.
+  The entry is in the format of `(lang :url <git-url> :rev <revision> :src <src-dir>)`.
 - Add the `(major-mode . language)` to the `treesit-major-mode-language-alist`
 - Add the highlighting rules to the `queries/<lang>/highlights.scm`
