@@ -206,10 +206,10 @@
 ] @boolean
 
 (integer_literal) @number
-(float_literal) @float
+(number.float_literal) @number.float
 
-((identifier) @float
-  (#any-of? @float "NaN" "NaN16" "NaN32"
+((identifier) @number.float
+  (#any-of? @number.float "NaN" "NaN16" "NaN32"
                    "Inf" "Inf16" "Inf32"))
 
 ((identifier) @constant.builtin

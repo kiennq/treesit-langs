@@ -103,7 +103,7 @@
 
 (int_value) @number
 
-(float_value) @float
+(number.float_value) @number.float
 
 (boolean_value) @boolean
 

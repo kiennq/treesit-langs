@@ -89,16 +89,16 @@ elisp-tree-sitter) to a query string compatible with treesit."
                    (let ((name (symbol-name exp)))
                      (cond
                       ((and (string-prefix-p "@" name)
-                                 (not (string-prefix-p "@_" name)))
-                            (intern
-                             (concat "@" "treesit-face-" (substring name 1))))
+                            (not (string-prefix-p "@_" name)))
+                       (intern
+                        (concat "@" "treesit-face-" (substring name 1))))
                       (:default exp))))
                   ;; handle other cases
                   (`(,op . ,_)
                    (if (and (symbolp op)
-                              (string-prefix-p "#" (symbol-name op))
-                              (not (memq op '(\#match? \#lua-match? \#eq? \#any-of?))))
-                     '_
+                            (string-prefix-p "#" (symbol-name op))
+                            (not (memq op '(\#match? \#lua-match? \#eq? \#any-of?))))
+                       '_
                      (mapcar #'transform exp)))
                   ((pred vectorp)
                    (apply #'vector (mapcar #'transform exp)))
@@ -107,9 +107,9 @@ elisp-tree-sitter) to a query string compatible with treesit."
                   ((pred numberp) exp)
                   ))
               (prin1exp
-               (exp)
-               (let (print-level print-length)
-                 (mapconcat #'prin1-to-string exp "\n"))))
+                (exp)
+                (let (print-level print-length)
+                  (mapconcat #'prin1-to-string exp "\n"))))
     (thread-last
       patterns
       (format "(%s)")
@@ -308,30 +308,22 @@ Return nil if there are no bundled patterns."
                         (or (treesit-langs--hl-default-patterns language major-mode)
                             (error "No query patterns for %s" language)))))
           (setq-local treesit-font-lock-feature-list '((override)))
-          ;; Before reset up treesit for major mode, we need:
-          ;; - disable indent
-          ;; - and forcefully reload fontlock state for major mode
-          (let (treesit-simple-indent-rules
-                font-lock-set-defaults)
-            (treesit-major-mode-setup))
+          (treesit-major-mode-setup)
           (message "Turn on tree-sitter.")))
     (let ((mode major-mode))
       (fundamental-mode)
-      (funcall-interactively mode)
+      (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
+        (funcall-interactively mode))
       (message "Turn off tree-sitter."))))
 
-(defvar treesit-hl--toggling nil "Non-nil if under toggling.")
 ;;;###autoload
 (defun treesit-hl-toggle (&optional enable)
   "Toggle tree-sitter highlighting state according to ENABLE."
   (interactive)
-  ;; Guard again invocation due to hook
-  (unless treesit-hl--toggling
-    (let ((treesit-hl--toggling t))
-      (setq treesit-hl--enabled (if (called-interactively-p 'any)
-                                    (not treesit-hl--enabled)
-                                  enable))
-      (treesit-hl--toggle))))
+  (setq treesit-hl--enabled (if (called-interactively-p 'any)
+                                (not treesit-hl--enabled)
+                              enable))
+  (treesit-hl--toggle))
 
 
 (provide 'treesit-langs)

@@ -72,7 +72,7 @@
 (boolean) @constant.boolean
 (null) @constant.builtin
 (integer) @number
-(float) @float
+(number.float) @number.float
 (comment) @comment
 
 ; Keywords

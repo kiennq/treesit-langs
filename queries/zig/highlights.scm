@@ -79,7 +79,7 @@ field_constant: (IDENTIFIER) @constant
 
 (INTEGER) @number
 
-(FLOAT) @float
+(NUMBER.FLOAT) @number.float
 
 [
   (LINESTRING)

@@ -137,7 +137,7 @@
   "Face for comments."
   :group 'treesit-faces)
 
-(defface treesit-face-doc
+(defface treesit-face-comment.documentation
   '((default :inherit font-lock-doc-face))
   "Face for docstrings."
   :group 'treesit-faces)
@@ -277,10 +277,8 @@
 (put 'treesit-face-define 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-exception 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-field 'face-alias 'treesit-face-variable)
-(put 'treesit-face-float 'face-alias 'treesit-face-number)
 (put 'treesit-face-function.method 'face-alias 'treesit-face-method)
 (put 'treesit-face-function.method.call 'face-alias 'treesit-face-method.call)
-(put 'treesit-face-import 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-include 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-keyword.conditional 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.coroutine 'face-alias 'treesit-face-keyword)
@@ -294,6 +292,7 @@
 (put 'treesit-face-library 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-namespace 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-none 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-number.float 'face-alias 'treesit-face-number)
 (put 'treesit-face-parameter 'face-alias 'treesit-face-type.parameter)
 (put 'treesit-face-preproc 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-repeat 'face-alias 'treesit-face-keyword)

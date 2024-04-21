@@ -122,7 +122,7 @@
  (oct_literal)
  (bin_literal)
 ] @number
-(real_literal) @float
+(real_literal) @number.float
 (boolean_literal) @boolean
 "nil" @constant.builtin
 

@@ -5,7 +5,7 @@
 
 (integer) @number
 
-(float) @float
+(number.float) @number.float
 
 (complex) @number
 

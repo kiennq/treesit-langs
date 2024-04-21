@@ -108,4 +108,4 @@
 [
   (unary_expression "-" (float_expression))
   (float_expression)
-] @float
+] @number.float

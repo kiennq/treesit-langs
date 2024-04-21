@@ -107,7 +107,7 @@
 
 (boolean_literal) @boolean
 (integer_literal) @number
-(floating_point_literal) @float
+(number.floating_point_literal) @number.float
 
 [
 (symbol_literal)

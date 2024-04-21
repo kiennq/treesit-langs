@@ -48,7 +48,7 @@
 
 (integer_literal) @number
 
-(float_literal) @float
+(number.float_literal) @number.float
 
 [
   "true"

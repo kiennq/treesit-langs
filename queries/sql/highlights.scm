@@ -36,8 +36,8 @@
 ((literal) @number
    (#match? @number "^[-+]?%d+$"))
 
-((literal) @float
-  (#match? @float "^[-+]?%d*\.%d*$"))
+((literal) @number.float
+  (#match? @number.float "^[-+]?%d*\.%d*$"))
 
 (parameter) @parameter
 

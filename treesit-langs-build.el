@@ -164,7 +164,7 @@ This used for both compilation and downloading."
     (pioasm :url "https://github.com/leo60228/tree-sitter-pioasm")
     (powershell :url "https://github.com/airbus-cert/tree-sitter-powershell")
     (prisma :url "https://github.com/victorhqc/tree-sitter-prisma")
-    (proto :url "https://github.com/mitchellh/tree-sitter-proto")
+    (proto :url "https://github.com/treywood/tree-sitter-proto")
     (psv :url "https://github.com/amaanq/tree-sitter-csv" :src "psv/src")
     (python :url "https://github.com/tree-sitter/tree-sitter-python")
     (ql :url "https://github.com/tree-sitter/tree-sitter-ql")
