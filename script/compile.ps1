@@ -20,7 +20,7 @@ try {
     }
     default { $code = "(treesit-langs-compile '$lang)" }
   }
-  emacs --batch `
+  emacs -Q --batch `
     --directory "$project_root" `
     --load treesit-langs-build `
     --eval "$code"
