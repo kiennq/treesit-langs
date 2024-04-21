@@ -92,6 +92,7 @@ This used for both compilation and downloading."
     (elvish :url "https://github.com/ckafi/tree-sitter-elvish")
     (erlang :url "https://github.com/AbstractMachinesLab/tree-sitter-erlang")
     (fennel :url "https://github.com/travonted/tree-sitter-fennel")
+    (fidl :url "https://github.com/google/tree-sitter-fidl")
     (fish :url "https://github.com/ram02z/tree-sitter-fish")
     (fluent :url "https://github.com/tree-sitter/tree-sitter-fluent")
     (fortran :url "https://github.com/stadelmanma/tree-sitter-fortran")
