@@ -1,7 +1,2 @@
 #!/usr/bin/env bash
-proj_root="$(dirname -- "$0")/.."
-cd "$proj_root"
-emacs -Q --batch \
-      --directory . \
-      --load treesit-langs-build \
-      --eval "(progn (require 'treesit-langs-build) (princ treesit-langs--bundle-version-prefix))"
+echo "1.0"

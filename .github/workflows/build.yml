@@ -21,22 +21,18 @@ jobs:
           # TODO: Get host platform from somewher instead of specifying it explicitly here.
           - os: macos-latest
             bundle_os: macos
-            emacs-version: '29.3'
             ext: dylib
             host: x86_64-apple-darwin
           - os: macos-latest
             bundle_os: macos
-            emacs-version: '29.3'
             ext: dylib
             target: aarch64-apple-darwin
           - os: ubuntu-latest
             bundle_os: linux
-            emacs-version: '29.3'
             ext: so
             host: x86_64-unknown-linux-gnu
           - os: windows-latest
             bundle_os: windows
-            emacs-version: '29.3'
             ext: dll
             host: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
@@ -66,24 +62,18 @@ jobs:
       - name: Install tree-sitter CLI
         run: npm install -g tree-sitter-cli
 
-      - uses: purcell/setup-emacs@master
-        if: runner.os != 'Windows'
-        with:
-          version: ${{ matrix.emacs-version }}
-      # Seems like the Emacs archive from GNU's FTP uses its own outdated bundle of CA certs, which
-      # wouldn't include the new LetsEncrypt's root CA cert, which is used by MELPA, among others.
-      # So we use mingw64's Emacs instead. TODO: Switch back whenever possible.
-      - uses: jcs090218/setup-emacs-windows@master
-        if: runner.os == 'Windows'
-        with:
-          version: ${{ matrix.emacs-version }}
-
       - name: Determine version
         run: |
           echo BUNDLE_VERSION=$(script/bundle-version-prefix).${{ github.run_number }} >> $GITHUB_ENV
         shell: bash
 
+      - name: Install current Bash on macOS
+        if: runner.os == 'macos'
+        run: brew install bash
+
       - run: script/compile all -target "${{ matrix.target }}" -version "${{ env.BUNDLE_VERSION  }}"
+        shell: bash
+        id: compile
         continue-on-error: ${{ runner.os != 'Windows' }}
 
       - run: script/inspect-binaries

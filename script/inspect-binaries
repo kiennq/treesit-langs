@@ -14,30 +14,30 @@ PROJECT_ROOT=$(cd "$here/.."; pwd)
             echo └ Grammar binaries:
             file bin/*.dll
             ldd bin/*.dll
-            echo ┌─────────────────────────────────────────────────────────────────────
-            echo └ Emacs:
-            file "$(which emacs)"
-            ldd "$(which emacs)"
+            # echo ┌─────────────────────────────────────────────────────────────────────
+            # echo └ Emacs:
+            # file "$(which emacs)"
+            # ldd "$(which emacs)"
             ;;
         Linux)
             echo ┌─────────────────────────────────────────────────────────────────────
             echo └ Grammar binaries:
             file bin/*.so
             ldd bin/*.so
-            echo ┌─────────────────────────────────────────────────────────────────────
-            echo └ Emacs:
-            file "$(which emacs)"
-            ldd "$(which emacs)"
+            # echo ┌─────────────────────────────────────────────────────────────────────
+            # echo └ Emacs:
+            # file "$(which emacs)"
+            # ldd "$(which emacs)"
             ;;
         Darwin)
             echo ┌─────────────────────────────────────────────────────────────────────
             echo └ Grammar binaries:
             file bin/*.dylib
             otool -L bin/*.dylib
-            echo ┌─────────────────────────────────────────────────────────────────────
-            echo └ Emacs:
-            file "$(which emacs)"
-            otool -L "$(which emacs)"
+            # echo ┌─────────────────────────────────────────────────────────────────────
+            # echo └ Emacs:
+            # file "$(which emacs)"
+            # otool -L "$(which emacs)"
             ;;
         *)
             echo "Unknown system $system"

@@ -322,9 +322,6 @@ infrequent (grammar-only changes)."
                       (string-trim (buffer-string))))))
             "0.pre")))
 
-(defconst treesit-langs--bundle-version-prefix "0.12"
-  "Version prefix of the grammar bundle.")
-
 (defconst treesit-langs--os
   (pcase system-type
     ('darwin "macos")
