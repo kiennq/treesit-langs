@@ -192,6 +192,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (latex-mode           . latex)
     (lua-mode             . lua)
     (makefile-mode        . make)
+    ;; (markdown-mode        . (markdown markdown-inline))
     (matlab-mode          . matlab)
     (mermaid-mode         . mermaid)
     (mermaid-ts-mode      . mermaid)
@@ -278,35 +279,42 @@ Return nil if there are no bundled patterns."
 (defvar-local treesit-hl--enabled nil "Non-nil if the treesit highlighting should be used.")
 (put 'treesit-hl--enabled 'permanent-local t)
 
-(defun treesit-hl--toggle (&optional lang)
-  "Toggle `treesit-font-lock-settings' for current buffer with language LANG."
+(defun treesit-hl--toggle (&optional langs)
+  "Toggle `treesit-font-lock-settings' for current buffer with language LANGS.
+LANGS can be a list or a symbol."
   (if treesit-hl--enabled
       (progn
         (unless treesit-lang--setup-completed
           (treesit-lang--setup))
-        (when-let ((language (or lang
-                                 (let* ((modes `(,major-mode))
-                                        (mode (pop modes))
-                                        l)
-                                   (while (and mode (not l))
-                                     (setq l (alist-get mode treesit-major-mode-language-alist))
-                                     (mapc (lambda (p-mode)
-                                             (add-to-list 'modes p-mode 'append))
-                                           `(,(get mode 'derived-mode-parent) ,@(get mode 'derived-mode-extra-parents)))
-                                     (setq mode (pop modes)))
-                                   l))))
-          (unless (treesit-ready-p language)
-            (error "Tree sitter for %s isn't available" language))
+        (when-let* ((languages (or langs
+                                   (let* ((modes `(,major-mode))
+                                          (mode (pop modes))
+                                          l)
+                                     (while (and mode (not l))
+                                       (setq l (alist-get mode treesit-major-mode-language-alist))
+                                       (mapc (lambda (p-mode)
+                                               (add-to-list 'modes p-mode 'append))
+                                             `(,(get mode 'derived-mode-parent) ,@(get mode 'derived-mode-extra-parents)))
+                                       (setq mode (pop modes)))
+                                     l)))
+                    (languages (pcase languages
+                                 ((pred listp) languages)
+                                 (`,val (list val)))))
+          (dolist (language languages)
+            (unless (treesit-ready-p language)
+              (error "Tree sitter for %s isn't available" language))
+            (treesit-parser-create language))
 
-          (treesit-parser-create language)
           (setq-local treesit-font-lock-settings
-                      (treesit-font-lock-rules
-                       :language language
-                       :feature 'override
-                       :override t
-                       (treesit-langs--convert-highlights
-                        (or (treesit-langs--hl-default-patterns language major-mode)
-                            (error "No query patterns for %s" language)))))
+                      (apply #'treesit-font-lock-rules
+                             (mapcan (lambda (lang)
+                                       (list :language lang
+                                             :feature 'override
+                                             :override t
+                                             (treesit-langs--convert-highlights
+                                              (or (treesit-langs--hl-default-patterns lang major-mode)
+                                                  (error "No query patterns for %s" lang)))))
+                                     languages)))
           (setq-local treesit-font-lock-feature-list '((override)))
           (treesit-major-mode-setup)
           (message "Turn on tree-sitter.")))
