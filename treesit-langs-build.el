@@ -144,6 +144,7 @@ This used for both compilation and downloading."
     (markdown :url "https://github.com/MDeiml/tree-sitter-markdown" :src "tree-sitter-markdown/src")
     (markdown-inline :url "https://github.com/MDeiml/tree-sitter-markdown" :src "tree-sitter-markdown-inline/src")
     (matlab :url "https://github.com/acristoffers/tree-sitter-matlab")
+    (mediawiki :url "https://github.com/Ordoviz/tree-sitter-mediawiki")
     (menhir :url "https://github.com/Kerl13/tree-sitter-menhir")
     (mermaid :url "https://github.com/monaqa/tree-sitter-mermaid")
     (meson :url "https://github.com/Decodetalkers/tree-sitter-meson")
