@@ -289,6 +289,7 @@
 (put 'treesit-face-keyword.repeat 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.return 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.storage 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.type 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-library 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-namespace 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-none 'face-alias 'treesit-face-keyword)
