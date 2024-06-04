@@ -248,7 +248,7 @@
 ;;; Markups.
 
 (defface treesit-face-tag
-  '((default :inherit font-lock-builtin-face))
+  '((default :inherit font-lock-function-name-face :weight bold))
   "Face for tags in markup languages."
   :group 'treesit-faces)
 
@@ -282,9 +282,12 @@
 (put 'treesit-face-include 'face-alias 'treesit-face-function.macro)
 (put 'treesit-face-keyword.conditional 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.coroutine 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.directive 'face-alias 'treesit-face-keyword)
+(put 'treesit-face-keyword.directive.define 'face-alias 'treesit-face-define)
 (put 'treesit-face-keyword.exception 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.function 'face-alias 'treesit-face-function)
 (put 'treesit-face-keyword.import 'face-alias 'treesit-face-function.macro)
+(put 'treesit-face-keyword.modifier 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.operator 'face-alias 'treesit-face-operator)
 (put 'treesit-face-keyword.repeat 'face-alias 'treesit-face-keyword)
 (put 'treesit-face-keyword.return 'face-alias 'treesit-face-keyword)
@@ -302,6 +305,7 @@
 (put 'treesit-face-storageclass.lifetime 'face-alias 'treesit-face-type.argument)
 (put 'treesit-face-string.escape 'face-alias 'treesit-face-escape)
 (put 'treesit-face-string.regex 'face-alias 'treesit-face-string)
+(put 'treesit-face-string.special.url 'face-alias 'treesit-face-string.uri)
 (put 'treesit-face-tag.attribute 'face-alias 'treesit-face-attribute)
 (put 'treesit-face-tag.delimiter 'face-alias 'treesit-face-punctuation.bracket)
 (put 'treesit-face-text 'face-alias 'treesit-face-string)
