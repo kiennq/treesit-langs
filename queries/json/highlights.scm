@@ -1,15 +1,40 @@
-[(true) (false)] @boolean
-[(null)] @constant.builtin
+[
+  (true)
+  (false)
+] @boolean
+
+(null) @constant.builtin
+
 (number) @number
 
-(pair key: (string) @keyword)
-(pair value: (string) @string)
+(pair
+  key: (string) @keyword)
 
-(array (string) @string)
-(string_content (escape_sequence) @string.escape)
+(pair
+  value: (string) @string)
 
-["," ":"] @punctuation.delimiter
-["{" "}" "[" "]"] @punctuation.bracket
+(array
+  (string) @string)
 
-(escape_sequence) @escape
+[
+  ","
+  ":"
+] @punctuation.delimiter
+
+[
+  "["
+  "]"
+  "{"
+  "}"
+] @punctuation.bracket
+
+("\"" @conceal
+  (#set! conceal ""))
+
+(escape_sequence) @string.escape
+
+((escape_sequence) @conceal
+  (#eq? @conceal "\\\"")
+  (#set! conceal "\""))
+
 (comment) @comment
