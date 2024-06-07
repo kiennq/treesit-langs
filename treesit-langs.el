@@ -84,6 +84,8 @@ elisp-tree-sitter) to a query string compatible with treesit."
                   ('\? `:?)
                   ('+ `:+)
                   ('* `:*)
+                  ('@spell '_)
+                  ('@nospell '_)
                   ;; @capture => @parent face of tree-sitter-hl-face:capture
                   ((pred symbolp)
                    (let ((name (symbol-name exp)))
