@@ -325,7 +325,7 @@
 (put 'treesit-face-text.diff.delete 'face-alias 'diff-removed)
 
 ;; Markdown
-(put 'treesit-face-markup.heading 'face-alias 'markdown-header-face)
+(put 'treesit-face-markup.heading 'face-alias 'markdown-table-face)
 (put 'treesit-face-markup.heading.1 'face-alias 'markdown-header-face-1)
 (put 'treesit-face-markup.heading.2 'face-alias 'markdown-header-face-2)
 (put 'treesit-face-markup.heading.3 'face-alias 'markdown-header-face-3)

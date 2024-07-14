@@ -194,7 +194,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (latex-mode           . latex)
     (lua-mode             . lua)
     (makefile-mode        . make)
-    ;; (markdown-mode        . (markdown markdown-inline))
+    (markdown-ts-mode     . (markdown markdown-inline))
     (matlab-mode          . matlab)
     (mermaid-mode         . mermaid)
     (mermaid-ts-mode      . mermaid)
