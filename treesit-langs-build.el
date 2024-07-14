@@ -55,7 +55,7 @@ This used for both compilation and downloading."
 (defvar treesit-langs-source-alist
   `(
     (ada :url "https://github.com/briot/tree-sitter-ada")
-    (agda :url "https://github.com/AusCyberman/tree-sitter-agda")
+    (agda :url "https://github.com/tree-sitter/tree-sitter-agda")
     (angular :url "https://github.com/dlvandenberg/tree-sitter-angular")
     (apex :url "https://github.com/aheber/tree-sitter-sfapex" :src "apex/src")
     (arduino :url "https://github.com/ObserverOfTime/tree-sitter-arduino")
@@ -203,6 +203,8 @@ This used for both compilation and downloading."
     (turtle :url "https://github.com/BonaBeavis/tree-sitter-turtle")
     (twig :url "https://github.com/gbprod/tree-sitter-twig")
     (typescript :url "https://github.com/tree-sitter/tree-sitter-typescript" :src "typescript/src")
+    (typst :url "https://github.com/uben0/tree-sitter-typst")
+    (ungrammar :url "https://github.com/tree-sitter-grammars/tree-sitter-ungrammar")
     (vala :url "https://github.com/vala-lang/tree-sitter-vala")
     (verilog :url "https://github.com/tree-sitter/tree-sitter-verilog.git")
     (vhs :url "https://github.com/charmbracelet/tree-sitter-vhs")

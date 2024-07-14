@@ -234,6 +234,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (tuareg-mode          . ocaml)
     (typescript-mode      . tsx)
     (typescript-ts-mode   . tsx)
+    (typst-ts-mode        . typst)
     (verilog-mode         . verilog)
     (vimrc-mode           . vim)
     (xml-mode             . xml)
