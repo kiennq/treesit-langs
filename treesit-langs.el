@@ -174,6 +174,8 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (go-mode              . go)
     (go-ts-mode           . go)
     (graphql-mode         . graphql)
+    (graphql-ts-mode      . graphql)
+    (graphviz-dot-mode    . dot)
     (groovy-mode          . groovy)
     (haskell-mode         . haskell)
     (hcl-mode             . hcl)
