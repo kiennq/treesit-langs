@@ -44,11 +44,6 @@ This should be set before the grammars are downloaded, e.g. before
   :group 'treesit-langs
   :type 'directory)
 
-(defun treesit-langs--bin-dir ()
-  "Return the directory to stored grammar binaries.
-This used for both compilation and downloading."
-  (concat (file-name-as-directory treesit-langs-grammar-dir) "bin/"))
-
 ;; ---------------------------------------------------------------------------
 ;;; Utilities.
 
@@ -318,7 +313,7 @@ This should be bumped whenever a language submodule is updated, which should be
 infrequent (grammar-only changes)."
   (setq treesit-langs--bundle-version
         (or treesit-langs--bundle-version
-            (let ((default-directory (treesit-langs--bin-dir)))
+            (let ((default-directory treesit-langs-grammar-dir))
               (if (file-exists-p treesit-langs--bundle-version-file)
                   (with-temp-buffer
                     (let ((coding-system-for-read 'utf-8))
@@ -400,7 +395,7 @@ This function requires git and tree-sitter CLI."
                (concat (treesit-langs--repos-dir)
                        (symbol-name lang))))
          (src-path (expand-file-name src dir))
-         (bin-dir (treesit-langs--bin-dir))
+         (bin-dir treesit-langs-grammar-dir)
          (treesit-langs--out (treesit-langs--buffer
                               (format "*treesit-langs-compile %s*" lang)))
          (cc (or (seq-find #'executable-find '("cc" "gcc" "c99" "clang"))
@@ -460,7 +455,7 @@ The bundle includes all languages in `treesit-langs-source-alist'."
         (let* ((tar-file (concat (file-name-as-directory
                                   (expand-file-name default-directory))
                                  (treesit-langs--old-bundle-file nil version) ".gz"))
-               (default-directory (treesit-langs--bin-dir))
+               (default-directory treesit-langs-grammar-dir)
                (treesit-langs--out (treesit-langs--buffer "*treesit-langs-create-bundle*"))
                (files (cons treesit-langs--bundle-version-file
                             (thread-last
@@ -523,7 +518,7 @@ non-nil."
                   (read-string "Bundle version: " (treesit-langs--bundle-version)))
                 treesit-langs--os
                 nil))
-  (let* ((bin-dir (treesit-langs--bin-dir))
+  (let* ((bin-dir treesit-langs-grammar-dir)
          (default-directory bin-dir)
          (_ (unless (file-directory-p bin-dir) (make-directory bin-dir t)))
          (has-bundle (file-exists-p

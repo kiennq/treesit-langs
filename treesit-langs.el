@@ -35,7 +35,7 @@
               (lambda (&rest _) (message treesit--inspect-name))))
 
 (defun treesit-langs--reformat-shared-objects (&optional lang)
-  "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs--bin-dir' .
+  "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs-grammar-dir' .
 
 Rationale: treesit-langs saves grammars as LANG.so, but
 treesit needs libtree-sitter-LANG.so."
@@ -49,9 +49,9 @@ treesit needs libtree-sitter-LANG.so."
               (make-symbolic-link
                file
                dest))))
-        (or (and lang `(,(concat (file-name-as-directory (treesit-langs--bin-dir))
+        (or (and lang `(,(concat (file-name-as-directory treesit-langs-grammar-dir)
                                  (format "%s.dll" lang))))
-            (directory-files (treesit-langs--bin-dir) 'full
+            (directory-files treesit-langs-grammar-dir 'full
                              (rx (* any) (eval `(or ,@treesit-langs--suffixes)) eol)))))
 
 (defvar treesit-lang--setup-completed nil)
@@ -59,7 +59,7 @@ treesit needs libtree-sitter-LANG.so."
 (defun treesit-lang--setup ()
   "Setup parsers."
   (treesit-langs--reformat-shared-objects)
-  (add-to-list 'treesit-extra-load-path (treesit-langs--bin-dir))
+  (add-to-list 'treesit-extra-load-path treesit-langs-grammar-dir)
   (setq treesit-lang--setup-completed t))
 
 (defun treesit-langs--convert-highlights (patterns)
