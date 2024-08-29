@@ -325,6 +325,8 @@ LANGS can be a list or a symbol."
                                      languages)))
           (setq-local treesit-font-lock-feature-list '((override)))
           (let (treesit-simple-indent-rules)
+            ;; Need to flush out the current fontlock
+            (setq font-lock-major-mode nil)
             (treesit-major-mode-setup))
           (message "Turn on tree-sitter.")))
     (let ((mode major-mode))
