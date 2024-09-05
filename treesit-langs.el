@@ -22,6 +22,7 @@
 (require 'treesit)
 (require 'treesit-langs-build)
 (require 'treesit-faces)
+(require 'font-lock)
 (require 'rx)
 
 (defvar treesit-langs--testing)
@@ -327,7 +328,8 @@ LANGS can be a list or a symbol."
           (let (treesit-simple-indent-rules)
             ;; Need to flush out the current fontlock
             (setq font-lock-major-mode nil)
-            (treesit-major-mode-setup))
+            (treesit-major-mode-setup)
+            (font-lock-flush))
           (message "Turn on tree-sitter.")))
     (let ((mode major-mode))
       (fundamental-mode)
