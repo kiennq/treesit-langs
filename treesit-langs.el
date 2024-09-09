@@ -26,14 +26,10 @@
 (require 'rx)
 
 (defvar treesit-langs--testing)
-(eval-and-compile
-  (unless (bound-and-true-p treesit-langs--testing)
-    (ignore-errors
-      (treesit-langs-install-grammars :skip-if-installed)))
+(unless (bound-and-true-p treesit-langs--testing)
+  (ignore-errors
+    (treesit-langs-install-grammars :skip-if-installed)))
 
-  ;; better inspect
-  (advice-add 'treesit-inspect-node-at-point :after
-              (lambda (&rest _) (message treesit--inspect-name))))
 
 (defun treesit-langs--reformat-shared-objects (&optional lang)
   "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs-grammar-dir' .
