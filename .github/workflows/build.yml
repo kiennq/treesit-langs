@@ -37,7 +37,7 @@ jobs:
             host: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # - name: Install rust toolchain
       #   uses: actions-rs/toolchain@v1
       #   with:
@@ -91,31 +91,19 @@ jobs:
         run: |
           mv tree-sitter-grammars-${{ matrix.bundle_os }}-${{ env.BUNDLE_VERSION }}.tar.gz tree-sitter-grammars.${{ matrix.host }}.v${{ env.BUNDLE_VERSION }}.tar.gz
 
-      - name: Upload binary
+      # Upload release for each build
+      - name: Upload binaries to release
         if: steps.inspect-binary.outcome == 'success'
-        uses: actions/upload-artifact@v2
+        id: upload_release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: tree-sitter-grammars
-          path: tree-sitter-grammars*.tar.gz
-          if-no-files-found: error
+          repo_token: ${{ github.token }}
+          file: tree-sitter-grammars*.tar.gz
+          file_glob: true
+          tag: ${{ env.BUNDLE_VERSION }}
+          release_name: ${{ env.BUNDLE_VERSION }}
+          draft: false
+          prerelease: false
 
-    outputs:
-      version: ${{ env.BUNDLE_VERSION }}
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download binaries
-        uses: actions/download-artifact@v2
-        with:
-          name: tree-sitter-grammars
-      - run: ls -R
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ needs.build.outputs.version }}
-          prerelease: true
-          files: |
-            tree-sitter-grammars*.tar.gz
+    # outputs:
+    #   version: ${{ env.BUNDLE_VERSION }}
