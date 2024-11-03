@@ -304,34 +304,37 @@ LANGS can be a list or a symbol."
                                      l)))
                     (languages (pcase languages
                                  ((pred listp) languages)
-                                 (`,val (list val)))))
+                                 (`,val (list val))))
+                    (font-lock-settings t))
           (dolist (language languages)
             (unless (treesit-ready-p language)
               (error "Tree sitter for %s isn't available" language))
             (treesit-parser-create language))
 
-          (setq-local treesit-font-lock-settings
-                      (apply #'treesit-font-lock-rules
-                             (mapcan (lambda (lang)
-                                       (list :language lang
-                                             :feature 'override
-                                             :override t
-                                             (treesit-langs--convert-highlights
-                                              (or (treesit-langs--hl-default-patterns lang major-mode)
-                                                  (error "No query patterns for %s" lang)))))
-                                     languages)))
-          (setq-local treesit-font-lock-feature-list '((override)))
+          (setq font-lock-settings
+                (apply #'treesit-font-lock-rules
+                       (mapcan (lambda (lang)
+                                 (list :language lang
+                                       :feature 'override
+                                       :override t
+                                       (treesit-langs--convert-highlights
+                                        (or (treesit-langs--hl-default-patterns lang major-mode)
+                                            (error "No query patterns for %s" lang)))))
+                               languages)))
+
           (let (treesit-simple-indent-rules)
-            ;; Need to flush out the current fontlock
-            (setq font-lock-major-mode nil)
-            (treesit-major-mode-setup)
-            (font-lock-flush))
+            (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
+              (delay-mode-hooks
+                (funcall-interactively major-mode)
+                (setq-local treesit-font-lock-settings font-lock-settings)
+                (setq-local treesit-font-lock-feature-list '((override)))
+                (treesit-major-mode-setup))
+              (run-mode-hooks)))
+          (run-at-time 0.01 nil #'font-lock-flush)
           (message "Turn on tree-sitter.")))
-    (let ((mode major-mode))
-      (fundamental-mode)
-      (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
-        (funcall-interactively mode))
-      (message "Turn off tree-sitter."))))
+    (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
+      (funcall-interactively major-mode))
+    (message "Turn off tree-sitter.")))
 
 ;;;###autoload
 (defun treesit-hl-toggle (&optional enable)
