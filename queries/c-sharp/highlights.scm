@@ -1,10 +1,10 @@
-[
-  (identifier)
-  (preproc_arg)
-] @variable
+;; [
+;;   (identifier)
+;;   (preproc_arg)
+;; ] @variable
 
-((preproc_arg) @constant.macro
-  (#lua-match? @constant.macro "^[_A-Z][_A-Z0-9]*$"))
+;; ((preproc_arg) @constant.macro
+;;   (#lua-match? @constant.macro "^[_A-Z][_A-Z0-9]*$"))
 
 ((identifier) @keyword
   (#eq? @keyword "value")
@@ -42,8 +42,8 @@
 
 (interpolation) @none
 
-(member_access_expression
-  name: (identifier) @variable.member)
+;; (member_access_expression
+;;   name: (identifier) @variable.member)
 
 (invocation_expression
   (member_access_expression
@@ -217,7 +217,6 @@
   "module"
   "this"
   "base"
-  (discard)
 ] @variable.builtin
 
 (constructor_declaration
@@ -429,6 +428,11 @@
   "??="
   ".."
 ] @operator
+
+(list_pattern
+  ".." @character.special)
+
+(discard) @character.special
 
 [
   ";"
