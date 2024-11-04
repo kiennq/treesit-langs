@@ -240,6 +240,7 @@ elisp-tree-sitter) to a query string compatible with treesit."
     (yaml-mode            . yaml)
     (yaml-ts-mode         . yaml)
     (zig-mode             . zig)
+    (zig-ts-mode          . zig)
     )
   "Alist that maps major modes to tree-sitter language names."
   :group 'treesit
