@@ -103,7 +103,7 @@ jobs:
           tag: ${{ env.BUNDLE_VERSION }}
           release_name: ${{ env.BUNDLE_VERSION }}
           draft: false
-          prerelease: false
+          prerelease: true
 
     # outputs:
     #   version: ${{ env.BUNDLE_VERSION }}
