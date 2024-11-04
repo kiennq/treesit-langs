@@ -118,9 +118,8 @@
   "Face for \"dangerous\" variables, e.g. mutable or dynamically-bound."
   :group 'treesit-faces)
 
-;;; TODO: Define a more sensible default.
 (defface treesit-face-property
-  '((default :inherit font-lock-constant-face :slant italic))
+  '((default :inherit font-lock-variable-name-face :slant italic))
   "Face for properties."
   :group 'treesit-faces)
 

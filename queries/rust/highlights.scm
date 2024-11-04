@@ -23,16 +23,17 @@
 
 (field_identifier) @variable.member
 
+(shorthand_field_identifier) @variable.member
+
 (shorthand_field_initializer
   (identifier) @variable.member)
 
 (mod_item
   name: (identifier) @module)
 
-[
-  (self)
-  "_"
-] @variable.builtin
+(self) @variable.builtin
+
+"_" @character.special
 
 (label
   [
@@ -52,6 +53,14 @@
     (identifier)
     "_"
   ] @variable.parameter)
+
+(parameter
+  (ref_pattern
+    [
+      (mut_pattern
+        (identifier) @variable.parameter)
+      (identifier) @variable.parameter
+    ]))
 
 (closure_parameters
   (_) @variable.parameter)
@@ -212,17 +221,6 @@
     (identifier) @function.macro .))
 
 ; Literals
-[
-  (line_comment)
-  (block_comment)
-] @comment @spell
-
-(line_comment
-  (doc_comment)) @comment.documentation
-
-(block_comment
-  (doc_comment)) @comment.documentation
-
 (boolean_literal) @boolean
 
 (integer_literal) @number
@@ -382,6 +380,19 @@
   "||"
 ] @operator
 
+(use_wildcard
+  "*" @character.special)
+
+(remaining_field_pattern
+  ".." @character.special)
+
+(range_pattern
+  [
+    ".."
+    "..="
+    "..."
+  ] @character.special)
+
 ; Punctuation
 [
   "("
@@ -458,3 +469,61 @@
   macro: (identifier) @keyword.debug
   "!" @keyword.debug
   (#eq? @keyword.debug "dbg"))
+
+; Comments
+[
+  (line_comment)
+  (block_comment)
+  (outer_doc_comment_marker)
+  (inner_doc_comment_marker)
+] @comment @spell
+
+(line_comment
+  (doc_comment)) @comment.documentation
+
+(block_comment
+  (doc_comment)) @comment.documentation
+
+(call_expression
+  function: (scoped_identifier
+    path: (identifier) @_regex
+    (#any-of? @_regex "Regex" "ByteRegexBuilder")
+    name: (identifier) @_new
+    (#eq? @_new "new"))
+  arguments: (arguments
+    (raw_string_literal
+      (string_content) @string.regexp)))
+
+(call_expression
+  function: (scoped_identifier
+    path: (scoped_identifier
+      (identifier) @_regex
+      (#any-of? @_regex "Regex" "ByteRegexBuilder") .)
+    name: (identifier) @_new
+    (#eq? @_new "new"))
+  arguments: (arguments
+    (raw_string_literal
+      (string_content) @string.regexp)))
+
+(call_expression
+  function: (scoped_identifier
+    path: (identifier) @_regex
+    (#any-of? @_regex "RegexSet" "RegexSetBuilder")
+    name: (identifier) @_new
+    (#eq? @_new "new"))
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @string.regexp))))
+
+(call_expression
+  function: (scoped_identifier
+    path: (scoped_identifier
+      (identifier) @_regex
+      (#any-of? @_regex "RegexSet" "RegexSetBuilder") .)
+    name: (identifier) @_new
+    (#eq? @_new "new"))
+  arguments: (arguments
+    (array_expression
+      (raw_string_literal
+        (string_content) @string.regexp))))
