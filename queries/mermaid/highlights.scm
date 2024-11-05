@@ -81,7 +81,6 @@
 ] @operator
 
 [
-  (class_reltype_aggregation)
   (class_reltype_extension)
   (class_reltype_composition)
   (class_reltype_dependency)
@@ -90,13 +89,11 @@
   "&"
 ] @operator
 
-(sequence_actor) @variable.member
+(sequence_actor) @type
 
-(class_name) @variable.member
+(class_name) @type
 
-(state_name) @variable.member
-
-(gantt_task_text) @variable.member
+(state_name) @type
 
 [
   (class_annotation_line)
@@ -109,22 +106,45 @@
 
 (directive) @keyword.import
 
-(pie_label) @string
+[
+  (flow_text_quoted)
+  (flow_text_literal)
+  (flow_arrow_text)
+  (flow_vertex_text)
+  (sequence_text)
+  (sequence_alias)
+  (state_description)
+  (er_role)
+  (cardinality)
+  (gantt_task_text)
+  (pie_title)
+  (pie_label)
+  (pie_label)
+] @string
 
 (pie_value) @number.float
 
 [
+  (direction_lr)
+  (direction_rl)
+  (direction_tb)
+  (direction_bt)
   (flowchart_direction_lr)
   (flowchart_direction_rl)
   (flowchart_direction_tb)
   (flowchart_direction_bt)
+  (annotation)
 ] @constant
 
-(flow_vertex_id) @variable.member
+(flow_vertex_id) @type
 
 [
   (flow_link_arrow)
   (flow_link_arrow_start)
+  (sequence_signal_type)
+  (state_arrow)
+  (er_relation)
+  (class_relation)
 ] @operator
 
 (flow_link_arrowtext
@@ -235,10 +255,9 @@
   (er_reltype_identifying)
 ] @operator
 
-(er_entity_name) @variable.member
+(er_entity_name) @type
 
-(er_attribute_type) @type
-
+(er_attribute_type) @constant
 (er_attribute_name) @variable.member
 
 [
@@ -247,3 +266,8 @@
 ] @keyword.modifier
 
 (er_attribute_comment) @string @spell
+
+(gantt_section) @type
+(gantt_task_data) @type
+(gantt_date_format) @constant
+(gantt_axis_format) @constant

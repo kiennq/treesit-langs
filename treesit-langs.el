@@ -329,7 +329,7 @@ LANGS can be a list or a symbol."
           (setq-local treesit-font-lock-feature-list '((override)))
           (treesit-major-mode-setup))
         (run-mode-hooks)))
-    (run-at-time 0.01 nil #'font-lock-flush)
+    (font-lock-update)
     (message "Turn on tree-sitter.")))
 
 (defun treesit-hl--off ()
