@@ -25,14 +25,14 @@
 (require 'font-lock)
 (require 'rx)
 
-(defvar treesit-langs--testing)
-(unless (bound-and-true-p treesit-langs--testing)
-  (ignore-errors
-    (treesit-langs-install-grammars :skip-if-installed)))
+;; (defvar treesit-langs--testing)
+;; (unless (bound-and-true-p treesit-langs--testing)
+;;   (ignore-errors
+;;     (treesit-langs-install-grammars :skip-if-installed)))
 
 
 (defun treesit-langs--reformat-shared-objects (&optional lang)
-  "Make symlinks so *.so files are aliased to libtree-sitter-*.so in `treesit-langs-grammar-dir' .
+  "Make symlinks so parsers are aliased in `treesit-langs-grammar-dir'.
 
 Rationale: treesit-langs saves grammars as LANG.so, but
 treesit needs libtree-sitter-LANG.so."
@@ -60,8 +60,8 @@ treesit needs libtree-sitter-LANG.so."
   (setq treesit-lang--setup-completed t))
 
 (defun treesit-langs--convert-highlights (patterns)
-  "Convert PATTERNS (a query string compatible with
-elisp-tree-sitter) to a query string compatible with treesit."
+  "Convert PATTERNS to a query string compatible with treesit.
+PATTERNS is a query string compatible with `elisp-tree-sitter'."
   (cl-labels ((transform (exp)
                 (pcase-exhaustive exp
                   ;; .match has its args flipped
@@ -321,33 +321,36 @@ LANGS can be a list or a symbol."
                                       (error "No query patterns for %s" lang)))))
                          languages)))
 
+    ;; NOTE: the alternative approach is to reinvoke the `major-mode' inside
+    ;; `delay-mode-hooks' to make sure the `treesit-font-lock' is set up
+    ;; correctly. We will need to run `delayed-mode-hooks' afterward. However,
+    ;; this approach is not efficient.
+    (setq-local treesit-font-lock-settings font-lock-settings)
+    (setq-local treesit-font-lock-feature-list '((override)))
     (let (treesit-simple-indent-rules)
-      (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
-        (delay-mode-hooks
-          (funcall-interactively major-mode)
-          (setq-local treesit-font-lock-settings font-lock-settings)
-          (setq-local treesit-font-lock-feature-list '((override)))
-          (treesit-major-mode-setup))
-        (run-mode-hooks)))
+      (treesit-major-mode-setup))
+    (setq font-lock-major-mode nil)
     (font-lock-update)
+    (mapc #'kill-local-variable
+          '(whitespace-mode-set-explicitly
+            whitespace-mode-major-mode))
+    (run-hooks 'after-change-major-mode-hook)
     (message "Turn on tree-sitter.")))
 
 (defun treesit-hl--off ()
   "Turn off tree-sitter highlighting for current buffer."
-  (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
-    (funcall-interactively major-mode))
+  (funcall-interactively major-mode)
   (message "Turn off tree-sitter."))
 
 ;;;###autoload
 (defun treesit-hl-toggle (&optional enable)
   "Toggle tree-sitter highlighting state according to ENABLE."
-  (interactive)
-  (setq treesit-hl--enabled (if (called-interactively-p 'any)
-                                (not treesit-hl--enabled)
-                              enable))
-  (if treesit-hl--enabled
-      (treesit-hl--on)
-    (treesit-hl--off)))
+  (interactive (list (not treesit-hl--enabled)))
+  (setq treesit-hl--enabled enable)
+  (cl-letf (((symbol-function 'treesit-hl-toggle) #'ignore))
+    (if treesit-hl--enabled
+        (treesit-hl--on)
+      (treesit-hl--off))))
 
 
 (provide 'treesit-langs)

@@ -51,7 +51,7 @@ script/compile all
 
 ### Adding a new grammar
 
-- Add a new entry in [`treesit-langs-source-alist`](./treesit-langs-build.el) and [`grammars`](./script/_grammars).
+- Add a new entry in [`grammars`](./script/_grammars) and optionally [`treesit-langs-source-alist`](./treesit-langs-build.el).
   The entry is in the format of `(lang :url <git-url> :rev <revision> :src <src-dir>)`.
 - Add the `(major-mode . language)` to the `treesit-major-mode-language-alist`
 - Add the highlighting rules to the `queries/<lang>/highlights.scm`
