@@ -206,7 +206,7 @@ PATTERNS is a query string compatible with `elisp-tree-sitter'."
     (ocaml-mode           . ocaml)
     (pascal-mode          . pascal)
     (perl-mode            . perl)
-    (php-mode             . php)
+    (php-mode             . (php phpdoc html javascript jsdoc css))
     (powershell-mode      . powershell)
     (powershell-ts-mode   . powershell)
     (prisma-mode          . prisma)
