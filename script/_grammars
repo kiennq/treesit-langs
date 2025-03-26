@@ -161,6 +161,7 @@ declare -A grammars=(
     ['menhir']=' -url https://github.com/Kerl13/tree-sitter-menhir'
     ['mermaid']=' -url https://github.com/monaqa/tree-sitter-mermaid'
     ['meson']=' -url https://github.com/Decodetalkers/tree-sitter-meson'
+    ['midl3']=' -url https://github.com/kiennq/tree-sitter-midl3'
     ['mlir']=' -url https://github.com/artagnon/tree-sitter-mlir'
     ['muttrc']=' -url https://github.com/neomutt/tree-sitter-muttrc'
     ['nasm']=' -url https://github.com/naclsn/tree-sitter-nasm'
