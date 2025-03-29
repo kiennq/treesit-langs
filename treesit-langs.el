@@ -132,6 +132,7 @@ PATTERNS is a query string compatible with `elisp-tree-sitter'."
 
 (defcustom treesit-major-mode-language-alist
   '(
+    (adoc-mode            . (asciidoc asciidoc-inline))
     (agda-mode            . agda)
     (asm-mode             . asm)
     (bash-ts-mode         . bash)
