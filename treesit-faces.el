@@ -305,8 +305,8 @@
   '((t (:strike-through t)))
   "Face for strikethrough text.")
 
-(put 'treesit-face-markup.italic 'face-alias 'link)
-(put 'treesit-face-markup.link 'face-alias 'link)
+(put 'treesit-face-markup.italic 'face-alias 'italic)
+(put 'treesit-face-markup.link 'face-alias 'font-lock-string-face)
 (put 'treesit-face-markup.link.label 'face-alias 'link)
 (put 'treesit-face-markup.link.url 'face-alias 'font-lock-string-face)
 (put 'treesit-face-markup.list.checked 'face-alias 'font-lock-builtin-face)
