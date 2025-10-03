@@ -351,6 +351,30 @@ LANGS can be a list or a symbol."
         (treesit-hl--on)
       (treesit-hl--off))))
 
+
+
+;; Debug
+(defun treesit-hl-validate (langs mode)
+  "Run `treesit-query-validate' on the highlighting query for LANGS and MAJOR-MODE."
+  (interactive
+   `(,(let* ((modes `(,major-mode))
+             (mode (pop modes))
+             languages)
+        (while (and mode
+                    (not (setq languages (alist-get mode treesit-major-mode-language-alist))))
+          (mapc (lambda (p-mode)
+                  (add-to-list 'modes p-mode))
+                `(,@(get mode 'derived-mode-extra-parents)
+                  ,(get mode 'derived-mode-parent)))
+          (setq mode (pop modes)))
+        (pcase languages
+          ((pred listp) languages)
+          (`,val (list val))))
+     ,major-mode))
+  (dolist (lang langs)
+    (treesit-query-validate
+     lang
+     (treesit-langs--convert-highlights (treesit-langs--hl-default-patterns lang mode)))))
 
 (provide 'treesit-langs)
 ;;; treesit-langs.el ends here
