@@ -22,11 +22,11 @@ jobs:
           - os: macos-15-intel
             bundle_os: macos
             ext: dylib
-            target: x86_64-apple-darwin
+            host: x86_64-apple-darwin
           - os: macos-15
             bundle_os: macos
             ext: dylib
-            target: aarch64-apple-darwin
+            host: aarch64-apple-darwin
           - os: ubuntu-latest
             bundle_os: linux
             ext: so
