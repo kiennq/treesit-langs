@@ -331,8 +331,8 @@ LANGS can be a list or a symbol."
     (setq font-lock-major-mode nil)
     (font-lock-update)
     (mapc #'kill-local-variable
-          '(whitespace-mode-set-explicitly
-            whitespace-mode-major-mode))
+          '(whitespace-mode--set-explicitly
+            global-whitespace-mode--major-mode))
     (run-hooks 'after-change-major-mode-hook)
     (message "Turn on tree-sitter.")))
 
