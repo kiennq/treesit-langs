@@ -327,13 +327,13 @@ LANGS can be a list or a symbol."
     (setq-local treesit-font-lock-settings font-lock-settings)
     (setq-local treesit-font-lock-feature-list '((override)))
     (let (treesit-simple-indent-rules)
-      (treesit-major-mode-setup))
-    (setq font-lock-major-mode nil)
-    (font-lock-update)
-    (mapc #'kill-local-variable
-          '(whitespace-mode--set-explicitly
-            global-whitespace-mode--major-mode))
-    (run-hooks 'after-change-major-mode-hook)
+      (treesit-major-mode-setup)
+      (setq font-lock-major-mode nil)
+      (font-lock-update)
+      (mapc #'kill-local-variable
+            '(whitespace-mode--set-explicitly
+              global-whitespace-mode--major-mode))
+      (run-hooks 'after-change-major-mode-hook))
     (message "Turn on tree-sitter.")))
 
 (defun treesit-hl--off ()
