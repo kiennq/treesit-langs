@@ -4,7 +4,7 @@
 (identifier) @variable
 
 ; Reset highlighting in f-string interpolations
-(interpolation) @none
+(interpolation) @none @nospell
 
 ; Identifier naming conventions
 ((identifier) @type
@@ -79,10 +79,10 @@
   (escape_interpolation)
 ] @string.escape
 
-; doc-strings
-(expression_statement
-  (string
-    (string_content) @spell) @string.documentation)
+;; ; doc-strings
+;; (expression_statement
+;;   (string
+;;     (string_content) @spell) @string.documentation)
 
 ; Tokens
 [
@@ -246,6 +246,12 @@
 (interpolation
   "{" @punctuation.special
   "}" @punctuation.special)
+
+(format_expression
+  "{" @punctuation.special
+  "}" @punctuation.special)
+
+(line_continuation) @punctuation.special
 
 (type_conversion) @function.macro
 
@@ -411,9 +417,17 @@
   function: (attribute
     object: (identifier) @_re)
   arguments: (argument_list
-    .
     (string
       (string_content) @string.regexp))
+  (#eq? @_re "re"))
+
+(call
+  function: (attribute
+    object: (identifier) @_re)
+  arguments: (argument_list
+    (concatenated_string
+      (string
+        (string_content) @string.regexp)))
   (#eq? @_re "re"))
 
 ; Decorators
