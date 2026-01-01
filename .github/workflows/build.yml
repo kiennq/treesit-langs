@@ -36,6 +36,8 @@ jobs:
             ext: dll
             host: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
+    env:
+      TS_VERSION: 0.26.3
     steps:
       - uses: actions/checkout@v4
       # - name: Install rust toolchain
@@ -60,11 +62,11 @@ jobs:
         shell: bash
 
       - name: Install tree-sitter CLI
-        run: npm install -g tree-sitter-cli
+        run: npm install -g tree-sitter-cli@${{ env.TS_VERSION }}
 
       - name: Determine version
         run: |
-          echo BUNDLE_VERSION=$(script/bundle-version-prefix).${{ github.run_number }} >> $GITHUB_ENV
+          echo BUNDLE_VERSION=$(script/bundle-version-prefix).${{ github.run_number }}.${{ env.TS_VERSION }} >> $GITHUB_ENV
         shell: bash
 
       - name: Install current Bash on macOS
