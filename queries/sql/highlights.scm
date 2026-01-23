@@ -334,6 +334,10 @@
   (keyword_duplicate)
 ] @keyword
 
+;; Scope Script-specific keywords (parsed as identifiers by SQL grammar)
+((identifier) @keyword
+  (#match? @keyword "^(EXTRACT|OUTPUT|PROCESS|PRODUCE|REDUCE|COMBINE|REFERENCE|DEPLOY|RESOURCE|MODULE|IMPORT|EXPORT|SSTREAM|PARAMS|TOP|CLUSTERED|SORTED|PRESORT|STREAMEXPIRY|ROWCOUNT|SAMPLE|SEMIJOIN|ANTISEMIJOIN|BROADCAST|PAIR|REQUIRED)$"))
+
 (keyword_while) @keyword.repeat
 
 [

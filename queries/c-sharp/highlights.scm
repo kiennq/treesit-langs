@@ -4,11 +4,13 @@
 ;; ] @variable
 
 ;; ((preproc_arg) @constant.macro
-;;   (#lua-match? @constant.macro "^[_A-Z][_A-Z0-9]*$"))
+;;   (#match? @constant.macro "^[_A-Z][_A-Z0-9]*$"))
 
-((identifier) @keyword
-  (#eq? @keyword "value")
-  (#has-ancestor? @keyword accessor_declaration))
+; "value" keyword in property/event accessors - it's a contextual keyword
+; We match assignment to "value" or using "value" as an expression in set/add/remove accessors
+(assignment_expression
+  right: (identifier) @keyword
+  (#eq? @keyword "value"))
 
 (method_declaration
   name: (identifier) @function.method)
@@ -17,11 +19,22 @@
   name: (identifier) @function.method)
 
 (method_declaration
-  returns: [
-    (identifier) @type
-    (generic_name
-      (identifier) @type)
-  ])
+  returns: (identifier) @type)
+
+(method_declaration
+  returns: (qualified_name) @type)
+
+(method_declaration
+  returns: (generic_name) @type)
+
+(method_declaration
+  returns: (array_type) @type)
+
+(method_declaration
+  returns: (nullable_type) @type)
+
+(method_declaration
+  returns: (predefined_type) @type.builtin)
 
 (event_declaration
   type: (identifier) @type)
@@ -60,20 +73,52 @@
     (identifier)
   ] @module)
 
+; Identifiers in qualified_name are types by default
 (qualified_name
-  (identifier) @type)
+  name: (identifier) @type)
+
+(qualified_name
+  qualifier: (identifier) @type)
+
+; Override: qualified_name in namespace declarations should be @module
+(namespace_declaration
+  name: (qualified_name
+    name: (identifier) @module))
 
 (namespace_declaration
-  name: (identifier) @module)
+  name: (qualified_name
+    qualifier: (identifier) @module))
+
+(namespace_declaration
+  name: (qualified_name
+    qualifier: (qualified_name
+      name: (identifier) @module)))
+
+(namespace_declaration
+  name: (qualified_name
+    qualifier: (qualified_name
+      qualifier: (identifier) @module)))
 
 (file_scoped_namespace_declaration
   name: (identifier) @module)
 
-(qualified_name
-  (identifier) @module
-  (#not-has-ancestor? @module method_declaration)
-  (#not-has-ancestor? @module record_declaration)
-  (#has-ancestor? @module namespace_declaration file_scoped_namespace_declaration))
+(file_scoped_namespace_declaration
+  name: (qualified_name
+    name: (identifier) @module))
+
+(file_scoped_namespace_declaration
+  name: (qualified_name
+    qualifier: (identifier) @module))
+
+(file_scoped_namespace_declaration
+  name: (qualified_name
+    qualifier: (qualified_name
+      name: (identifier) @module)))
+
+(file_scoped_namespace_declaration
+  name: (qualified_name
+    qualifier: (qualified_name
+      qualifier: (identifier) @module)))
 
 (invocation_expression
   (identifier) @function.method.call)
@@ -101,6 +146,30 @@
 (parameter_list
   (parameter
     type: (identifier) @type))
+
+(parameter_list
+  (parameter
+    type: (qualified_name) @type))
+
+(parameter_list
+  (parameter
+    type: (generic_name) @type))
+
+(parameter_list
+  (parameter
+    type: (array_type) @type))
+
+(parameter_list
+  (parameter
+    type: (nullable_type) @type))
+
+(parameter_list
+  (parameter
+    type: (pointer_type) @type))
+
+(parameter_list
+  (parameter
+    type: (ref_type) @type))
 
 (integer_literal) @number
 
@@ -140,13 +209,13 @@
 (comment) @comment @spell
 
 ((comment) @comment.documentation
-  (#lua-match? @comment.documentation "^/[*][*][^*].*[*]/$"))
+  (#match? @comment.documentation "^/[*][*][^*].*[*]/$"))
 
 ((comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///[^/]"))
+  (#match? @comment.documentation "^///[^/]"))
 
 ((comment) @comment.documentation
-  (#lua-match? @comment.documentation "^///$"))
+  (#match? @comment.documentation "^///$"))
 
 (using_directive
   (identifier) @type)
@@ -235,6 +304,10 @@
   (identifier) @type)
 
 ; Generic Types.
+; Capture the name identifier in generic_name
+(generic_name
+  (identifier) @type)
+
 (typeof_expression
   (generic_name
     (identifier) @type))

@@ -221,6 +221,7 @@ PATTERNS is a query string compatible with `elisp-tree-sitter'."
     (rustic-mode          . rust)
     (scala-mode           . scala)
     (scheme-mode          . scheme)
+    (sscript-ts-mode      . (sql c-sharp))
     (sgml-mode            . dtd)
     (sh-mode              . bash)
     (sql-mode             . sql)
