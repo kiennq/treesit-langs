@@ -210,6 +210,7 @@ PATTERNS is a query string compatible with `elisp-tree-sitter'."
     (powershell-mode      . powershell)
     (powershell-ts-mode   . powershell)
     (prisma-mode          . prisma)
+    (protobuf-ts-mode     . proto)
     (psv-mode             . psv)
     (pygn-mode            . pgn)
     (python-mode          . python)
