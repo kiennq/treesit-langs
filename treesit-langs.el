@@ -191,6 +191,7 @@ PATTERNS is a query string compatible with `elisp-tree-sitter'."
     (julia-mode           . julia)
     (kotlin-mode          . kotlin)
     (kusto-mode           . kusto)
+    (kusto-ts-mode           . kusto)
     (latex-mode           . latex)
     (lua-mode             . lua)
     (makefile-mode        . make)
